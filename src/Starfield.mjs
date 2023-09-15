@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import Star from "./Star.mjs";
 
 class Starfield extends PIXI.Container {
 
@@ -11,57 +12,39 @@ class Starfield extends PIXI.Container {
   constructor(texture, n) {
     super();
     for(let i = 0; i < n; i++) {
-      const star = new PIXI.Sprite(texture);
+      const star = new Star(texture);
       this.stars.push(star);
-      star.x = Math.round(Math.random()*160-star.width);
-      star.y = Math.round(Math.random()*144-star.height);
       this.addChild(star);
+
+      star.xPos = Math.random()*160-star.width;
+      star.yPos = Math.random()*144-star.height;
     }
   }
 
   move(x, y) {
-    this.accumulatedMovement.x += x;
-    this.accumulatedMovement.y += y;
-
-    if(this.accumulatedMovement.x >= 1 || 
-      this.accumulatedMovement.x <= -1) {
-      
-      for(let star of this.stars) {
-        star.x += this.accumulatedMovement.x;
-        this.resetPosition(star);
-      }
-
-      this.accumulatedMovement.x = 0;
-    }
-
-    if(this.accumulatedMovement.y >= 1 || 
-      this.accumulatedMovement.y <= -1) {
-      
-      for(let star of this.stars) {
-        star.y += this.accumulatedMovement.y;
-        this.resetPosition(star);
-      }
-
-      this.accumulatedMovement.y = 0;
+    for(let star of this.stars) {
+      star.move(x, y);
+      this.wrapStarPosition(star);
+      star.update();
     }
   }
 
-  resetPosition(star) {
-    if(star.x > 160) {
-      star.x = 0 - star.width;
-      star.y = Math.round(Math.random()*144-star.height);
+  wrapStarPosition(star) {
+    if(star.xPos > 160) {
+      star.xPos = 0 - star.width;
+      star.yPos = Math.round(Math.random()*144-star.height);
     }
-    if(star.x < 0 - star.width) {
-      star.x = 160;
-      star.y = Math.round(Math.random()*144-star.height);
+    if(star.xPos < 0 - star.width) {
+      star.xPos = 160;
+      star.yPos = Math.round(Math.random()*144-star.height);
     }
-    if(star.y > 144) {
-      star.y = 0 - star.height;
-      star.x = Math.round(Math.random()*160-star.width);
+    if(star.yPos > 144) {
+      star.yPos = 0 - star.height;
+      star.xPos = Math.round(Math.random()*160-star.width);
     }
-    if(star.y < 0 - star.height) {
-      star.y = 144;
-      star.x = Math.round(Math.random()*160-star.width);
+    if(star.yPos < 0 - star.height) {
+      star.yPos = 144;
+      star.xPos = Math.round(Math.random()*160-star.width);
     }
   }
 }
