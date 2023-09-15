@@ -1,6 +1,5 @@
 * {
-    image-rendering: pixelated;
-    
+    image-rendering: pixelated;   
 }
 
 body {
@@ -12,6 +11,10 @@ body {
 }
 
 canvas{
-    
     border:64px ridge #880000;
+}
+
+@font-face {
+    font-family: gameboyfont;
+    src: url("../../res/gameboy.ttf") format("truetype");
 }
