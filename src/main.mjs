@@ -35,18 +35,30 @@ for(let starfield of starfields) {
     app.stage.addChild(starfield);
 }
 
+const player = new PIXI.Sprite(Assets.get("spaceman"));
+player.x = Math.round((160) / 2);
+player.y = Math.round((144) / 2);
+app.stage.addChild(player);
+player.pivot.set(16);
+
 let degrees = 0;
+let degrees2 = 0;
 
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
 
-    degrees += 1;
+    degrees++;
+    degrees2++;
     if(degrees == 360) degrees = 0;
+    if(degrees2 == 90) degrees2 = -90;
     let radians = degrees * (Math.PI / 180);
+    let radians2 = degrees2 * (Math.PI / 180);
 
     for(let i = 0; i < starfields.length; i++) {
         starfields[i].move(Math.cos(radians) + i * Math.cos(radians), Math.sin(radians) + i * Math.sin(radians));
     }
+    player.rotation += .05;
+    player.scale.set(.5 + Math.cos(radians2));
 });
 
 /*
