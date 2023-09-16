@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import Star from "./Star.mjs";
+import GameObject from "./GameObject.mjs";
 
 class Starfield extends PIXI.Container {
 
@@ -12,7 +12,7 @@ class Starfield extends PIXI.Container {
   constructor(texture, n) {
     super();
     for(let i = 0; i < n; i++) {
-      const star = new Star(texture);
+      const star = new GameObject(texture);
       this.stars.push(star);
       this.addChild(star);
 
