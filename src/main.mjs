@@ -2,14 +2,11 @@ import * as PIXI from "pixi.js";
 import Assets from "./Assets.mjs";
 import Starfield from "./Starfield.mjs";
 import Playingfield from "./Playingfield.mjs"
-import Player from "./Player.mjs";
 import Input from "./Input.mjs";
 
 console.log("pixi version:", PIXI.VERSION);
 
 PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
-// PIXI.Text.defaultAutoResolution = false;
-// PIXI.Text.defaultResolution = 1;
 
 const gameSettings = {
     width: 160,
@@ -26,6 +23,7 @@ const app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 await Assets.load();
+Input.startListener();
 
 const starfieldSpeed = -.1;
 const starfields = [
@@ -39,33 +37,22 @@ for (let starfield of starfields) {
     app.stage.addChild(starfield);
 }
 
-
 // add playingfield to stage
 const playingfield = new Playingfield();
 app.stage.addChild(playingfield);
+
 let degrees = 0;
-let degrees2 = 0;
-
-Input.startListener();
-
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
-
     degrees++;
-    degrees2++;
     if (degrees == 360) degrees = 0;
-    if (degrees2 == 90) degrees2 = -90;
     let radians = degrees * (Math.PI / 180);
-    let radians2 = degrees2 * (Math.PI / 180);
 
     for (let i = 0; i < starfields.length; i++) {
         starfields[i].move(Math.cos(radians) + i * Math.cos(radians), Math.sin(radians) + i * Math.sin(radians));
     }
-    // player.rotation += .05;
-    // player.scale.set(.5 + Math.cos(radians2));
 
-    playingfield.update()
-
+    playingfield.update();
 });
 
 /*

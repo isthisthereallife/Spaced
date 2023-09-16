@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 
-export default class Assets {
+class Assets {
   static #assets;
 
   static async load() {
@@ -15,3 +15,5 @@ export default class Assets {
     return this.#assets.sheet.textures[id];
   }
 }
+
+export default Assets;

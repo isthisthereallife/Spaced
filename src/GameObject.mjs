@@ -1,8 +1,10 @@
 import { Sprite } from "pixi.js";
 
 class GameObject extends Sprite {
-  #xPos = 0;
-  #yPos = 0;
+  xPos = 0;
+  yPos = 0;
+  rot = 0;
+
   constructor(texture) {
     super(texture);
   }

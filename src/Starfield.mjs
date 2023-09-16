@@ -2,15 +2,11 @@ import * as PIXI from "pixi.js";
 import GameObject from "./GameObject.mjs";
 
 class Starfield extends PIXI.Container {
-
   stars = [];
-  accumulatedMovement = {
-    x: 0,
-    y: 0
-  };
 
   constructor(texture, n) {
     super();
+
     for (let i = 0; i < n; i++) {
       const star = new GameObject(texture);
       this.stars.push(star);
@@ -23,7 +19,8 @@ class Starfield extends PIXI.Container {
 
   move(x, y) {
     for (let star of this.stars) {
-      star.move(x, y);
+      star.xPos += x;
+      star.yPos += y;
       this.wrapStarPosition(star);
       star.update();
     }

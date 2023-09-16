@@ -1,7 +1,7 @@
 class Input {
     static #inputMap = new Map();
-    static startListener() {
 
+    static startListener() {
         document.addEventListener("keydown", (e) => {
             this.#inputMap.set(e.code, true);
         });
@@ -9,8 +9,8 @@ class Input {
             this.#inputMap.set(e.code, false);
         });
     }
-    static getInput(code) {
 
+    static getInput(code) {
         return this.#inputMap.has(code) ? this.#inputMap.get(code) : false;
     }
 }

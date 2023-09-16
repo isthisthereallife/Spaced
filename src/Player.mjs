@@ -7,7 +7,6 @@ class Player extends GameObject {
     }
 
     update() {
-
         if (this.rotation < -6 || this.rotation > 6) {
             this.rotation = 0
         }
@@ -15,7 +14,6 @@ class Player extends GameObject {
             this.yPos -= 1;
             // ändra x och y baserat på aktuell rotation
             console.log("up")
-
         };
         if (Input.getInput("ArrowDown")) {
             this.yPos += 1;
@@ -26,8 +24,6 @@ class Player extends GameObject {
         if (Input.getInput("ArrowRight")) {
             this.rotation += 0.1;
         }
-
-
 
         // debugging, TODO remove
         if (Input.getInput("KeyR")) {
