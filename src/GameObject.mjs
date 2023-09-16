@@ -1,6 +1,8 @@
-import * as PIXI from "pixi.js";
+import { Sprite } from "pixi.js";
 
-class GameObject extends PIXI.Sprite {
+class GameObject extends Sprite {
+  #xPos = 0;
+  #yPos = 0;
   constructor(texture) {
     super(texture);
   }

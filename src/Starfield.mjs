@@ -11,18 +11,18 @@ class Starfield extends PIXI.Container {
 
   constructor(texture, n) {
     super();
-    for(let i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
       const star = new GameObject(texture);
       this.stars.push(star);
       this.addChild(star);
 
-      star.xPos = Math.random()*160-star.width;
-      star.yPos = Math.random()*144-star.height;
+      star.xPos = Math.random() * 160 - star.width;
+      star.yPos = Math.random() * 144 - star.height;
     }
   }
 
   move(x, y) {
-    for(let star of this.stars) {
+    for (let star of this.stars) {
       star.move(x, y);
       this.wrapStarPosition(star);
       star.update();
@@ -30,21 +30,21 @@ class Starfield extends PIXI.Container {
   }
 
   wrapStarPosition(star) {
-    if(star.xPos > 160) {
+    if (star.xPos > 160) {
       star.xPos = 0 - star.width;
-      star.yPos = Math.round(Math.random()*144-star.height);
+      star.yPos = Math.round(Math.random() * 144 - star.height);
     }
-    if(star.xPos < 0 - star.width) {
+    if (star.xPos < 0 - star.width) {
       star.xPos = 160;
-      star.yPos = Math.round(Math.random()*144-star.height);
+      star.yPos = Math.round(Math.random() * 144 - star.height);
     }
-    if(star.yPos > 144) {
+    if (star.yPos > 144) {
       star.yPos = 0 - star.height;
-      star.xPos = Math.round(Math.random()*160-star.width);
+      star.xPos = Math.round(Math.random() * 160 - star.width);
     }
-    if(star.yPos < 0 - star.height) {
+    if (star.yPos < 0 - star.height) {
       star.yPos = 144;
-      star.xPos = Math.round(Math.random()*160-star.width);
+      star.xPos = Math.round(Math.random() * 160 - star.width);
     }
   }
 }
