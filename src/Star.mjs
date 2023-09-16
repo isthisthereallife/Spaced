@@ -1,6 +1,6 @@
-import * as PIXI from "pixi.js";
+import { Sprite } from "pixi.js";
 
-class Star extends PIXI.Sprite {
+class Star extends Sprite {
   constructor(texture) {
     super(texture);
   }

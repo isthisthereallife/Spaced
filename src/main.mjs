@@ -1,6 +1,9 @@
 import * as PIXI from "pixi.js";
 import Assets from "./Assets.mjs";
 import Starfield from "./Starfield.mjs";
+import Player from "./Player.mjs";
+import Input from "./Input.mjs";
+
 console.log("pixi version:", PIXI.VERSION);
 
 PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
@@ -35,7 +38,7 @@ for(let starfield of starfields) {
     app.stage.addChild(starfield);
 }
 
-const player = new PIXI.Sprite(Assets.get("spaceman"));
+const player = new Player(Assets.get("spaceman"));
 player.x = Math.round((160) / 2);
 player.y = Math.round((144) / 2);
 app.stage.addChild(player);
@@ -43,6 +46,8 @@ player.pivot.set(16);
 
 let degrees = 0;
 let degrees2 = 0;
+
+Input.startListener();
 
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
@@ -57,8 +62,11 @@ PIXI.Ticker.shared.add(ts => {
     for(let i = 0; i < starfields.length; i++) {
         starfields[i].move(Math.cos(radians) + i * Math.cos(radians), Math.sin(radians) + i * Math.sin(radians));
     }
-    player.rotation += .05;
-    player.scale.set(.5 + Math.cos(radians2));
+   // player.rotation += .05;
+   // player.scale.set(.5 + Math.cos(radians2));
+
+    player.update()
+
 });
 
 /*
