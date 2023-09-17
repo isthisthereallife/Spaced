@@ -8,7 +8,11 @@ class Starfield extends PIXI.Container {
     super();
 
     for (let i = 0; i < n; i++) {
-      const star = new GameObject(texture);
+      const star = new GameObject({
+        static: {loop: true, goto: "static", frames: [
+          {texture: texture, duration: Number.MAX_VALUE}
+        ]}
+      });
       this.stars.push(star);
       this.addChild(star);
 
