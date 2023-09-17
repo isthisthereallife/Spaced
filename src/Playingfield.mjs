@@ -3,8 +3,9 @@ import Assets from "./Assets.mjs";
 import Player from "./Player.mjs";
 import Asteroid from "./Asteroid.mjs";
 
-class Playingfield extends Container {
+class Playingfield extends PIXI.Container {
     #asteroid = new Asteroid(Assets.get("asteroid_0"));
+    #asters = [];
     #player = new Player({
         static: {loop: true, goto: "static", frames: [
             {texture: Assets.get("spaceman_0"), duration: Number.MAX_VALUE}
@@ -29,7 +30,7 @@ class Playingfield extends Container {
         this.#asteroid.xPos = 160 / 2;
         this.#asteroid.yPos = 4;
         this.#asteroid.pivot.set(45/2)
-
+/*
         const circle = new PIXI.Graphics();
         circle.beginFill(0xffffff);
         circle.drawCircle(this.#asteroid.xPos, this.#asteroid.yPos, this.#asteroidSize)
@@ -38,8 +39,8 @@ class Playingfield extends Container {
         console.log(
             circle.getLocalBounds()
         );
-        //this.addChild(circle)
-
+        this.addChild(circle)
+*/
         this.#asters.push(this.#asteroid);
         console.log(this.#asteroid.getLocalBounds())
         this.addChild(this.#asteroid);
