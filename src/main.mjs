@@ -50,6 +50,7 @@ PIXI.Ticker.shared.add(ts => {
 
     for (let i = 0; i < starfields.length; i++) {
         //TODO uncomment
+        starfields[i].move(0.1,0.01)
         //starfields[i].move(Math.cos(radians) + i * Math.cos(radians), Math.sin(radians) + i * Math.sin(radians));
     }
     playingfield.update();
