@@ -9,7 +9,7 @@ class Asteroid extends GameObject {
 
     update(spaceman_X, nuJump) {
 
-        //fuck collisioncheck på newjump
+        //ingen collisioncheck på newjump
         if (!nuJump) {
             const rotateCharToThis = this.collisionChecker();
             if (rotateCharToThis) return rotateCharToThis;
@@ -17,16 +17,13 @@ class Asteroid extends GameObject {
 
 
         if (Input.getInput("moving")) {
-            console.log("moving?", Input.getInput("moving"))
 
             //vilket håll asteroiden ska flytta sig är avhängt gubbens riktning
             switch (spaceman_X) {
                 case "spaceman_N":
                     this.yPos += 1;
-                    console.log("newpos: ", this.yPos)
                     break;
                 case "spaceman_S":
-                    console.log("newpos: ", this.yPos)
                     this.yPos -= 1;
                     break;
                 default:
@@ -36,7 +33,7 @@ class Asteroid extends GameObject {
         super.update();
     }
     collisionChecker() {
-        console.log(this)
+
         const boardwidth = 144;
         const boardheight = 160;
         const centerX = Math.round(boardwidth / 2);
@@ -45,36 +42,22 @@ class Asteroid extends GameObject {
         const asterRadie = this._localBoundsRect.height / 2;
         const combinedRadii = spacemanRadie + asterRadie;
         let newSpacemanAngle = false;
-        //console.log("combined radii", Math.round(spacemanRadie + asterRadie))
-        //console.log("distance between centers: ", this.pythagorasForDistance(centerX, centerY, this.yPos, this.xPos))
+
         //om avståndet mellan punkterna är <= bådas radie så är det en träff
         if (this.pythagorasForDistance(centerX, centerY, this.yPos, this.xPos) <= Math.round(combinedRadii)) {
-            console.log("combinedRadii", combinedRadii);
-            console.log("cY", centerY)
-            console.log("cX", centerX)
-            console.log("yPos", this.yPos)
-            console.log("xPos", this.xPos)
             if (Input.getInput("moving")) {
                 Input.stop();
-                console.log("##¤¤¤¤¤### IS MOVING, JUST HIT SOMETHING ###¤¤¤¤¤##")
+                console.log("###¤¤¤### VI HAR LANDAT ###¤¤¤###")
 
                 // TODO kolla var träffen skett, returnera ett väderstreck
 
                 //hit from above
                 if (this.yPos + combinedRadii == centerX) {
                     newSpacemanAngle = "S";
-                } else if (this.yPos - combinedRadii == centerX){
+                } else if (this.yPos - combinedRadii == centerX) {
                     newSpacemanAngle = "N";
                 }
-
-
             }
-            else {
-                console.log("DETTA BORDE ALDRIG SKRIVAS UT EFTERSOM DÅ HAR 2 ASTEROIDER KROCKAT MED GUBBEN ");
-                // Input.start();
-                return false;
-            }
-
 
             return newSpacemanAngle
         }

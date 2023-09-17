@@ -49,21 +49,8 @@ PIXI.Ticker.shared.add(ts => {
     let radians = degrees * (Math.PI / 180);
 
     for (let i = 0; i < starfields.length; i++) {
-       // TODO uncomment
-        // starfields[i].move(Math.cos(radians) + i * Math.cos(radians), Math.sin(radians) + i * Math.sin(radians));
+        //TODO uncomment
+        //starfields[i].move(Math.cos(radians) + i * Math.cos(radians), Math.sin(radians) + i * Math.sin(radians));
     }
-    //console.log(playingfield.getAsteroids())
     playingfield.update();
 });
-
-/*
-const font = new FontFaceObserver("gameboyfont", {});
-await font.load();
-
-const text = new PIXI.Text("Hello", {
-    fontFamily: "gameboyfont",
-    fontSize: 16
-});
-
-app.stage.addChild(text);
-*/

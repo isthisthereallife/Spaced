@@ -51,23 +51,13 @@ class Playingfield extends PIXI.Container {
         this.#asteroid.xPos = 160 / 2;
         this.#asteroid.yPos = 4;
         this.#asteroid.pivot.set(42 / 2);
-        /*
-                const circle = new PIXI.Graphics();
-                circle.beginFill(0xffffff);
-                circle.drawCircle(this.#asteroid.xPos, this.#asteroid.yPos, this.#asteroidSize)
-                circle.endFill();
-                circle.getLocalBounds();
-                console.log(
-                    circle.getLocalBounds()
-                );
-                this.addChild(circle)
-        */
+
         this.#asters.push(ass2);
-        console.log("ass2", ass2.getLocalBounds())
+        ass2.getLocalBounds()
         this.addChild(ass2);
 
         this.#asters.push(this.#asteroid);
-        console.log(this.#asteroid.getLocalBounds())
+        this.#asteroid.getLocalBounds()
         this.addChild(this.#asteroid);
 
 
@@ -84,11 +74,10 @@ class Playingfield extends PIXI.Container {
         this.#player.update();
     }
 
-    
+
     update() {
         //behöver bara flytta asteroider om vi är i rörelse
         if (Input.getInput("moving")) {
-            console.log("MOVING, ITERATING ASTEROIDS")
             this.#asters.forEach((e) => {
                 //skicka in nuvarande vinkel av gubben
                 const rotateChar = e.update(this.#player._texture.textureCacheIds[0], Input.getInput("nuJump"))
@@ -97,12 +86,10 @@ class Playingfield extends PIXI.Container {
                 if (rotateChar) {
                     console.log("recieved new rotation value", rotateChar)
                     this.#player.texture = Assets.get("spaceman_" + rotateChar);
-                    console.log(this.#player._texture.textureCacheIds[0])
                 }
-                
             });
             //efter ett varv av asteroider borde gubben flyttat sig från en asteroid
-            Input.setInput("nuJump",false);
+            Input.setInput("nuJump", false);
         }
 
     }

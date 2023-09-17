@@ -6,7 +6,7 @@ class GameObject extends Sprite {
   rot = 0;
 
   #spriteset = {
-    idle: {frames: [{texture: "texture", duration: 1}], loop: false, goto: "animationname"},
+    idle: { frames: [{ texture: "texture", duration: 1 }], loop: false, goto: "animationname" },
     walking: {}
   };
   #activeSpriteset;
@@ -18,7 +18,7 @@ class GameObject extends Sprite {
     this.#spritesetIndex = 0;
     this.frameDuration = this.#activeSpriteset.frames[0].duration;
   }
-  
+
   constructor(spriteset) {
     super(spriteset[Object.keys(spriteset)[0]].frames[0].texture);
 
@@ -27,10 +27,10 @@ class GameObject extends Sprite {
   }
 
   draw() {
-    if(this.frameDuration > 0) this.frameDuration--;
+    if (this.frameDuration > 0) this.frameDuration--;
     else {
-      if(this.#spritesetIndex == this.#activeSpriteset.frames.length - 1) {
-        if(this.#activeSpriteset.loop) {
+      if (this.#spritesetIndex == this.#activeSpriteset.frames.length - 1) {
+        if (this.#activeSpriteset.loop) {
           this.#spritesetIndex = 0;
         } else {
           this.switchSpriteset(this.#activeSpriteset.goto);
