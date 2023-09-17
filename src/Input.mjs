@@ -1,14 +1,24 @@
 class Input {
     static #inputMap = new Map();
     static jumpButton = "Space";
+    static relocateCWButton = "KeyE";
+    static relocateCCWButton = "KeyA";
 
     static startListener() {
         document.addEventListener("keydown", (e) => {
             //no move if moving
             if (!this.#inputMap.get("moving")) {
-                this.#inputMap.set(e.code, true);
-                if (e.code == this.jumpButton)
+                if (e.code === this.jumpButton) {
                     this.start();
+                }
+                if (e.code === this.relocateCWButton){
+                    console.log("wanna relocate CW")
+                    this.#inputMap.set("cw", true)
+
+                }else if(e.code === this.relocateCCWButton) {
+                    console.log("wanna relocate CCW")
+                    this.#inputMap.set("ccw", true)
+                }
             }
         });
     }
@@ -26,6 +36,11 @@ class Input {
 
     static stop() {
         this.#inputMap.clear();
+    }
+    static unsetRelocation(){
+        this.#inputMap.set("cw", false);
+        this.#inputMap.set("ccw", false);
+        console.log("relocation unset")
     }
 }
 

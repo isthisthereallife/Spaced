@@ -6,8 +6,18 @@ class Asteroid extends GameObject {
         super(texture);
     }
 
+    relocateAsteroidFunction(spaceman_X) {
+        console.log("want to relocate")
+        if (Input.getInput("cw")) {
+            //flytta asteroid neråt och åt vänster (sänk y, öka x)
+            this.yPos -= 10;
+            this.xPos += 20;
+            console.log("flyttat")
+        }
+        super.update();
+    }
 
-    update(spaceman_X, nuJump) {
+    jumpFunction(spaceman_X, nuJump) {
 
         //ingen collisioncheck på newjump
         if (!nuJump) {
@@ -20,11 +30,32 @@ class Asteroid extends GameObject {
 
             //vilket håll asteroiden ska flytta sig är avhängt gubbens riktning
             switch (spaceman_X) {
-                case "spaceman_N":
+                case "spaceman_0":
                     this.yPos += 1;
                     break;
-                case "spaceman_S":
+                case "spaceman_1":
+                    this.yPos += 0.5;
+                    this.xPos += 0.5;
+                    break;
+                case "spaceman_2":
+                    this.xPos += 1;
+                    break;
+                case "spaceman_3":
+                    this.xPos += 0.5;
+                    this.yPos -= 0.5;
+                case "spaceman_4":
                     this.yPos -= 1;
+                    break;
+                case "spaceman_5":
+                    this.yPos -= 0.5;
+                    this.xPos -= 0.5;
+                    break;
+                case "spaceman_6":
+                    this.xPos -= 1;
+                    break;
+                case "spaceman_7":
+                    this.xPos -= 0.5;
+                    this.yPos += 0.5;
                     break;
                 default:
                     break;
@@ -32,6 +63,9 @@ class Asteroid extends GameObject {
         }
         super.update();
     }
+
+
+
     collisionChecker() {
 
         const boardwidth = 144;
@@ -53,9 +87,9 @@ class Asteroid extends GameObject {
 
                 //hit from above
                 if (this.yPos + combinedRadii == centerX) {
-                    newSpacemanAngle = "S";
+                    newSpacemanAngle = "4";
                 } else if (this.yPos - combinedRadii == centerX) {
-                    newSpacemanAngle = "N";
+                    newSpacemanAngle = "0";
                 }
             }
 

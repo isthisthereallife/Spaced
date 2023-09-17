@@ -17,19 +17,19 @@ class Playingfield extends PIXI.Container {
     #player = new Player({
         static: {
             loop: true, goto: "static", frames: [
-                { texture: Assets.get("spaceman_N"), duration: Number.MAX_VALUE }
+                { texture: Assets.get("spaceman_0"), duration: Number.MAX_VALUE }
             ]
         },
         rotating: {
             loop: true, goto: "rotation", frames: [
-                { texture: Assets.get("spaceman_N"), duration: 10 },
-                { texture: Assets.get("spaceman_NW"), duration: 10 },
-                { texture: Assets.get("spaceman_W"), duration: 10 },
-                { texture: Assets.get("spaceman_SW"), duration: 10 },
-                { texture: Assets.get("spaceman_S"), duration: 10 },
-                { texture: Assets.get("spaceman_SE"), duration: 10 },
-                { texture: Assets.get("spaceman_E"), duration: 10 },
-                { texture: Assets.get("spaceman_NE"), duration: 10 },
+                { texture: Assets.get("spaceman_0"), duration: 10 },
+                { texture: Assets.get("spaceman_1"), duration: 10 },
+                { texture: Assets.get("spaceman_2"), duration: 10 },
+                { texture: Assets.get("spaceman_3"), duration: 10 },
+                { texture: Assets.get("spaceman_4"), duration: 10 },
+                { texture: Assets.get("spaceman_5"), duration: 10 },
+                { texture: Assets.get("spaceman_6"), duration: 10 },
+                { texture: Assets.get("spaceman_6"), duration: 10 },
             ]
         }
     });
@@ -44,6 +44,7 @@ class Playingfield extends PIXI.Container {
                 ]
             }
         });
+
         ass2.xPos = 160 / 2;
         ass2.yPos = 144;
         ass2.pivot.set(42 / 2);
@@ -51,8 +52,21 @@ class Playingfield extends PIXI.Container {
         ass2.update();
         this.#asters.push(ass2);
         this.addChild(ass2);
-        
-        
+
+        let ass3 = new Asteroid({
+            static: {
+                loop: true, goto: "static", frames: [
+                    { texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE }
+                ]
+            }
+        });
+        ass3.xPos = 12;
+        ass3.yPos = 23;
+        ass3.pivot.set(42 / 2);
+        ass3.getLocalBounds();
+        ass3.update();
+        this.#asters.push(ass3);
+        this.addChild(ass3);
 
 
         this.#asteroid.xPos = 160 / 2;
@@ -83,7 +97,7 @@ class Playingfield extends PIXI.Container {
         if (Input.getInput("moving")) {
             this.#asters.forEach((e) => {
                 //skicka in nuvarande vinkel av gubben
-                const rotateChar = e.update(this.#player._texture.textureCacheIds[0], Input.getInput("nuJump"))
+                const rotateChar = e.jumpFunction(this.#player._texture.textureCacheIds[0], Input.getInput("nuJump"))
 
                 //om den här finns så är det ett väderstreck som gubben ska roteras till
                 if (rotateChar) {
@@ -93,11 +107,26 @@ class Playingfield extends PIXI.Container {
             });
             //efter ett varv av asteroider borde gubben flyttat sig från en asteroid
             Input.setInput("nuJump", false);
+
+        } else if (Input.getInput("cw") || Input.getInput("ccw")) {
+            this.#asters.forEach((e) => {
+                e.relocateAsteroidFunction();
+            });
+            //change texture
+            //
+            const change = Input.getInput("cw")
+                ? Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) + 1
+                : Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) - 1
+            console.log("change", change)
+            console.log(this.#player._texture.textureCacheIds[0])
+            this.#player.texture = Assets.get("spaceman_".concat(change == 8 ? "0" : change == -1 ? "7" : change.toString()));
+            //this.#player.texture = Assets.get("spaceman_1");
+            console.log(this.#player._texture.textureCacheIds[0])
+            Input.unsetRelocation();
         }
 
-    }
-    getAsteroids() {
-        return this.asteroids;
+
+
     }
 }
 

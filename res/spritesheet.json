@@ -11,28 +11,28 @@
    "star_3": {
     "frame": { "x": 32, "y": 8, "w": 5, "h": 5 }
    },
-   "spaceman_N": {
+   "spaceman_0": {
     "frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
    },
-   "spaceman_NW": {
+   "spaceman_1": {
     "frame": { "x": 0, "y": 32, "w": 32, "h": 32 }
    },
-   "spaceman_W": {
+   "spaceman_2": {
     "frame": { "x": 0, "y": 64, "w": 32, "h": 32 }
    },
-   "spaceman_SW": {
+   "spaceman_3": {
     "frame": { "x": 0, "y": 96, "w": 32, "h": 32 }
    },
-   "spaceman_S": {
+   "spaceman_4": {
     "frame": { "x": 0, "y": 128, "w": 32, "h": 32 }
    },
-   "spaceman_SE": {
+   "spaceman_5": {
     "frame": { "x": 0, "y": 160, "w": 32, "h": 32 }
    },
-   "spaceman_E": {
+   "spaceman_6": {
     "frame": { "x": 0, "y": 192, "w": 32, "h": 32 }
    },
-   "spaceman_NE": {
+   "spaceman_7": {
     "frame": { "x": 0, "y": 224, "w": 32, "h": 32 }
    },
    "asteroid_0": {
