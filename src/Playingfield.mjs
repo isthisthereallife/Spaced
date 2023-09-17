@@ -2,52 +2,74 @@ import * as PIXI from "pixi.js";
 import Assets from "./Assets.mjs";
 import Player from "./Player.mjs";
 import Asteroid from "./Asteroid.mjs";
+import Input from "./Input.mjs";
 
 class Playingfield extends PIXI.Container {
     #asteroid = new Asteroid({
-    static: {loop: true, goto: "static", frames: [
-        {texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE}
-      ]}});
-    
+        static: {
+            loop: true, goto: "static", frames: [
+                { texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE }
+            ]
+        }
+    });
+
     #asters = [];
     #player = new Player({
-        static: {loop: true, goto: "static", frames: [
-            {texture: Assets.get("spaceman_N"), duration: Number.MAX_VALUE}
-        ]},
-        rotating: {loop:true, goto:"rotating", frames: [
-            {texture: Assets.get("spaceman_N"), duration: 10},
-            {texture: Assets.get("spaceman_NW"), duration: 10},
-            {texture: Assets.get("spaceman_W"), duration: 10},
-            {texture: Assets.get("spaceman_SW"), duration: 10},
-            {texture: Assets.get("spaceman_S"), duration: 10},
-            {texture: Assets.get("spaceman_SE"), duration: 10},
-            {texture: Assets.get("spaceman_E"), duration: 10},
-            {texture: Assets.get("spaceman_NE"), duration: 10},
-        ]}
+        static: {
+            loop: true, goto: "static", frames: [
+                { texture: Assets.get("spaceman_N"), duration: Number.MAX_VALUE }
+            ]
+        },
+        rotating: {
+            loop: true, goto: "rotation", frames: [
+                { texture: Assets.get("spaceman_N"), duration: 10 },
+                { texture: Assets.get("spaceman_NW"), duration: 10 },
+                { texture: Assets.get("spaceman_W"), duration: 10 },
+                { texture: Assets.get("spaceman_SW"), duration: 10 },
+                { texture: Assets.get("spaceman_S"), duration: 10 },
+                { texture: Assets.get("spaceman_SE"), duration: 10 },
+                { texture: Assets.get("spaceman_E"), duration: 10 },
+                { texture: Assets.get("spaceman_NE"), duration: 10 },
+            ]
+        }
     });
 
     constructor() {
         super();
 
-
+        let ass2 = new Asteroid({
+            static: {
+                loop: true, goto: "static", frames: [
+                    { texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE }
+                ]
+            }
+        });
+        ass2.xPos = 160 / 2;
+        ass2.yPos = 144;
+        ass2.pivot.set(45 / 2);
         //add an asteroid
         this.#asteroid.xPos = 160 / 2;
         this.#asteroid.yPos = 4;
-        this.#asteroid.pivot.set(45/2)
-/*
-        const circle = new PIXI.Graphics();
-        circle.beginFill(0xffffff);
-        circle.drawCircle(this.#asteroid.xPos, this.#asteroid.yPos, this.#asteroidSize)
-        circle.endFill();
-        circle.getLocalBounds();
-        console.log(
-            circle.getLocalBounds()
-        );
-        this.addChild(circle)
-*/
+        this.#asteroid.pivot.set(45 / 2);
+        /*
+                const circle = new PIXI.Graphics();
+                circle.beginFill(0xffffff);
+                circle.drawCircle(this.#asteroid.xPos, this.#asteroid.yPos, this.#asteroidSize)
+                circle.endFill();
+                circle.getLocalBounds();
+                console.log(
+                    circle.getLocalBounds()
+                );
+                this.addChild(circle)
+        */
+        this.#asters.push(ass2);
+        console.log("ass2", ass2.getLocalBounds())
+        this.addChild(ass2);
+
         this.#asters.push(this.#asteroid);
         console.log(this.#asteroid.getLocalBounds())
         this.addChild(this.#asteroid);
+
 
 
         this.#player.xPos = 160 / 2
@@ -59,15 +81,30 @@ class Playingfield extends PIXI.Container {
         this.addChild(this.#player);
 
         this.#player.switchSpriteset("rotating");
+        this.#player.update();
     }
 
+    
     update() {
-        
-        this.#player.update();
-        this.#asters.forEach((e) => {
-            //console.log("varje aster",e) 
-            e.update();
-        });
+        //behöver bara flytta asteroider om vi är i rörelse
+        if (Input.getInput("moving")) {
+            console.log("MOVING, ITERATING ASTEROIDS")
+            this.#asters.forEach((e) => {
+                //skicka in nuvarande vinkel av gubben
+                const rotateChar = e.update(this.#player._texture.textureCacheIds[0], Input.getInput("nuJump"))
+
+                //om den här finns så är det ett väderstreck som gubben ska roteras till
+                if (rotateChar) {
+                    console.log("recieved new rotation value", rotateChar)
+                    this.#player.texture = Assets.get("spaceman_" + rotateChar);
+                    console.log(this.#player._texture.textureCacheIds[0])
+                }
+                
+            });
+            //efter ett varv av asteroider borde gubben flyttat sig från en asteroid
+            Input.setInput("nuJump",false);
+        }
+
     }
     getAsteroids() {
         return this.asteroids;
