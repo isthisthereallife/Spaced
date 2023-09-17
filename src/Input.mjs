@@ -6,12 +6,16 @@ class Input {
             this.#inputMap.set(e.code, true);
         });
         document.addEventListener("keyup", (e) => {
-            this.#inputMap.set(e.code, false);
+            //this.#inputMap.set(e.code, false);
         });
     }
 
     static getInput(code) {
         return this.#inputMap.has(code) ? this.#inputMap.get(code) : false;
+    }
+
+    static stop() {
+        this.#inputMap.clear();
     }
 }
 

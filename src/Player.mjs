@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import * as PIXI from "pixi.js";
 import GameObject from "./GameObject.mjs";
 import Input from "./Input.mjs";
 class Player extends GameObject {
@@ -10,30 +10,16 @@ class Player extends GameObject {
         if (this.rotation < -6 || this.rotation > 6) {
             this.rotation = 0
         }
-        if (Input.getInput("ArrowUp")) {
-            this.yPos -= 1;
-            // ändra x och y baserat på aktuell rotation
-            console.log("up")
-        };
-        if (Input.getInput("ArrowDown")) {
-            this.yPos += 1;
-        }
-        if (Input.getInput("ArrowLeft")) {
+        
+
+
+        if (Input.getInput("ArrowLeft") || Input.getInput("KeyA")) {
             this.rotation -= 0.1
         }
-        if (Input.getInput("ArrowRight")) {
+        if (Input.getInput("ArrowRight") || Input.getInput("KeyE")) {
             this.rotation += 0.1;
         }
 
-        // debugging, TODO remove
-        if (Input.getInput("KeyR")) {
-            this.xPos = Math.round((160) / 2);
-            this.yPos = Math.round((144) / 2);
-        }// debugging, TODO remove
-        if (Input.getInput("KeyP")) {
-            this.xPos = Math.round((160) / 2);
-            this.yPos = Math.round((144) / 2);
-        }
 
         super.update();
     }
