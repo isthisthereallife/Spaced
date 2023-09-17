@@ -47,17 +47,20 @@ class Playingfield extends PIXI.Container {
         ass2.xPos = 160 / 2;
         ass2.yPos = 144;
         ass2.pivot.set(42 / 2);
-        //add an asteroid
+        ass2.getLocalBounds();
+        ass2.update();
+        this.#asters.push(ass2);
+        this.addChild(ass2);
+        
+        
+
+
         this.#asteroid.xPos = 160 / 2;
         this.#asteroid.yPos = 4;
         this.#asteroid.pivot.set(42 / 2);
-
-        this.#asters.push(ass2);
-        ass2.getLocalBounds()
-        this.addChild(ass2);
-
-        this.#asters.push(this.#asteroid);
         this.#asteroid.getLocalBounds()
+        this.#asteroid.update();
+        this.#asters.push(this.#asteroid);
         this.addChild(this.#asteroid);
 
 
