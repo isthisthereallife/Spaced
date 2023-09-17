@@ -1,6 +1,6 @@
 class Input {
     static #inputMap = new Map();
-    static jumpButton = "Semicolon";
+    static jumpButton = "Space";
 
     static startListener() {
         document.addEventListener("keydown", (e) => {
