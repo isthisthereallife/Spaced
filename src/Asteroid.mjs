@@ -7,12 +7,12 @@ class Asteroid extends GameObject {
     }
 
     relocateAsteroidFunction(spaceman_X) {
-        console.log("want to relocate")
         if (Input.getInput("cw")) {
-            //flytta asteroid neråt och åt vänster (sänk y, öka x)
-            this.yPos -= 10;
-            this.xPos += 20;
-            console.log("flyttat")
+            //Asteroidernas förflyttning är avhängt astronautens position
+            // och det är olika för varje position
+            // TODO lös det
+            this.yPos += 10;
+            this.xPos -= 28;
         }
         super.update();
     }
@@ -29,33 +29,35 @@ class Asteroid extends GameObject {
         if (Input.getInput("moving")) {
 
             //vilket håll asteroiden ska flytta sig är avhängt gubbens riktning
+            // skärmjäveln ju är inte kvadratisk, så 0.5 0.5 stämmer inte
+            // TODO lös detta
             switch (spaceman_X) {
                 case "spaceman_0":
                     this.yPos += 1;
                     break;
                 case "spaceman_1":
                     this.yPos += 0.5;
-                    this.xPos += 0.5;
+                    this.xPos += 0.45;
                     break;
                 case "spaceman_2":
                     this.xPos += 1;
                     break;
                 case "spaceman_3":
-                    this.xPos += 0.5;
                     this.yPos -= 0.5;
+                    this.xPos += 0.45;
                 case "spaceman_4":
                     this.yPos -= 1;
                     break;
                 case "spaceman_5":
                     this.yPos -= 0.5;
-                    this.xPos -= 0.5;
+                    this.xPos -= 0.45;
                     break;
                 case "spaceman_6":
                     this.xPos -= 1;
                     break;
                 case "spaceman_7":
-                    this.xPos -= 0.5;
                     this.yPos += 0.5;
+                    this.xPos -= 0.45;
                     break;
                 default:
                     break;

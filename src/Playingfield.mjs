@@ -117,11 +117,7 @@ class Playingfield extends PIXI.Container {
             const change = Input.getInput("cw")
                 ? Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) + 1
                 : Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) - 1
-            console.log("change", change)
-            console.log(this.#player._texture.textureCacheIds[0])
             this.#player.texture = Assets.get("spaceman_".concat(change == 8 ? "0" : change == -1 ? "7" : change.toString()));
-            //this.#player.texture = Assets.get("spaceman_1");
-            console.log(this.#player._texture.textureCacheIds[0])
             Input.unsetRelocation();
         }
 

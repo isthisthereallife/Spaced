@@ -40,7 +40,6 @@ class Input {
     static unsetRelocation(){
         this.#inputMap.set("cw", false);
         this.#inputMap.set("ccw", false);
-        console.log("relocation unset")
     }
 }
 
