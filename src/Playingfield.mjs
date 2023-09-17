@@ -4,21 +4,25 @@ import Player from "./Player.mjs";
 import Asteroid from "./Asteroid.mjs";
 
 class Playingfield extends PIXI.Container {
-    #asteroid = new Asteroid(Assets.get("asteroid_0"));
+    #asteroid = new Asteroid({
+    static: {loop: true, goto: "static", frames: [
+        {texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE}
+      ]}});
+    
     #asters = [];
     #player = new Player({
         static: {loop: true, goto: "static", frames: [
-            {texture: Assets.get("spaceman_0"), duration: Number.MAX_VALUE}
+            {texture: Assets.get("spaceman_N"), duration: Number.MAX_VALUE}
         ]},
         rotating: {loop:true, goto:"rotating", frames: [
-            {texture: Assets.get("spaceman_0"), duration: 10},
-            {texture: Assets.get("spaceman_1"), duration: 10},
-            {texture: Assets.get("spaceman_2"), duration: 10},
-            {texture: Assets.get("spaceman_3"), duration: 10},
-            {texture: Assets.get("spaceman_4"), duration: 10},
-            {texture: Assets.get("spaceman_5"), duration: 10},
-            {texture: Assets.get("spaceman_6"), duration: 10},
-            {texture: Assets.get("spaceman_7"), duration: 10},
+            {texture: Assets.get("spaceman_N"), duration: 10},
+            {texture: Assets.get("spaceman_NW"), duration: 10},
+            {texture: Assets.get("spaceman_W"), duration: 10},
+            {texture: Assets.get("spaceman_SW"), duration: 10},
+            {texture: Assets.get("spaceman_S"), duration: 10},
+            {texture: Assets.get("spaceman_SE"), duration: 10},
+            {texture: Assets.get("spaceman_E"), duration: 10},
+            {texture: Assets.get("spaceman_NE"), duration: 10},
         ]}
     });
 
