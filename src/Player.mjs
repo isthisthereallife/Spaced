@@ -2,8 +2,8 @@ import * as PIXI from "pixi.js";
 import GameObject from "./GameObject.mjs";
 import Input from "./Input.mjs";
 class Player extends GameObject {
-    constructor(texture) {
-        super(texture);
+    constructor(spriteset) {
+        super(spriteset);
     }
 
     update() {

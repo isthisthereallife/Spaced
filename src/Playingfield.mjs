@@ -3,11 +3,24 @@ import Assets from "./Assets.mjs";
 import Player from "./Player.mjs";
 import Asteroid from "./Asteroid.mjs";
 
-class Playingfield extends PIXI.Container {
-    #player = new Player(Assets.get("spaceman_0"));
+class Playingfield extends Container {
     #asteroid = new Asteroid(Assets.get("asteroid_0"));
-    #asters = [];
-    #asteroidSize = 16;
+    #player = new Player({
+        static: {loop: true, goto: "static", frames: [
+            {texture: Assets.get("spaceman_0"), duration: Number.MAX_VALUE}
+        ]},
+        rotating: {loop:true, goto:"rotating", frames: [
+            {texture: Assets.get("spaceman_0"), duration: 10},
+            {texture: Assets.get("spaceman_1"), duration: 10},
+            {texture: Assets.get("spaceman_2"), duration: 10},
+            {texture: Assets.get("spaceman_3"), duration: 10},
+            {texture: Assets.get("spaceman_4"), duration: 10},
+            {texture: Assets.get("spaceman_5"), duration: 10},
+            {texture: Assets.get("spaceman_6"), duration: 10},
+            {texture: Assets.get("spaceman_7"), duration: 10},
+        ]}
+    });
+
     constructor() {
         super();
 
@@ -39,6 +52,8 @@ class Playingfield extends PIXI.Container {
 
         //add player to field
         this.addChild(this.#player);
+
+        this.#player.switchSpriteset("rotating");
     }
 
     update() {
