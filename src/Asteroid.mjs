@@ -7,12 +7,12 @@ class Asteroid extends GameObject {
     }
 
 
-    update(spaceman_X,nuJump) {
+    update(spaceman_X, nuJump) {
 
         //fuck collisioncheck på newjump
-        if(!nuJump){
-        const rotateCharToThis = this.collisionChecker();
-        if (rotateCharToThis) return rotateCharToThis;
+        if (!nuJump) {
+            const rotateCharToThis = this.collisionChecker();
+            if (rotateCharToThis) return rotateCharToThis;
         }
 
 
@@ -43,18 +43,31 @@ class Asteroid extends GameObject {
         const centerY = Math.round(boardheight / 2);
         const spacemanRadie = 16;
         const asterRadie = this._localBoundsRect.height / 2;
+        const combinedRadii = spacemanRadie + asterRadie;
         let newSpacemanAngle = false;
         //console.log("combined radii", Math.round(spacemanRadie + asterRadie))
         //console.log("distance between centers: ", this.pythagorasForDistance(centerX, centerY, this.yPos, this.xPos))
         //om avståndet mellan punkterna är <= bådas radie så är det en träff
-        if (this.pythagorasForDistance(centerX, centerY, this.yPos, this.xPos) <= Math.round(spacemanRadie + asterRadie)) {
-
+        if (this.pythagorasForDistance(centerX, centerY, this.yPos, this.xPos) <= Math.round(combinedRadii)) {
+            console.log("combinedRadii", combinedRadii);
+            console.log("cY", centerY)
+            console.log("cX", centerX)
+            console.log("yPos", this.yPos)
+            console.log("xPos", this.xPos)
             if (Input.getInput("moving")) {
                 Input.stop();
                 console.log("##¤¤¤¤¤### IS MOVING, JUST HIT SOMETHING ###¤¤¤¤¤##")
 
                 // TODO kolla var träffen skett, returnera ett väderstreck
-                newSpacemanAngle = "S";
+
+                //hit from above
+                if (this.yPos + combinedRadii == centerX) {
+                    newSpacemanAngle = "S";
+                } else if (this.yPos - combinedRadii == centerX){
+                    newSpacemanAngle = "N";
+                }
+
+
             }
             else {
                 console.log("DETTA BORDE ALDRIG SKRIVAS UT EFTERSOM DÅ HAR 2 ASTEROIDER KROCKAT MED GUBBEN ");

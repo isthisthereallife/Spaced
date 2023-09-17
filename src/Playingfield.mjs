@@ -46,11 +46,11 @@ class Playingfield extends PIXI.Container {
         });
         ass2.xPos = 160 / 2;
         ass2.yPos = 144;
-        ass2.pivot.set(45 / 2);
+        ass2.pivot.set(42 / 2);
         //add an asteroid
         this.#asteroid.xPos = 160 / 2;
         this.#asteroid.yPos = 4;
-        this.#asteroid.pivot.set(45 / 2);
+        this.#asteroid.pivot.set(42 / 2);
         /*
                 const circle = new PIXI.Graphics();
                 circle.beginFill(0xffffff);
