@@ -91,7 +91,6 @@ class Playingfield extends PIXI.Container {
         this.#player.update();
     }
 
-
     update() {
         //behöver bara flytta asteroider om vi är i rörelse
         if (Input.getInput("moving")) {
@@ -120,9 +119,6 @@ class Playingfield extends PIXI.Container {
             this.#player.texture = Assets.get("spaceman_".concat(change == 8 ? "0" : change == -1 ? "7" : change.toString()));
             Input.unsetRelocation();
         }
-
-
-
     }
 }
 

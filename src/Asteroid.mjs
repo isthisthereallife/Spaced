@@ -25,9 +25,7 @@ class Asteroid extends GameObject {
             if (rotateCharToThis) return rotateCharToThis;
         }
 
-
         if (Input.getInput("moving")) {
-
             //vilket håll asteroiden ska flytta sig är avhängt gubbens riktning
             // skärmjäveln ju är inte kvadratisk, så 0.5 0.5 stämmer inte
             // TODO lös detta
@@ -66,10 +64,7 @@ class Asteroid extends GameObject {
         super.update();
     }
 
-
-
     collisionChecker() {
-
         const boardwidth = 144;
         const boardheight = 160;
         const centerX = Math.round(boardwidth / 2);
@@ -94,11 +89,9 @@ class Asteroid extends GameObject {
                     newSpacemanAngle = "0";
                 }
             }
-
             return newSpacemanAngle
         }
         return false;
-
     }
     pythagorasForDistance(centerX, centerY, asterX, asterY) {
         let xDist = Math.pow((centerX - asterX), 2);
