@@ -1,6 +1,5 @@
 import * as PIXI from "pixi.js";
 import GameObject from "./GameObject.mjs";
-import Assets from "./Assets.mjs";
 
 class ParallaxLayers extends PIXI.Container {
   layers = [];
@@ -32,6 +31,20 @@ class ParallaxLayers extends PIXI.Container {
         const radians = angle * (Math.PI / 180);
         child.xPos += Math.cos(radians) * (speed + speed * i);
         child.yPos += Math.sin(radians) * (speed + speed * i);
+        this.wrapObjectPosition(child);
+        child.update();
+      }
+    }
+  }
+
+  rotateAroundCenter(speed) {
+    for(let i = 0; i < this.layers.length; i++) {
+      for(let child of this.layers[i].children) {
+        let angleToCenter = Math.atan2(child.yPos - (144/2), child.xPos - 160/2);
+        let distanceToCenter = Math.sqrt((child.xPos - (160/2))**2 + (child.yPos - (144/2))**2);
+        child.xPos = (160/2) + Math.cos(angleToCenter + speed) * distanceToCenter;
+        child.yPos = (144/2) + Math.sin(angleToCenter + speed) * distanceToCenter;
+
         this.wrapObjectPosition(child);
         child.update();
       }

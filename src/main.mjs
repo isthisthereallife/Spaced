@@ -42,6 +42,6 @@ PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
     if(angle < 359) angle += 2;
     else angle = 0;
-    parallaxLayers.move(angle, 0.8);
+    parallaxLayers.rotateAroundCenter(.005);
     playingfield.update();
 });
