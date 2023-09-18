@@ -117,7 +117,7 @@ class Playingfield extends PIXI.Container {
                 ? Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) + 1
                 : Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) - 1
             this.#player.texture = Assets.get("spaceman_".concat(change == 8 ? "0" : change == -1 ? "7" : change.toString()));
-            Input.unsetRelocation();
+            Input.stop();
         }
     }
 }

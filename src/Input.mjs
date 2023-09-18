@@ -37,10 +37,6 @@ class Input {
     static stop() {
         this.#inputMap.clear();
     }
-    static unsetRelocation(){
-        this.#inputMap.set("cw", false);
-        this.#inputMap.set("ccw", false);
-    }
 }
 
 export default Input;
