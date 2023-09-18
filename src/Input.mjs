@@ -1,6 +1,8 @@
 class Input {
     static #inputMap = new Map();
-    static jumpButton = "Semicolon";
+    static jumpButton = "Space";
+    static relocateCWButton = "KeyA";
+    static relocateCCWButton = "KeyE";
 
     static startListener() {
         document.addEventListener("keydown", (e) => {
