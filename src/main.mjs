@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js";
 import Assets from "./Assets.mjs";
-import Starfield from "./Starfield.mjs";
 import Playingfield from "./Playingfield.mjs"
 import Input from "./Input.mjs";
+import ParallaxLayers from "./ParallaxLayers.mjs";
 
 console.log("pixi version:", PIXI.VERSION);
 
@@ -16,7 +16,7 @@ export const gameSettings = {
 const app = new PIXI.Application({
     width: gameSettings.width,
     height: gameSettings.height,
-    resolution: window.innerHeight * 0.6 / gameSettings.height,
+    resolution: Math.round(window.innerHeight * 0.6 / gameSettings.height),
     backgroundColor: 0x213555
 });
 
@@ -25,33 +25,23 @@ document.body.appendChild(app.view);
 await Assets.load();
 Input.startListener();
 
-const starfieldSpeed = -.1;
-const starfields = [
-    new Starfield(Assets.get("star_0"), 20),
-    new Starfield(Assets.get("star_1"), 10),
-    new Starfield(Assets.get("star_2"), 6),
-    new Starfield(Assets.get("star_3"), 2)
-];
-
-for (let starfield of starfields) {
-    app.stage.addChild(starfield);
-}
+const parallaxLayers = new ParallaxLayers([
+    {texture: Assets.get("star_0"), n: 20},
+    {texture: Assets.get("star_1"), n: 10},
+    {texture: Assets.get("star_2"), n: 6},
+    {texture: Assets.get("star_3"), n: 2}
+]);
+app.stage.addChild(parallaxLayers);
 
 // add playingfield to stage
 const playingfield = new Playingfield();
 app.stage.addChild(playingfield);
 
-let degrees = 0;
+let angle = 0;
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
-    degrees++;
-    if (degrees == 360) degrees = 0;
-    let radians = degrees * (Math.PI / 180);
-
-    for (let i = 0; i < starfields.length; i++) {
-        //TODO uncomment
-        //starfields[i].move(0.1,0.01)
-        //starfields[i].move(Math.cos(radians) + i * Math.cos(radians), Math.sin(radians) + i * Math.sin(radians));
-    }
+    if(angle < 359) angle += 2;
+    else angle = 0;
+    parallaxLayers.move(angle, 0.8);
     playingfield.update();
 });

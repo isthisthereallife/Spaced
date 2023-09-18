@@ -66,7 +66,6 @@ class Asteroid extends GameObject {
             return false
         }
         return false;
-
     }
     pythagorasForDistance(centerX, centerY, asterX, asterY) {
         let xDist = Math.pow((centerX - asterX), 2);

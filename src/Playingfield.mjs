@@ -49,6 +49,7 @@ class Playingfield extends PIXI.Container {
                 ]
             }
         });
+
         ass2.xPos = 160 / 2;
         ass2.yPos = 144;
         ass2.pivot.set(42 / 2);
@@ -127,7 +128,6 @@ class Playingfield extends PIXI.Container {
         this.#player.update();
     }
 
-
     update() {
         
         //behöver bara flytta asteroider om vi är i rörelse
@@ -156,9 +156,18 @@ class Playingfield extends PIXI.Container {
             Input.stop();
         }
 
-    }
-    getAsteroids() {
-        return this.asteroids;
+        } else if (Input.getInput("cw") || Input.getInput("ccw")) {
+            this.#asters.forEach((e) => {
+                e.relocateAsteroidFunction();
+            });
+            //change texture
+            //
+            const change = Input.getInput("cw")
+                ? Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) + 1
+                : Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) - 1
+            this.#player.texture = Assets.get("spaceman_".concat(change == 8 ? "0" : change == -1 ? "7" : change.toString()));
+            Input.stop();
+        }
     }
 }
 
