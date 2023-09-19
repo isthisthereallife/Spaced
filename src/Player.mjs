@@ -7,4 +7,6 @@ class Player extends GameObject {
     update() {
         super.update();
     }
-} export default Player;
+}
+
+export default Player;

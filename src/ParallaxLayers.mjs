@@ -12,7 +12,7 @@ class ParallaxLayers extends PIXI.Container {
       for(let i = 0; i < layerSetting.n; i++) {
         const obj = new GameObject({
           static: {loop: true, goto: "static", frames: [
-              { texture: layerSetting.texture, duration: Number.MAX_VALUE }
+              { texture: layerSetting.texture, duration: Number.MAX_SAFE_INTEGER }
             ]}
         });
         obj.xPos = Math.random() * 160 - obj.width;
@@ -42,8 +42,8 @@ class ParallaxLayers extends PIXI.Container {
       for(let child of this.layers[i].children) {
         let angleToCenter = Math.atan2(child.yPos - (144/2), child.xPos - 160/2);
         let distanceToCenter = Math.sqrt((child.xPos - (160/2))**2 + (child.yPos - (144/2))**2);
-        child.xPos = (160/2) + Math.cos(angleToCenter + speed) * distanceToCenter;
-        child.yPos = (144/2) + Math.sin(angleToCenter + speed) * distanceToCenter;
+        child.xPos = (160/2) + Math.cos(angleToCenter + (speed+speed*i)) * distanceToCenter;
+        child.yPos = (144/2) + Math.sin(angleToCenter + (speed+speed*i)) * distanceToCenter;
 
         this.wrapObjectPosition(child);
         child.update();

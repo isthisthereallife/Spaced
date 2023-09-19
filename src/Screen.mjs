@@ -1,12 +1,22 @@
 class Screen {
   static #stage;
+  static #screens;
 
   static init(stage) {
     this.#stage = stage;
   }
 
-  static switch(id) {
+  static addScreens(screens) {
+    this.#screens = screens;
+  }
 
+  static switch(id) {
+    this.#stage.removeChildren();
+    this.#stage.addChild(this.#screens[id]);
+  }
+
+  static updateScreen() {
+    this.#stage.children[0].update();
   }
 }
 

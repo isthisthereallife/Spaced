@@ -5,10 +5,10 @@ class GameObject extends Sprite {
   yPos = 0;
   rot = 0;
 
-  #spriteset = {
-    idle: { frames: [{ texture: "texture", duration: 1 }], loop: false, goto: "animationname" },
-    walking: {}
-  };
+  /* sample spriteset: {
+    idle: { loop: false, goto: "animationname", frames: [{ texture: "texture", duration: 1 }] },
+  }; */
+  #spriteset;
   #activeSpriteset;
   #spritesetIndex = 0;
   frameDuration = 0;
@@ -24,6 +24,11 @@ class GameObject extends Sprite {
 
     this.#spriteset = spriteset;
     this.#activeSpriteset = this.#spriteset[Object.keys(this.#spriteset)[0]];
+  }
+
+  roundPosition() {
+    this.x = Math.round(this.xPos);
+    this.y = Math.round(this.yPos);
   }
 
   draw() {
@@ -44,9 +49,7 @@ class GameObject extends Sprite {
   }
 
   update() {
-    this.x = Math.round(this.xPos);
-    this.y = Math.round(this.yPos);
-
+    this.roundPosition();
     this.draw();
   }
 }

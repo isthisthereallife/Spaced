@@ -8,7 +8,7 @@ class Playingfield extends PIXI.Container {
     #asteroid = new Asteroid({
         static: {
             loop: true, goto: "static", frames: [
-                { texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE }
+                { texture: Assets.get("asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
             ]
         }
     });
@@ -17,7 +17,7 @@ class Playingfield extends PIXI.Container {
     #player = new Player({
         static: {
             loop: true, goto: "static", frames: [
-                { texture: Assets.get("spaceman_0"), duration: Number.MAX_VALUE }
+                { texture: Assets.get("spaceman_0"), duration: Number.MAX_SAFE_INTEGER }
             ]
         },
         rotating: {
