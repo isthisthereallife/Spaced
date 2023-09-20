@@ -99,7 +99,6 @@ class GameScreen extends PIXI.Container {
 
           //om den här finns så är det ett väderstreck som gubben ska roteras till
           if (rotateChar) {
-              console.log("recieved new rotation value", rotateChar)
               this.#player.texture = Assets.get("spaceman_" + rotateChar);
           }
       });

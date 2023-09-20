@@ -4,12 +4,13 @@ import Input from "./Input.mjs";
 import Screen from "./Screen.mjs";
 import MainMenu from "./screens/MainMenu.mjs";
 import GameScreen from "./screens/GameScreen.mjs";
+import PlayScreen from "./screens/PlayScreen.mjs";
 
 console.log("pixi version:", PIXI.VERSION);
 
 PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
-const gameSettings = {
+export const gameSettings = {
     width: 160,
     height: 144
 };
@@ -27,12 +28,13 @@ await Assets.load();
 Screen.init(app.stage);
 Screen.addScreens({
     mainMenu: new MainMenu(),
-    gameScreen: new GameScreen()
+    gameScreen: new GameScreen(),
+    playScreen: new PlayScreen()
 });
 Input.startListener();
 
 Screen.switch("mainMenu");
-Screen.switch("gameScreen");
+Screen.switch("playScreen");
 
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {

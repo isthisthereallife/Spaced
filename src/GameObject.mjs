@@ -17,6 +17,7 @@ class GameObject extends Sprite {
     this.#activeSpriteset = this.#spriteset[id];
     this.#spritesetIndex = 0;
     this.frameDuration = this.#activeSpriteset.frames[0].duration;
+    this.texture = this.#activeSpriteset.frames[this.#spritesetIndex].texture;
   }
 
   constructor(spriteset) {
