@@ -38,13 +38,27 @@ class ParallaxLayers extends PIXI.Container {
     }
   }
 
-  rotateAroundCenter(speed) {
+  rotateAroundCenterParallax(speed) {
     for(let i = 0; i < this.layers.length; i++) {
       for(let child of this.layers[i].children) {
         let angleToCenter = Math.atan2(child.yPos - (gameSettings.height/2), child.xPos - gameSettings.width/2);
         let distanceToCenter = Math.sqrt((child.xPos - (gameSettings.width/2))**2 + (child.yPos - (gameSettings.height/2))**2);
         child.xPos = (gameSettings.width/2) + Math.cos(angleToCenter + (speed+speed*i)) * distanceToCenter;
         child.yPos = (gameSettings.height/2) + Math.sin(angleToCenter + (speed+speed*i)) * distanceToCenter;
+
+        this.wrapObjectPosition(child);
+        child.update();
+      }
+    }
+  }
+
+  rotateAroundCenterNoParallax(speed) {
+    for(let i = 0; i < this.layers.length; i++) {
+      for(let child of this.layers[i].children) {
+        let angleToCenter = Math.atan2(child.yPos - (gameSettings.height/2), child.xPos - gameSettings.width/2);
+        let distanceToCenter = Math.sqrt((child.xPos - (gameSettings.width/2))**2 + (child.yPos - (gameSettings.height/2))**2);
+        child.xPos = (gameSettings.width/2) + Math.cos(angleToCenter + (speed)) * distanceToCenter;
+        child.yPos = (gameSettings.height/2) + Math.sin(angleToCenter + (speed)) * distanceToCenter;
 
         this.wrapObjectPosition(child);
         child.update();

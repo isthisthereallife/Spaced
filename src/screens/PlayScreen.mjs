@@ -5,6 +5,7 @@ import Assets from "../Assets.mjs";
 import Asteroid from "../Asteroid.mjs";
 import Input from "../Input.mjs";
 import DanielInput from "../DanielInput.mjs";
+import ParallaxLayers from "../ParallaxLayers.mjs";
 
 class PlayScreen extends PIXI.Container {
 
@@ -13,6 +14,14 @@ class PlayScreen extends PIXI.Container {
         super();
 
         this.asteroids = [];
+
+        this.stars = new ParallaxLayers([
+            {texture: Assets.get("star_0"), n: 20},
+            {texture: Assets.get("star_1"), n: 10},
+            {texture: Assets.get("star_2"), n: 6},
+            {texture: Assets.get("star_3"), n: 2}
+        ]);
+        this.addChild(this.stars);
 
         this.player = new Player({
             spaceman_0: {
@@ -102,10 +111,12 @@ class PlayScreen extends PIXI.Container {
         }
         */
         if(DanielInput.getKey("ArrowRight")) {
-            this.rotateTheUniverse(0.1);
+            this.rotateTheUniverse(0.05);
+            this.stars.rotateAroundCenterNoParallax(0.05);
         }
         if(DanielInput.getKey("ArrowLeft")) {
-            this.rotateTheUniverse(-0.1);
+            this.rotateTheUniverse(-0.05);
+            this.stars.rotateAroundCenterNoParallax(-0.05);
         }
     }
 

@@ -39,7 +39,7 @@ class MainMenu extends PIXI.Container {
   update() {
     this.logo.update();
     this.btnStart.update();
-    this.parallaxLayers.rotateAroundCenter(0.005);
+    this.parallaxLayers.rotateAroundCenterParallax(0.005);
   }
 }
 
