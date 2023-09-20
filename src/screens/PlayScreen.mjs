@@ -4,6 +4,7 @@ import { gameSettings } from "../main.mjs"
 import Assets from "../Assets.mjs";
 import Asteroid from "../Asteroid.mjs";
 import Input from "../Input.mjs";
+import DanielInput from "../DanielInput.mjs";
 
 class PlayScreen extends PIXI.Container {
 
@@ -14,37 +15,44 @@ class PlayScreen extends PIXI.Container {
         this.asteroids = [];
 
         this.player = new Player({
-            spaceman_1: {
-                loop: true, goto: "spaceman_2", frames: [
-                    { texture: Assets.get("spaceman_1"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }, spaceman_0: {
-                loop: true, goto: "spaceman_1", frames: [
+            spaceman_0: {
+                loop: true, goto: "spaceman_0", frames: [
                     { texture: Assets.get("spaceman_0"), duration: Number.MAX_SAFE_INTEGER }
                 ]
-            }, spaceman_7: {
-                loop: true, goto: "spaceman_0", frames: [
-                    { texture: Assets.get("spaceman_7"), duration: Number.MAX_SAFE_INTEGER }
+            },
+            spaceman_1: {
+                loop: true, goto: "spaceman_1", frames: [
+                    { texture: Assets.get("spaceman_1"), duration: Number.MAX_SAFE_INTEGER }
                 ]
-            }, spaceman_6: {
-                loop: true, goto: "spaceman_7", frames: [
-                    { texture: Assets.get("spaceman_6"), duration: Number.MAX_SAFE_INTEGER }
+            },
+            spaceman_2: {
+                loop: true, goto: "spaceman_2", frames: [
+                    { texture: Assets.get("spaceman_2"), duration: Number.MAX_SAFE_INTEGER }
                 ]
-            }, spaceman_5: {
-                loop: true, goto: "spaceman_6", frames: [
-                    { texture: Assets.get("spaceman_5"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }, spaceman_4: {
-                loop: true, goto: "spaceman_5", frames: [
-                    { texture: Assets.get("spaceman_4"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }, spaceman_3: {
-                loop: true, goto: "spaceman_4", frames: [
+            },
+            spaceman_3: {
+                loop: true, goto: "spaceman_3", frames: [
                     { texture: Assets.get("spaceman_3"), duration: Number.MAX_SAFE_INTEGER }
                 ]
-            }, spaceman_2: {
-                loop: true, goto: "spaceman_3", frames: [
-                    { texture: Assets.get("spaceman_2"), duration: Number.MAX_SAFE_INTEGER }
+            },
+            spaceman_4: {
+                loop: true, goto: "spaceman_4", frames: [
+                    { texture: Assets.get("spaceman_4"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_5: {
+                loop: true, goto: "spaceman_5", frames: [
+                    { texture: Assets.get("spaceman_5"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_6: {
+                loop: true, goto: "spaceman_6", frames: [
+                    { texture: Assets.get("spaceman_6"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_7: {
+                loop: true, goto: "spaceman_7", frames: [
+                    { texture: Assets.get("spaceman_7"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             }
         });
@@ -77,12 +85,13 @@ class PlayScreen extends PIXI.Container {
         this.asteroids.push(this.asteroid);
 
         for (let asteroid of this.asteroids) {
-            this.addChild(asteroid)
+            this.addChild(asteroid);
         }
     }
 
     update() {
         this.player.update()
+        /*
         if (Input.getInput("left")){
             this.rotateTheUniverse(1)
             Input.stop()
@@ -91,8 +100,13 @@ class PlayScreen extends PIXI.Container {
             this.rotateTheUniverse(-1)
             Input.stop()
         }
-        //this.rotateTheUniverse(0.01)
-
+        */
+        if(DanielInput.getKey("ArrowRight")) {
+            this.rotateTheUniverse(0.1);
+        }
+        if(DanielInput.getKey("ArrowLeft")) {
+            this.rotateTheUniverse(-0.1);
+        }
     }
 
     rotateTheUniverse(speed) {
@@ -105,14 +119,11 @@ class PlayScreen extends PIXI.Container {
             asteroid.yPos = ((gameSettings.height / 2) + Math.sin(angleToCenter + speed) * distanceToCenter) - asteroid.height / 2; asteroid.roundPosition();
            if (distanceToCenter < distance) {
                 distance = distanceToCenter;
-                angle = angleToCenter;
+                angle = angleToCenter * (180 / Math.PI) + 22.5;
+                if(angle < 0) angle += 360;
             }
-
         }
-
-
-
-        this.player.updateAsteroidAngle(angle);
+        this.player.rot = angle;
     }
 
 } export default PlayScreen;

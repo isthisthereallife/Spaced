@@ -1,35 +1,23 @@
+import DanielInput from "./DanielInput.mjs";
 import GameObject from "./GameObject.mjs";
 class Player extends GameObject {
-    asteroidAngle = 90;
+    currentTextureIndex = 0;
     constructor(spriteset) {
         super(spriteset);
-        
+        this.rot = 90;
+    }
+
+    updateSpriteRotation() {
+        let textureIndex = Math.floor(this.rot / 45);
+        //if(textureIndex > 360) textureIndex -= 360;
+        if(textureIndex != this.currentTextureIndex) this.switchSpriteset(`spaceman_${textureIndex}`);
+        this.currentTextureIndex = textureIndex;
     }
 
     update() {
+        this.updateSpriteRotation();
         super.update();
     }
-
-    rotatePlayer() {
-        
-        let sprite = Math.floor((this.asteroidAngle > 360? this.asteroidAngle -360 : this.asteroidAngle) / 45);
-       this.switchSpriteset("spaceman_" + sprite.toString())
-        
-
-
-    }
-
-    updateAsteroidAngle(angle) {
-        angle = angle * (180 / Math.PI);
-        if (angle < 0) {
-            angle = 360 + angle;
-        }
-        this.asteroidAngle = angle + 22.5;
-        
-        this.rotatePlayer();
-    }
-
-
 }
 
 export default Player;

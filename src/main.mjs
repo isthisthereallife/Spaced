@@ -3,8 +3,8 @@ import Assets from "./Assets.mjs";
 import Input from "./Input.mjs";
 import Screen from "./Screen.mjs";
 import MainMenu from "./screens/MainMenu.mjs";
-import GameScreen from "./screens/GameScreen.mjs";
 import PlayScreen from "./screens/PlayScreen.mjs";
+import DanielInput from "./DanielInput.mjs";
 
 console.log("pixi version:", PIXI.VERSION);
 
@@ -28,10 +28,10 @@ await Assets.load();
 Screen.init(app.stage);
 Screen.addScreens({
     mainMenu: new MainMenu(),
-    gameScreen: new GameScreen(),
     playScreen: new PlayScreen()
 });
 Input.startListener();
+DanielInput.init();
 
 Screen.switch("mainMenu");
 Screen.switch("playScreen");

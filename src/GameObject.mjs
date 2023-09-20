@@ -15,18 +15,18 @@ class GameObject extends Sprite {
   #spritesetIndex = 0;
   frameDuration = 0;
 
-  switchSpriteset(id) {
-    this.#activeSpriteset = this.#spriteset[id];
-    this.#spritesetIndex = 0;
-    this.frameDuration = this.#activeSpriteset.frames[0].duration;
-    this.texture = this.#activeSpriteset.frames[this.#spritesetIndex].texture;
-  }
-
   constructor(spriteset) {
     super(spriteset[Object.keys(spriteset)[0]].frames[0].texture);
 
     this.#spriteset = spriteset;
     this.#activeSpriteset = this.#spriteset[Object.keys(this.#spriteset)[0]];
+  }
+
+  switchSpriteset(id) {
+    this.#activeSpriteset = this.#spriteset[id];
+    this.#spritesetIndex = 0;
+    this.frameDuration = this.#activeSpriteset.frames[0].duration;
+    this.texture = this.#activeSpriteset.frames[this.#spritesetIndex].texture;
   }
 
   roundPosition() {
