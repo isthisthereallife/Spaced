@@ -25,51 +25,86 @@ class PlayScreen extends PIXI.Container {
 
         this.player = new Player({
             spaceman_0: {
-                loop: true, goto: "spaceman_0", frames: [
-                    { texture: Assets.get("spaceman_0"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_0", frames: [
+                    { texture: Assets.get("small_spaceman_0"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             },
             spaceman_1: {
-                loop: true, goto: "spaceman_1", frames: [
-                    { texture: Assets.get("spaceman_1"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_1", frames: [
+                    { texture: Assets.get("small_spaceman_1"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             },
             spaceman_2: {
-                loop: true, goto: "spaceman_2", frames: [
-                    { texture: Assets.get("spaceman_2"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_2", frames: [
+                    { texture: Assets.get("small_spaceman_2"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             },
             spaceman_3: {
-                loop: true, goto: "spaceman_3", frames: [
-                    { texture: Assets.get("spaceman_3"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_3", frames: [
+                    { texture: Assets.get("small_spaceman_3"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             },
             spaceman_4: {
-                loop: true, goto: "spaceman_4", frames: [
-                    { texture: Assets.get("spaceman_4"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_4", frames: [
+                    { texture: Assets.get("small_spaceman_4"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             },
             spaceman_5: {
-                loop: true, goto: "spaceman_5", frames: [
-                    { texture: Assets.get("spaceman_5"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_5", frames: [
+                    { texture: Assets.get("small_spaceman_5"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             },
             spaceman_6: {
-                loop: true, goto: "spaceman_6", frames: [
-                    { texture: Assets.get("spaceman_6"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_6", frames: [
+                    { texture: Assets.get("small_spaceman_6"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             },
             spaceman_7: {
-                loop: true, goto: "spaceman_7", frames: [
-                    { texture: Assets.get("spaceman_7"), duration: Number.MAX_SAFE_INTEGER }
+                loop: true, goto: "small_spaceman_7", frames: [
+                    { texture: Assets.get("small_spaceman_7"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_8: {
+                loop: true, goto: "small_spaceman_8", frames: [
+                    { texture: Assets.get("small_spaceman_8"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_9: {
+                loop: true, goto: "small_spaceman_9", frames: [
+                    { texture: Assets.get("small_spaceman_9"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_10: {
+                loop: true, goto: "small_spaceman_10", frames: [
+                    { texture: Assets.get("small_spaceman_10"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_11: {
+                loop: true, goto: "small_spaceman_11", frames: [
+                    { texture: Assets.get("small_spaceman_11"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_12: {
+                loop: true, goto: "small_spaceman_12", frames: [
+                    { texture: Assets.get("small_spaceman_12"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_13: {
+                loop: true, goto: "small_spaceman_13", frames: [
+                    { texture: Assets.get("small_spaceman_13"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            },
+            spaceman_14: {
+                loop: true, goto: "small_spaceman_14", frames: [
+                    { texture: Assets.get("small_spaceman_14"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             }
         });
+        this.player.setCenterRotation(true);
         this.player.xPos = (gameSettings.width - this.player.width) / 2;
         this.player.yPos = (gameSettings.height - this.player.height) / 2;
         this.player.closestAsteroidAngle = 0;
-        this.p
-        this.player.roundPosition();
+        this.player.updatePosition();
         this.addChild(this.player)
 
         this.asteroid = new Asteroid({
@@ -89,8 +124,8 @@ class PlayScreen extends PIXI.Container {
         this.asteroids.push(this.asteroid2)
 
         this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
-        this.asteroid.yPos = this.player.y + this.player.height;
-        this.asteroid.roundPosition();
+        this.asteroid.yPos = this.player.y + this.player.height/2;
+        this.asteroid.updatePosition();
         this.asteroids.push(this.asteroid);
 
         for (let asteroid of this.asteroids) {
@@ -127,10 +162,10 @@ class PlayScreen extends PIXI.Container {
             let angleToCenter = Math.atan2((asteroid.yPos + asteroid.height / 2) - (gameSettings.height / 2), (asteroid.xPos + asteroid.width / 2) - gameSettings.width / 2);
             let distanceToCenter = Math.sqrt(((asteroid.xPos + asteroid.width / 2) - (gameSettings.width / 2)) ** 2 + ((asteroid.yPos + asteroid.height / 2) - (gameSettings.height / 2)) ** 2);
             asteroid.xPos = ((gameSettings.width / 2) + Math.cos(angleToCenter + speed) * distanceToCenter) - asteroid.width / 2;
-            asteroid.yPos = ((gameSettings.height / 2) + Math.sin(angleToCenter + speed) * distanceToCenter) - asteroid.height / 2; asteroid.roundPosition();
+            asteroid.yPos = ((gameSettings.height / 2) + Math.sin(angleToCenter + speed) * distanceToCenter) - asteroid.height / 2; asteroid.updatePosition();
            if (distanceToCenter < distance) {
                 distance = distanceToCenter;
-                angle = angleToCenter * (180 / Math.PI) + 22.5;
+                angle = angleToCenter * (180 / Math.PI) + (360/15/2);
                 if(angle < 0) angle += 360;
             }
         }

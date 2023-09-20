@@ -17,6 +17,9 @@
    "star_3": {
     "frame": { "x": 32, "y": 8, "w": 5, "h": 5 }
    },
+   "asteroid_0": {
+    "frame": { "x": 116, "y": 4, "w":40,"h": 40}
+   },
    "spaceman_2": {
     "frame": { "x": 0, "y": 0, "w": 32, "h": 32 }
    },
@@ -41,8 +44,50 @@
    "spaceman_1": {
     "frame": { "x": 0, "y": 224, "w": 32, "h": 32 }
    },
-   "asteroid_0": {
-    "frame": { "x": 116, "y": 4, "w":40,"h": 40}
+   "small_spaceman_4": {
+    "frame": { "x": 32, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_5": {
+    "frame": { "x": 48, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_6": {
+    "frame": { "x": 64, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_7": {
+    "frame": { "x": 80, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_8": {
+    "frame": { "x": 96, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_9": {
+    "frame": { "x": 112, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_10": {
+    "frame": { "x": 128, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_11": {
+    "frame": { "x": 144, "y": 112, "w": 16, "h": 16 }
+   },
+   "small_spaceman_12": {
+    "frame": { "x": 32, "y": 128, "w": 16, "h": 16 }
+   },
+   "small_spaceman_13": {
+    "frame": { "x": 48, "y": 128, "w": 16, "h": 16 }
+   },
+   "small_spaceman_14": {
+    "frame": { "x": 64, "y": 128, "w": 16, "h": 16 }
+   },
+   "small_spaceman_0": {
+    "frame": { "x": 80, "y": 128, "w": 16, "h": 16 }
+   },
+   "small_spaceman_1": {
+    "frame": { "x": 96, "y": 128, "w": 16, "h": 16 }
+   },
+   "small_spaceman_2": {
+    "frame": { "x": 112, "y": 128, "w": 16, "h": 16 }
+   },
+   "small_spaceman_3": {
+    "frame": { "x": 128, "y": 128, "w": 16, "h": 16 }
    }
  },
  "meta": {

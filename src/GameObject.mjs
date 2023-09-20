@@ -1,6 +1,7 @@
 import { Sprite } from "pixi.js";
 
 class GameObject extends Sprite {
+  #centerRotation = false;
   xPos = 0;
   yPos = 0;
   rot = 0;
@@ -22,6 +23,12 @@ class GameObject extends Sprite {
     this.#activeSpriteset = this.#spriteset[Object.keys(this.#spriteset)[0]];
   }
 
+  setCenterRotation(bool) {
+    this.#centerRotation = bool;
+    if(this.#centerRotation) this.pivot.set(this.width/2, this.height/2);
+    else this.pivot.set(0, 0);
+  }
+
   switchSpriteset(id) {
     this.#activeSpriteset = this.#spriteset[id];
     this.#spritesetIndex = 0;
@@ -29,12 +36,12 @@ class GameObject extends Sprite {
     this.texture = this.#activeSpriteset.frames[this.#spritesetIndex].texture;
   }
 
-  roundPosition() {
-    this.x = Math.round(this.xPos);
-    this.y = Math.round(this.yPos);
+  updatePosition() {
+    this.x = Math.round(this.xPos + (this.#centerRotation ? this.width/2 : 0));
+    this.y = Math.round(this.yPos + (this.#centerRotation ? this.height/2 : 0));
   }
 
-  draw() {
+  drawSprite() {
     if (this.frameDuration > 0) this.frameDuration--;
     else {
       if (this.#spritesetIndex == this.#activeSpriteset.frames.length - 1) {
@@ -52,8 +59,8 @@ class GameObject extends Sprite {
   }
 
   update() {
-    this.roundPosition();
-    this.draw();
+    this.updatePosition();
+    this.drawSprite();
   }
 }
 
