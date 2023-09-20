@@ -40,10 +40,10 @@ class ParallaxLayers extends PIXI.Container {
   rotateAroundCenter(speed) {
     for(let i = 0; i < this.layers.length; i++) {
       for(let child of this.layers[i].children) {
-        let angleToCenter = Math.atan2(child.yPos - (144/2), child.xPos - 160/2);
-        let distanceToCenter = Math.sqrt((child.xPos - (160/2))**2 + (child.yPos - (144/2))**2);
-        child.xPos = (160/2) + Math.cos(angleToCenter + (speed+speed*i)) * distanceToCenter;
-        child.yPos = (144/2) + Math.sin(angleToCenter + (speed+speed*i)) * distanceToCenter;
+        let angleToCenter = Math.atan2((child.yPos + child.height/2) - (144/2), (child.xPos + child.width/2) - 160/2);
+        let distanceToCenter = Math.sqrt(((child.xPos + child.width/2) - (160/2))**2 + ((child.yPos + child.height/2) - (144/2))**2);
+        child.xPos = ((160/2) + Math.cos(angleToCenter + (speed+speed*i)) * distanceToCenter) - child.width/2;
+        child.yPos = ((144/2) + Math.sin(angleToCenter + (speed+speed*i)) * distanceToCenter) - child.height/2;
 
         this.wrapObjectPosition(child);
         child.update();

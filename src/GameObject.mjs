@@ -4,6 +4,8 @@ class GameObject extends Sprite {
   xPos = 0;
   yPos = 0;
   rot = 0;
+  vel = 0;
+  acc = 0;
 
   /* sample spriteset: {
     idle: { loop: false, goto: "animationname", frames: [{ texture: "texture", duration: 1 }] },

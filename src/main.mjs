@@ -32,7 +32,7 @@ Screen.addScreens({
 Input.startListener();
 
 Screen.switch("mainMenu");
-Screen.switch("gameScreen");
+//Screen.switch("gameScreen");
 
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
