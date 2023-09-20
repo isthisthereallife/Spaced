@@ -12,12 +12,10 @@ class Input {
                     this.start();
                 }
                 if (e.code === this.relocateCWButton){
-                    console.log("wanna relocate CW")
-                    this.#inputMap.set("cw", true)
+                    this.#inputMap.set("left", true)
 
                 }else if(e.code === this.relocateCCWButton) {
-                    console.log("wanna relocate CCW")
-                    this.#inputMap.set("ccw", true)
+                    this.#inputMap.set("right", true)
                 }
             }
         });

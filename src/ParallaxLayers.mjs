@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import GameObject from "./GameObject.mjs";
+import { gameSettings } from "./main.mjs";
 
 class ParallaxLayers extends PIXI.Container {
   layers = [];
@@ -15,8 +16,8 @@ class ParallaxLayers extends PIXI.Container {
               { texture: layerSetting.texture, duration: Number.MAX_SAFE_INTEGER }
             ]}
         });
-        obj.xPos = Math.random() * 160 - obj.width;
-        obj.yPos = Math.random() * 144 - obj.height;
+        obj.xPos = Math.random() * gameSettings.width - obj.width;
+        obj.yPos = Math.random() * gameSettings.height - obj.height;
         obj.update();
         layer.addChild(obj);
       }
@@ -40,10 +41,10 @@ class ParallaxLayers extends PIXI.Container {
   rotateAroundCenter(speed) {
     for(let i = 0; i < this.layers.length; i++) {
       for(let child of this.layers[i].children) {
-        let angleToCenter = Math.atan2((child.yPos + child.height/2) - (144/2), (child.xPos + child.width/2) - 160/2);
-        let distanceToCenter = Math.sqrt(((child.xPos + child.width/2) - (160/2))**2 + ((child.yPos + child.height/2) - (144/2))**2);
-        child.xPos = ((160/2) + Math.cos(angleToCenter + (speed+speed*i)) * distanceToCenter) - child.width/2;
-        child.yPos = ((144/2) + Math.sin(angleToCenter + (speed+speed*i)) * distanceToCenter) - child.height/2;
+        let angleToCenter = Math.atan2(child.yPos - (gameSettings.height/2), child.xPos - gameSettings.width/2);
+        let distanceToCenter = Math.sqrt((child.xPos - (gameSettings.width/2))**2 + (child.yPos - (gameSettings.height/2))**2);
+        child.xPos = (gameSettings.width/2) + Math.cos(angleToCenter + (speed+speed*i)) * distanceToCenter;
+        child.yPos = (gameSettings.height/2) + Math.sin(angleToCenter + (speed+speed*i)) * distanceToCenter;
 
         this.wrapObjectPosition(child);
         child.update();
@@ -52,21 +53,21 @@ class ParallaxLayers extends PIXI.Container {
   }
 
   wrapObjectPosition(obj) {
-    if (obj.xPos > 160) {
+    if (obj.xPos > gameSettings.width) {
       obj.xPos = 0 - obj.width;
-      obj.yPos = Math.round(Math.random() * 144 - obj.height);
+      obj.yPos = Math.round(Math.random() * gameSettings.height - obj.height);
     }
     if (obj.xPos < 0 - obj.width) {
-      obj.xPos = 160;
-      obj.yPos = Math.round(Math.random() * 144 - obj.height);
+      obj.xPos = gameSettings.width;
+      obj.yPos = Math.round(Math.random() * gameSettings.height - obj.height);
     }
-    if (obj.yPos > 144) {
+    if (obj.yPos > gameSettings.height) {
       obj.yPos = 0 - obj.height;
-      obj.xPos = Math.round(Math.random() * 160 - obj.width);
+      obj.xPos = Math.round(Math.random() * gameSettings.width - obj.width);
     }
     if (obj.yPos < 0 - obj.height) {
-      obj.yPos = 144;
-      obj.xPos = Math.round(Math.random() * 160 - obj.width);
+      obj.yPos = gameSettings.height;
+      obj.xPos = Math.round(Math.random() * gameSettings.width - obj.width);
     }
   }
 }

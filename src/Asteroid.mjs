@@ -78,8 +78,7 @@ class Asteroid extends GameObject {
         if (this.pythagorasForDistance(centerX, centerY, this.yPos, this.xPos) <= Math.round(combinedRadii)) {
             if (Input.getInput("moving")) {
                 Input.stop();
-                console.log("###¤¤¤### VI HAR LANDAT ###¤¤¤###")
-
+                
                 // TODO kolla var träffen skett, returnera ett väderstreck
 
                 //hit from above
