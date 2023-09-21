@@ -1,6 +1,6 @@
-import { Sprite } from "pixi.js";
+import * as PIXI from "pixi.js";
 
-class GameObject extends Sprite {
+class GameObject extends PIXI.Sprite {
   #centerRotation = false;
   xPos = 0;
   yPos = 0;
@@ -34,6 +34,13 @@ class GameObject extends Sprite {
     this.#spritesetIndex = 0;
     this.frameDuration = this.#activeSpriteset.frames[0].duration;
     this.texture = this.#activeSpriteset.frames[this.#spritesetIndex].texture;
+  }
+
+  move(angle, speed) {
+    const radians = angle * (Math.PI / 180);
+    this.xPos += Math.cos(radians) * (speed);
+    this.yPos += Math.sin(radians) * (speed);
+    this.updatePosition();
   }
 
   updatePosition() {

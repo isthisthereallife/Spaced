@@ -6,6 +6,7 @@ import Asteroid from "../Asteroid.mjs";
 import Input from "../Input.mjs";
 import DanielInput from "../DanielInput.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
+import HitTest from "../HitTest.mjs";
 
 class PlayScreen extends PIXI.Container {
 
@@ -103,9 +104,8 @@ class PlayScreen extends PIXI.Container {
         this.player.setCenterRotation(true);
         this.player.xPos = (gameSettings.width - this.player.width) / 2;
         this.player.yPos = (gameSettings.height - this.player.height) / 2;
-        this.player.closestAsteroidAngle = 0;
         this.player.updatePosition();
-        this.addChild(this.player)
+        this.addChild(this.player);
 
         this.asteroid = new Asteroid({
             static: {
@@ -114,6 +114,13 @@ class PlayScreen extends PIXI.Container {
                 ]
             }
         });
+        this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
+        this.asteroid.yPos = this.player.y + this.player.height/2;
+        this.asteroid.updatePosition();
+        this.asteroids.push(this.asteroid);
+        this.addChild(this.asteroid);
+        this.playerAsteroid = this.asteroid;
+
         this.asteroid2 = new Asteroid({
             static: {
                 loop: true, goto: "static", frames: [
@@ -121,20 +128,11 @@ class PlayScreen extends PIXI.Container {
                 ]
             }
         });
-        this.asteroids.push(this.asteroid2)
-
-        this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
-        this.asteroid.yPos = this.player.y + this.player.height/2;
-        this.asteroid.updatePosition();
-        this.asteroids.push(this.asteroid);
-
-        for (let asteroid of this.asteroids) {
-            this.addChild(asteroid);
-        }
+        this.asteroids.push(this.asteroid2);
+        this.addChild(this.asteroid2);
     }
 
     update() {
-        this.player.update()
         /*
         if (Input.getInput("left")){
             this.rotateTheUniverse(1)
@@ -145,31 +143,57 @@ class PlayScreen extends PIXI.Container {
             Input.stop()
         }
         */
-        if(DanielInput.getKey("ArrowRight")) {
-            this.rotateTheUniverse(0.05);
-            this.stars.rotateAroundCenterNoParallax(0.05);
+        if(this.player.grounded) {
+            if(DanielInput.getKey("ArrowRight")) {
+                this.rotateTheUniverse(0.025);
+            }
+            if(DanielInput.getKey("ArrowLeft")) {
+                this.rotateTheUniverse(-0.025);
+            }
+            if(DanielInput.getKey("ArrowUp")) {
+                this.player.grounded = false;
+            }
+        } else {
+            for(let asteroid of this.asteroids) {
+                asteroid.move(this.player.rot, 0.35);
+                this.stars.move(this.player.rot, 0.040);
+                if(HitTest.circle(this.player.collider, asteroid.collider)) {
+                    this.player.grounded = true;
+                    this.playerAsteroid = asteroid;
+                    let relativeDistance = {
+                        x: (this.playerAsteroid.xPos + this.playerAsteroid.width/2) - 160/2,
+                        y: (this.playerAsteroid.yPos + this.playerAsteroid.height/2) - 144/2
+                    }
+                    let relativeAngle = Math.atan2(relativeDistance.y, relativeDistance.x);
+                    this.player.rot = ((relativeAngle + Math.PI) * (180/Math.PI) + 180)%360;
+                }
+            }
         }
-        if(DanielInput.getKey("ArrowLeft")) {
-            this.rotateTheUniverse(-0.05);
-            this.stars.rotateAroundCenterNoParallax(-0.05);
-        }
+
+        for(let asteroid of this.asteroids) asteroid.update();
+        this.player.update();
     }
 
     rotateTheUniverse(speed) {
-        let distance = Number.MAX_SAFE_INTEGER;
-        let angle;
-        for (let asteroid of this.asteroids) {
-            let angleToCenter = Math.atan2((asteroid.yPos + asteroid.height / 2) - (gameSettings.height / 2), (asteroid.xPos + asteroid.width / 2) - gameSettings.width / 2);
-            let distanceToCenter = Math.sqrt(((asteroid.xPos + asteroid.width / 2) - (gameSettings.width / 2)) ** 2 + ((asteroid.yPos + asteroid.height / 2) - (gameSettings.height / 2)) ** 2);
-            asteroid.xPos = ((gameSettings.width / 2) + Math.cos(angleToCenter + speed) * distanceToCenter) - asteroid.width / 2;
-            asteroid.yPos = ((gameSettings.height / 2) + Math.sin(angleToCenter + speed) * distanceToCenter) - asteroid.height / 2; asteroid.updatePosition();
-           if (distanceToCenter < distance) {
-                distance = distanceToCenter;
-                angle = angleToCenter * (180 / Math.PI) + (360/15/2);
-                if(angle < 0) angle += 360;
-            }
+        let relativeDistance = {
+            x: (this.playerAsteroid.xPos + this.playerAsteroid.width/2) - 160/2,
+            y: (this.playerAsteroid.yPos + this.playerAsteroid.height/2) - 144/2
         }
-        this.player.rot = angle;
+        let relativeAngle = Math.atan2(relativeDistance.y, relativeDistance.x);
+        let distanceToCenter = Math.sqrt(relativeDistance.x** 2 + relativeDistance.y**2);
+
+        console.log(relativeDistance);
+        console.log(relativeAngle);
+
+        for (let asteroid of this.asteroids) {
+            asteroid.xPos = (asteroid.xPos + asteroid.width/2 - relativeDistance.x) + Math.cos(relativeAngle + (speed)) * distanceToCenter - asteroid.width/2;
+            asteroid.yPos = (asteroid.yPos + asteroid.height/2 - relativeDistance.y) + Math.sin(relativeAngle + (speed)) * distanceToCenter - asteroid.height/2;
+            asteroid.updatePosition();
+        }
+
+        this.stars.rotateInRelation(relativeDistance, relativeAngle, distanceToCenter, speed);
+
+        this.player.rot = ((relativeAngle + Math.PI) * (180/Math.PI) + 180)%360;
     }
 
 } export default PlayScreen;

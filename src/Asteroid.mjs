@@ -2,9 +2,25 @@ import GameObject from "./GameObject.mjs";
 import Input from "./Input.mjs";
 
 class Asteroid extends GameObject {
-    constructor(texture) {
-        super(texture);
+    collider;
+
+    constructor(spriteset) {
+        super(spriteset);
+
+        this.collider = {
+            x: this.x + this.width/2,
+            y: this.y + this.height/2,
+            r: 20
+        }
     }
+
+    update() {
+        this.collider.x = this.x + this.width/2;
+        this.collider.y = this.y + this.height/2;
+        super.update();
+    }
+
+    /*
 
     relocateAsteroidFunction(spaceman_X) {
         if (Input.getInput("cw")) {
@@ -97,6 +113,8 @@ class Asteroid extends GameObject {
         let yDist = Math.pow((centerY - asterY), 2);
         return Math.sqrt(xDist + yDist)
     }
+
+    */
 }
 
 export default Asteroid;

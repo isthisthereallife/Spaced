@@ -38,6 +38,18 @@ class ParallaxLayers extends PIXI.Container {
     }
   }
 
+  rotateInRelation(relativeDistance, relativeAngle, distanceToCenter, speed) {
+    for(let i = 0; i < this.layers.length; i++) {
+      for(let child of this.layers[i].children) {
+        child.xPos = (child.xPos + child.width/2 - relativeDistance.x) + Math.cos(relativeAngle + (speed)) * distanceToCenter - child.width/2;
+        child.yPos = (child.yPos + child.height/2 - relativeDistance.y) + Math.sin(relativeAngle + (speed)) * distanceToCenter - child.height/2;
+
+        this.wrapObjectPosition(child);
+        child.update();
+      }
+    }
+  }
+
   rotateAroundCenterParallax(speed) {
     for(let i = 0; i < this.layers.length; i++) {
       for(let child of this.layers[i].children) {
