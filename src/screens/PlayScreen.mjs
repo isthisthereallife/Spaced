@@ -151,6 +151,9 @@ class PlayScreen extends PIXI.Container {
                 this.rotateTheUniverse(-0.025);
             }
             if(DanielInput.getKey("ArrowUp")) {
+                for(let asteroid of this.asteroids) {
+                    asteroid.move(this.player.rot, 1);
+                }
                 this.player.grounded = false;
             }
         } else {
@@ -165,7 +168,21 @@ class PlayScreen extends PIXI.Container {
                         y: (this.playerAsteroid.yPos + this.playerAsteroid.height/2) - 144/2
                     }
                     let relativeAngle = Math.atan2(relativeDistance.y, relativeDistance.x);
-                    this.player.rot = ((relativeAngle + Math.PI) * (180/Math.PI) + 180)%360;
+                    this.player.rot = ((relativeAngle + Math.PI) * (180/Math.PI) + 180) % 360;
+                    let distance = Math.sqrt(relativeDistance.x * relativeDistance.x + relativeDistance.y * relativeDistance.y);
+                    let direction = {
+                        x: relativeDistance.x / distance,
+                        y: relativeDistance.y / distance
+                    }
+                    let displacement = {
+                        x: direction.x * (this.player.collider.r + this.playerAsteroid.collider.r - distance + .1),
+                        y: direction.y * (this.player.collider.r + this.playerAsteroid.collider.r -distance + .1)
+                    }
+                    for(let asteroid of this.asteroids) {
+                        asteroid.xPos += displacement.x;
+                        asteroid.yPos += displacement.y;
+                        asteroid.updatePosition();
+                    }
                 }
             }
         }
@@ -182,8 +199,7 @@ class PlayScreen extends PIXI.Container {
         let relativeAngle = Math.atan2(relativeDistance.y, relativeDistance.x);
         let distanceToCenter = Math.sqrt(relativeDistance.x** 2 + relativeDistance.y**2);
 
-        console.log(relativeDistance);
-        console.log(relativeAngle);
+        console.log(distanceToCenter);
 
         for (let asteroid of this.asteroids) {
             asteroid.xPos = (asteroid.xPos + asteroid.width/2 - relativeDistance.x) + Math.cos(relativeAngle + (speed)) * distanceToCenter - asteroid.width/2;
