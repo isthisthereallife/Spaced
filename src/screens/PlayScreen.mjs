@@ -356,15 +356,19 @@ class PlayScreen extends PIXI.Container {
             if(!DanielInput.getKey("ArrowRight") && !DanielInput.getKey("ArrowLeft")) {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
             }
-            if(DanielInput.getKey("ArrowRight")) {
-                this.rotateTheUniverse(0.025);
-                this.player.currentSpritesetID = "walk_right"
-                this.player.last_direction = "right";
-            }
-            if(DanielInput.getKey("ArrowLeft")) {
-                this.rotateTheUniverse(-0.025);
-                this.player.currentSpritesetID = "walk_left"
-                this.player.last_direction = "left";
+            if(DanielInput.getKey("ArrowRight") && DanielInput.getKey("ArrowLeft")) {
+                this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
+            } else {
+                if(DanielInput.getKey("ArrowRight")) {
+                    this.rotateTheUniverse(0.025);
+                    this.player.currentSpritesetID = "walk_right"
+                    this.player.last_direction = "right";
+                }
+                if(DanielInput.getKey("ArrowLeft")) {
+                    this.rotateTheUniverse(-0.025);
+                    this.player.currentSpritesetID = "walk_left"
+                    this.player.last_direction = "left";
+                }
             }
             if(DanielInput.getKey("z")) {
                 for(let asteroid of this.asteroids) {
