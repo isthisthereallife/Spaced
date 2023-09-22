@@ -10,7 +10,7 @@ class GameScreen extends PIXI.Container {
   #asteroid = new Asteroid({
     static: {
         loop: true, goto: "static", frames: [
-            { texture: Assets.get("asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
+            { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
         ]
       }
   });
@@ -19,19 +19,19 @@ class GameScreen extends PIXI.Container {
   #player = new Player({
       static: {
           loop: true, goto: "static", frames: [
-              { texture: Assets.get("spaceman_0"), duration: Number.MAX_SAFE_INTEGER }
+              { texture: Assets.get("sheet", "spaceman_0"), duration: Number.MAX_SAFE_INTEGER }
           ]
       },
       rotating: {
           loop: true, goto: "rotation", frames: [
-              { texture: Assets.get("spaceman_0"), duration: 10 },
-              { texture: Assets.get("spaceman_1"), duration: 10 },
-              { texture: Assets.get("spaceman_2"), duration: 10 },
-              { texture: Assets.get("spaceman_3"), duration: 10 },
-              { texture: Assets.get("spaceman_4"), duration: 10 },
-              { texture: Assets.get("spaceman_5"), duration: 10 },
-              { texture: Assets.get("spaceman_6"), duration: 10 },
-              { texture: Assets.get("spaceman_6"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_0"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_1"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_2"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_3"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_4"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_5"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_6"), duration: 10 },
+              { texture: Assets.get("sheet", "spaceman_6"), duration: 10 },
           ]
       }
   });
@@ -42,7 +42,7 @@ class GameScreen extends PIXI.Container {
     let ass2 = new Asteroid({
       static: {
           loop: true, goto: "static", frames: [
-              { texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE }
+              { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_VALUE }
           ]
       }
     });
@@ -58,7 +58,7 @@ class GameScreen extends PIXI.Container {
     let ass3 = new Asteroid({
         static: {
             loop: true, goto: "static", frames: [
-                { texture: Assets.get("asteroid_0"), duration: Number.MAX_VALUE }
+                { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_VALUE }
             ]
         }
     });
@@ -99,7 +99,7 @@ class GameScreen extends PIXI.Container {
 
           //om den här finns så är det ett väderstreck som gubben ska roteras till
           if (rotateChar) {
-              this.#player.texture = Assets.get("spaceman_" + rotateChar);
+              this.#player.texture = Assets.get("sheet", "spaceman_" + rotateChar);
           }
       });
       //efter ett varv av asteroider borde gubben flyttat sig från en asteroid
@@ -114,7 +114,7 @@ class GameScreen extends PIXI.Container {
       const change = Input.getInput("cw")
           ? Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) + 1
           : Number(this.#player._texture.textureCacheIds[0].charAt(this.#player._texture.textureCacheIds[0].length - 1)) - 1
-      this.#player.texture = Assets.get("spaceman_".concat(change == 8 ? "0" : change == -1 ? "7" : change.toString()));
+      this.#player.texture = Assets.get("sheet", "spaceman_".concat(change == 8 ? "0" : change == -1 ? "7" : change.toString()));
       Input.stop();
     }
   }

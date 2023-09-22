@@ -30,6 +30,7 @@ class GameObject extends PIXI.Sprite {
   }
 
   switchSpriteset(id) {
+    if(this.#activeSpriteset === this.#spriteset[id]) return;
     this.#activeSpriteset = this.#spriteset[id];
     this.#spritesetIndex = 0;
     this.frameDuration = this.#activeSpriteset.frames[0].duration;

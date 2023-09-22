@@ -24,7 +24,10 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
-await Assets.load();
+await Assets.load({
+    sheet: "res/spritesheet.json",
+    spaceman: "res/spaceman_spritesheet.json"
+});
 Screen.init(app.stage);
 Screen.addScreens({
     mainMenu: new MainMenu(),

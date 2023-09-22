@@ -17,89 +17,302 @@ class PlayScreen extends PIXI.Container {
         this.asteroids = [];
 
         this.stars = new ParallaxLayers([
-            {texture: Assets.get("star_0"), n: 20},
-            {texture: Assets.get("star_1"), n: 10},
-            {texture: Assets.get("star_2"), n: 6},
-            {texture: Assets.get("star_3"), n: 2}
+            {texture: Assets.get("sheet", "star_0"), n: 20},
+            {texture: Assets.get("sheet", "star_1"), n: 10},
+            {texture: Assets.get("sheet", "star_2"), n: 6},
+            {texture: Assets.get("sheet", "star_3"), n: 2}
         ]);
         this.addChild(this.stars);
 
         this.player = new Player({
-            spaceman_0: {
-                loop: true, goto: "small_spaceman_0", frames: [
-                    { texture: Assets.get("small_spaceman_0"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_1: {
-                loop: true, goto: "small_spaceman_1", frames: [
-                    { texture: Assets.get("small_spaceman_1"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_2: {
-                loop: true, goto: "small_spaceman_2", frames: [
-                    { texture: Assets.get("small_spaceman_2"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_3: {
-                loop: true, goto: "small_spaceman_3", frames: [
-                    { texture: Assets.get("small_spaceman_3"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_4: {
-                loop: true, goto: "small_spaceman_4", frames: [
-                    { texture: Assets.get("small_spaceman_4"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_5: {
-                loop: true, goto: "small_spaceman_5", frames: [
-                    { texture: Assets.get("small_spaceman_5"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_6: {
-                loop: true, goto: "small_spaceman_6", frames: [
-                    { texture: Assets.get("small_spaceman_6"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_7: {
-                loop: true, goto: "small_spaceman_7", frames: [
-                    { texture: Assets.get("small_spaceman_7"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_8: {
-                loop: true, goto: "small_spaceman_8", frames: [
-                    { texture: Assets.get("small_spaceman_8"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_9: {
-                loop: true, goto: "small_spaceman_9", frames: [
-                    { texture: Assets.get("small_spaceman_9"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_10: {
-                loop: true, goto: "small_spaceman_10", frames: [
-                    { texture: Assets.get("small_spaceman_10"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_11: {
-                loop: true, goto: "small_spaceman_11", frames: [
-                    { texture: Assets.get("small_spaceman_11"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_12: {
-                loop: true, goto: "small_spaceman_12", frames: [
-                    { texture: Assets.get("small_spaceman_12"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_13: {
-                loop: true, goto: "small_spaceman_13", frames: [
-                    { texture: Assets.get("small_spaceman_13"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            },
-            spaceman_14: {
-                loop: true, goto: "small_spaceman_14", frames: [
-                    { texture: Assets.get("small_spaceman_14"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
+            idle_right_0: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_0"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_1: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_4"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_2: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_8"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_3: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_12"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_4: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_16"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_5: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_20"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_6: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_24"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_7: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_28"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_8: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_32"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_9: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_36"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_10: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_40"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_11: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_44"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_12: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_48"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_13: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_52"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_14: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_56"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_right_15: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_60"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            walk_right_0: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_0"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_1"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_2"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_3"), duration: 5 }
+            ]},
+            walk_right_1: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_4"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_5"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_6"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_7"), duration: 5 }
+            ]},
+            walk_right_2: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_8"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_9"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_10"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_11"), duration: 5 }
+            ]},
+            walk_right_3: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_12"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_13"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_14"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_15"), duration: 5 }
+            ]},
+            walk_right_4: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_16"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_17"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_18"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_19"), duration: 5 }
+            ]},
+            walk_right_5: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_20"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_21"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_22"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_23"), duration: 5 }
+            ]},
+            walk_right_6: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_24"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_25"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_26"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_27"), duration: 5 }
+            ]},
+            walk_right_7: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_28"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_29"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_30"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_31"), duration: 5 }
+            ]},
+            walk_right_8: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_32"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_33"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_34"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_35"), duration: 5 }
+            ]},
+            walk_right_9: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_36"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_37"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_38"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_39"), duration: 5 }
+            ]},
+            walk_right_10: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_40"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_41"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_42"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_43"), duration: 5 }
+            ]},
+            walk_right_11: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_44"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_45"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_46"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_47"), duration: 5 }
+            ]},
+            walk_right_12: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_48"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_49"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_50"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_51"), duration: 5 }
+            ]},
+            walk_right_13: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_52"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_53"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_54"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_55"), duration: 5 }
+            ]},
+            walk_right_14: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_56"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_57"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_58"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_59"), duration: 5 }
+            ]},
+            walk_right_15: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_60"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_61"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_62"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_63"), duration: 5 }
+            ]},
+            idle_left_0: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_64"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_1: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_68"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_2: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_72"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_3: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_76"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_4: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_80"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_5: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_84"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_6: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_88"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_7: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_92"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_8: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_96"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_9: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_100"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_10: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_104"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_11: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_108"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_12: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_112"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_13: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_116"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_14: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_120"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            idle_left_15: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_124"), duration: Number.MAX_SAFE_INTEGER }
+            ]},
+            walk_left_0: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_64"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_65"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_66"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_67"), duration: 5 }
+            ]},
+            walk_left_1: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_68"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_69"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_70"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_71"), duration: 5 }
+            ]},
+            walk_left_2: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_72"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_73"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_74"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_75"), duration: 5 }
+            ]},
+            walk_left_3: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_76"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_77"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_78"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_79"), duration: 5 }
+            ]},
+            walk_left_4: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_80"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_81"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_82"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_83"), duration: 5 }
+            ]},
+            walk_left_5: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_84"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_85"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_86"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_87"), duration: 5 }
+            ]},
+            walk_left_6: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_88"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_89"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_90"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_91"), duration: 5 }
+            ]},
+            walk_left_7: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_92"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_93"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_94"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_95"), duration: 5 }
+            ]},
+            walk_left_8: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_96"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_97"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_98"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_99"), duration: 5 }
+            ]},
+            walk_left_9: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_100"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_101"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_102"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_103"), duration: 5 }
+            ]},
+            walk_left_10: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_104"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_105"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_106"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_107"), duration: 5 }
+            ]},
+            walk_left_11: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_108"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_109"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_110"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_111"), duration: 5 }
+            ]},
+            walk_left_12: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_112"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_113"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_114"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_115"), duration: 5 }
+            ]},
+            walk_left_13: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_116"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_117"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_118"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_119"), duration: 5 }
+            ]},
+            walk_left_14: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_120"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_121"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_122"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_123"), duration: 5 }
+            ]},
+            walk_left_15: {loop: true, frames: [
+                { texture: Assets.get("spaceman", "ssm_124"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_125"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_126"), duration: 5 },
+                { texture: Assets.get("spaceman", "ssm_127"), duration: 5 }
+            ]}
         });
         this.player.setCenterRotation(true);
         this.player.xPos = (gameSettings.width - this.player.width) / 2;
@@ -108,11 +321,9 @@ class PlayScreen extends PIXI.Container {
         this.addChild(this.player);
 
         this.asteroid = new Asteroid({
-            static: {
-                loop: true, goto: "static", frames: [
-                    { texture: Assets.get("asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
+            static: {loop: true, goto: "static", frames: [
+                { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
+            ]}
         });
         this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
         this.asteroid.yPos = this.player.y + this.player.height/2;
@@ -122,11 +333,9 @@ class PlayScreen extends PIXI.Container {
         this.playerAsteroid = this.asteroid;
 
         this.asteroid2 = new Asteroid({
-            static: {
-                loop: true, goto: "static", frames: [
-                    { texture: Assets.get("asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
+            static: {loop: true, goto: "static", frames: [
+                { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
+            ]}
         });
         this.asteroids.push(this.asteroid2);
         this.addChild(this.asteroid2);
@@ -144,19 +353,27 @@ class PlayScreen extends PIXI.Container {
         }
         */
         if(this.player.grounded) {
+            if(!DanielInput.getKey("ArrowRight") && !DanielInput.getKey("ArrowLeft")) {
+                this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
+            }
             if(DanielInput.getKey("ArrowRight")) {
                 this.rotateTheUniverse(0.025);
+                this.player.currentSpritesetID = "walk_right"
+                this.player.last_direction = "right";
             }
             if(DanielInput.getKey("ArrowLeft")) {
                 this.rotateTheUniverse(-0.025);
+                this.player.currentSpritesetID = "walk_left"
+                this.player.last_direction = "left";
             }
-            if(DanielInput.getKey("ArrowUp")) {
+            if(DanielInput.getKey("z")) {
                 for(let asteroid of this.asteroids) {
                     asteroid.move(this.player.rot, 1);
                 }
                 this.player.grounded = false;
             }
         } else {
+            this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
             for(let asteroid of this.asteroids) {
                 asteroid.move(this.player.rot, 0.35);
                 this.stars.move(this.player.rot, 0.040);
@@ -181,7 +398,6 @@ class PlayScreen extends PIXI.Container {
                     for(let asteroid of this.asteroids) {
                         asteroid.xPos += displacement.x;
                         asteroid.yPos += displacement.y;
-                        asteroid.updatePosition();
                     }
                 }
             }
@@ -198,8 +414,6 @@ class PlayScreen extends PIXI.Container {
         }
         let relativeAngle = Math.atan2(relativeDistance.y, relativeDistance.x);
         let distanceToCenter = Math.sqrt(relativeDistance.x** 2 + relativeDistance.y**2);
-
-        console.log(distanceToCenter);
 
         for (let asteroid of this.asteroids) {
             asteroid.xPos = (asteroid.xPos + asteroid.width/2 - relativeDistance.x) + Math.cos(relativeAngle + (speed)) * distanceToCenter - asteroid.width/2;

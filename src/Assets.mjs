@@ -3,16 +3,13 @@ import * as PIXI from "pixi.js";
 class Assets {
   static #assets;
 
-  static async load() {
-    PIXI.Assets.addBundle("resources", {
-      sheet: "res/spritesheet.json",
-    });
-
+  static async load(bundle) {
+    PIXI.Assets.addBundle("resources", bundle);
     this.#assets = await PIXI.Assets.loadBundle("resources");
   }
 
-  static get(id) {
-    return this.#assets.sheet.textures[id];
+  static get(bundle, id) {
+    return this.#assets[bundle].textures[id];
   }
 }
 

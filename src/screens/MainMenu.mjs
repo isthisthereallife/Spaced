@@ -8,16 +8,16 @@ class MainMenu extends PIXI.Container {
     super();
 
     this.parallaxLayers = new ParallaxLayers([
-      {texture: Assets.get("star_0"), n: 20},
-      {texture: Assets.get("star_1"), n: 10},
-      {texture: Assets.get("star_2"), n: 6},
-      {texture: Assets.get("star_3"), n: 2}
+      {texture: Assets.get("sheet", "star_0"), n: 20},
+      {texture: Assets.get("sheet", "star_1"), n: 10},
+      {texture: Assets.get("sheet", "star_2"), n: 6},
+      {texture: Assets.get("sheet", "star_3"), n: 2}
     ]);
     this.addChild(this.parallaxLayers);
 
     this.logo = new GameObject({
       static: {loop: true, goto: "static", frames: [
-        {texture: Assets.get("main_menu_logo"), duration: Number.MAX_SAFE_INTEGER}
+        {texture: Assets.get("sheet", "main_menu_logo"), duration: Number.MAX_SAFE_INTEGER}
       ]}
     });
 
@@ -27,7 +27,7 @@ class MainMenu extends PIXI.Container {
 
     this.btnStart = new GameObject({
       static: {loop: true, goto: "static", frames: [
-        {texture: Assets.get("btn_start"), duration: Number.MAX_SAFE_INTEGER}
+        {texture: Assets.get("sheet", "btn_start"), duration: Number.MAX_SAFE_INTEGER}
       ]}
     });
 
