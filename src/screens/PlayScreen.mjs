@@ -16,11 +16,27 @@ class PlayScreen extends PIXI.Container {
         super();
 
         this.asteroids = [];
-        let sound = new Howl({
+        let music = new Howl({
             src: ['/res/audio/starchild_sonnet.wav'],
             autoplay : true,
-            loop: true
+            loop: true,
+            volume: 1
         });
+        this.jumpSound = new Howl({
+            src: ['/res/audio/jump.wav'],
+            volume: 1
+        });
+        this.touchdownSound = new Howl({
+            src:['res/audio/touchdown.wav']
+        });
+         // this sound is nicer, but mixes badly with the bg-music
+         // this.movingSound = new Howl ({ src: ['res/audio/movingMelody.wav'], volume: 1});
+
+        this.movingSound = new Howl({
+            src:['res/audio/movingChugg.wav'],
+            volume: 0.5
+        });
+       
         this.stars = new ParallaxLayers([
             { texture: Assets.get("sheet", "star_0"), n: 20 },
             { texture: Assets.get("sheet", "star_1"), n: 10 },
@@ -497,17 +513,29 @@ class PlayScreen extends PIXI.Container {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
             } else {
                 if (DanielInput.getKey("ArrowRight")) {
+                    if(!this.movingSound.playing()){
+                        this.movingSound.play()
+                        //this.movingSound.fade(0.1,0.5, 1000)
+                    }
                     this.rotateTheUniverse(0.025);
                     this.player.currentSpritesetID = "walk_right"
                     this.player.last_direction = "right";
                 }
-                if (DanielInput.getKey("ArrowLeft")) {
+                else if (DanielInput.getKey("ArrowLeft")) {
+                     if(!this.movingSound.playing()){
+                        this.movingSound.play()
+                        //this.movingSound.fade(0.1,1, 1000)
+                    }
                     this.rotateTheUniverse(-0.025);
                     this.player.currentSpritesetID = "walk_left"
                     this.player.last_direction = "left";
+                } else{
+                    this.movingSound.stop();
                 }
             }
             if (DanielInput.getKey("z")) {
+                this.jumpSound.play()
+
                 for (let asteroid of this.asteroids) {
                     asteroid.move(this.player.rot, 1);
                 }
