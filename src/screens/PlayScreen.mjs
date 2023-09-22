@@ -7,6 +7,7 @@ import Input from "../Input.mjs";
 import DanielInput from "../DanielInput.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
 import HitTest from "../HitTest.mjs";
+import OxygenMeter from "../OxygenMeter.mjs";
 
 class PlayScreen extends PIXI.Container {
 
@@ -322,7 +323,7 @@ class PlayScreen extends PIXI.Container {
 
         this.asteroid = new Asteroid({
             static: {loop: true, goto: "static", frames: [
-                { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
+                { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
             ]}
         });
         this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
@@ -334,11 +335,14 @@ class PlayScreen extends PIXI.Container {
 
         this.asteroid2 = new Asteroid({
             static: {loop: true, goto: "static", frames: [
-                { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
+                { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
             ]}
         });
         this.asteroids.push(this.asteroid2);
         this.addChild(this.asteroid2);
+
+        this.oxygenMeter = new OxygenMeter();
+        this.addChild(this.oxygenMeter);
     }
 
     update() {
@@ -352,6 +356,8 @@ class PlayScreen extends PIXI.Container {
             Input.stop()
         }
         */
+        this.oxygenMeter.decrementOxygen(0.02);
+
         if(this.player.grounded) {
             if(!DanielInput.getKey("ArrowRight") && !DanielInput.getKey("ArrowLeft")) {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
