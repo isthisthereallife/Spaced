@@ -18,8 +18,14 @@ class PlayScreen extends PIXI.Container {
 
         this.asteroids = [];
         let music = new Howl({
-            src: ['/res/audio/starchild_sonnet.wav'],
-            autoplay : true,
+            src: ['/res/audio/song2_c123.wav'],
+            autoplay: true,
+            loop: true,
+            volume: 1
+        });
+        this.walkingMusic = new Howl({
+            src: ['/res/audio/song2_c4.wav'],
+            autoplay: true,
             loop: true,
             volume: 1
         });
@@ -28,16 +34,9 @@ class PlayScreen extends PIXI.Container {
             volume: 1
         });
         this.touchdownSound = new Howl({
-            src:['res/audio/touchdown.wav']
+            src: ['res/audio/touchdown.wav']
         });
-         // this sound is nicer, but mixes badly with the bg-music
-         // this.movingSound = new Howl ({ src: ['res/audio/movingMelody.wav'], volume: 1});
 
-        this.movingSound = new Howl({
-            src:['res/audio/movingChugg.wav'],
-            volume: 0.5
-        });
-       
         this.stars = new ParallaxLayers([
             { texture: Assets.get("sheet", "star_0"), n: 20 },
             { texture: Assets.get("sheet", "star_1"), n: 10 },
@@ -471,9 +470,11 @@ class PlayScreen extends PIXI.Container {
         this.addChild(this.player);
 
         this.asteroid = new Asteroid({
-            static: {loop: true, goto: "static", frames: [
-                { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
-            ]}
+            static: {
+                loop: true, goto: "static", frames: [
+                    { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            }
         });
         this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
         this.asteroid.yPos = this.player.y + this.player.height / 2;
@@ -483,9 +484,11 @@ class PlayScreen extends PIXI.Container {
         this.playerAsteroid = this.asteroid;
 
         this.asteroid2 = new Asteroid({
-            static: {loop: true, goto: "static", frames: [
-                { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
-            ]}
+            static: {
+                loop: true, goto: "static", frames: [
+                    { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            }
         });
         this.asteroids.push(this.asteroid2);
         this.addChild(this.asteroid2);
@@ -507,32 +510,29 @@ class PlayScreen extends PIXI.Container {
         */
         this.oxygenMeter.decrementOxygen(0.02);
 
-        if(this.player.grounded) {
-            if(!DanielInput.getKey("ArrowRight") && !DanielInput.getKey("ArrowLeft")) {
+        if (this.player.grounded) {
+            if (!DanielInput.getKey("ArrowRight") && !DanielInput.getKey("ArrowLeft")) {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
             }
             if (DanielInput.getKey("ArrowRight") && DanielInput.getKey("ArrowLeft")) {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
             } else {
                 if (DanielInput.getKey("ArrowRight")) {
-                    if(!this.movingSound.playing()){
-                        this.movingSound.play()
-                        //this.movingSound.fade(0.1,0.5, 1000)
-                    }
+                    this.walkingMusic.mute(false)
+
+
                     this.rotateTheUniverse(0.025);
                     this.player.currentSpritesetID = "walk_right"
                     this.player.last_direction = "right";
                 }
                 else if (DanielInput.getKey("ArrowLeft")) {
-                     if(!this.movingSound.playing()){
-                        this.movingSound.play()
-                        //this.movingSound.fade(0.1,1, 1000)
-                    }
+
+                    this.walkingMusic.mute(false);
                     this.rotateTheUniverse(-0.025);
                     this.player.currentSpritesetID = "walk_left"
                     this.player.last_direction = "left";
-                } else{
-                    this.movingSound.stop();
+                } else {
+                    this.walkingMusic.mute(true);
                 }
             }
             if (DanielInput.getKey("z")) {
