@@ -517,26 +517,30 @@ class PlayScreen extends PIXI.Container {
         this.asteroid = new Asteroid({
             static: {
                 loop: true, goto: "static", frames: [
-                    { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
+                    { texture: Assets.get("sheet", "asteroid_1"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             }
         });
         this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
         this.asteroid.yPos = this.player.y + this.player.height / 2;
-        this.asteroid.updatePosition();
         this.asteroids.push(this.asteroid);
-        this.addChild(this.asteroid);
         this.playerAsteroid = this.asteroid;
 
         this.asteroid2 = new Asteroid({
             static: {
                 loop: true, goto: "static", frames: [
-                    { texture: Assets.get("sheet", "asteroid"), duration: Number.MAX_SAFE_INTEGER }
+                    { texture: Assets.get("sheet", "asteroid_2"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             }
         });
         this.asteroids.push(this.asteroid2);
-        this.addChild(this.asteroid2);
+        this.asteroid2.xPos = -this.asteroid2.width/2;
+        this.asteroid2.yPos = -this.asteroid2.height/2;
+
+        for(let asteroid of this.asteroids) {
+            asteroid.updatePosition();
+            this.addChild(asteroid);
+        }
 
         this.oxygenMeter = new OxygenMeter();
         this.addChild(this.oxygenMeter);
@@ -570,7 +574,7 @@ class PlayScreen extends PIXI.Container {
                     if (DanielInput.getDown("ArrowRight")) {
                         this.walkingMusic.mute(false)
 
-                        this.rotateTheUniverse(0.025);
+                        this.rotateTheUniverse(0.025 / (this.playerAsteroid.collider.r / 20));
                         this.player.currentSpritesetID = "walk_right"
                         this.player.last_direction = "right";
                     }
@@ -578,14 +582,14 @@ class PlayScreen extends PIXI.Container {
                     else if (DanielInput.getDown("ArrowLeft")) {
                         this.walkingMusic.mute(false);
 
-                        this.rotateTheUniverse(-0.025);
+                        this.rotateTheUniverse(-(0.025 / (this.playerAsteroid.collider.r / 20)));
                         this.player.currentSpritesetID = "walk_left"
                         this.player.last_direction = "left";
                     } else {
                         this.walkingMusic.mute(true);
                     }
                 }
-                if (DanielInput.getDown("z")) {
+                if (DanielInput.getClick("z")) {
                     this.walkingMusic.mute(true);
                     this.jumpSound.play()
 
