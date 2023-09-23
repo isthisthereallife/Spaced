@@ -9,23 +9,67 @@ import DanielInput from "../DanielInput.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
 import HitTest from "../HitTest.mjs";
 import OxygenMeter from "../OxygenMeter.mjs";
+import GameObject from "../GameObject.mjs";
 
 class PlayScreen extends PIXI.Container {
+    transitionComplete = false;
 
+    init() {
+        this.transition.switchSpriteset("reveal");
+    }
 
     constructor() {
         super();
 
+        this.transition = new GameObject({
+            reveal: {loop: false, callback: () => {
+                if(!this.transitionComplete) {
+                    this.music.play();
+                    this.walkingMusic.play();
+                    this.transitionComplete=true;
+                }
+            }, frames: [
+              {texture: Assets.get("transition", "transition_0"), duration: 2},
+              {texture: Assets.get("transition", "transition_1"), duration: 2},
+              {texture: Assets.get("transition", "transition_2"), duration: 2},
+              {texture: Assets.get("transition", "transition_3"), duration: 2},
+              {texture: Assets.get("transition", "transition_4"), duration: 2},
+              {texture: Assets.get("transition", "transition_5"), duration: 2},
+              {texture: Assets.get("transition", "transition_6"), duration: 2},
+              {texture: Assets.get("transition", "transition_7"), duration: 2},
+              {texture: Assets.get("transition", "transition_8"), duration: 2},
+              {texture: Assets.get("transition", "transition_9"), duration: 2},
+              {texture: Assets.get("transition", "transition_10"), duration: 2},
+              {texture: Assets.get("transition", "transition_11"), duration: 2},
+              {texture: Assets.get("transition", "transition_12"), duration: 2}
+            ]},
+            conceal: {loop: false, callback: () => Screen.switch("mainMenu"), frames: [
+              {texture: Assets.get("transition", "transition_12"), duration: 2},
+              {texture: Assets.get("transition", "transition_11"), duration: 2},
+              {texture: Assets.get("transition", "transition_10"), duration: 2},
+              {texture: Assets.get("transition", "transition_9"), duration: 2},
+              {texture: Assets.get("transition", "transition_8"), duration: 2},
+              {texture: Assets.get("transition", "transition_7"), duration: 2},
+              {texture: Assets.get("transition", "transition_6"), duration: 2},
+              {texture: Assets.get("transition", "transition_5"), duration: 2},
+              {texture: Assets.get("transition", "transition_4"), duration: 2},
+              {texture: Assets.get("transition", "transition_3"), duration: 2},
+              {texture: Assets.get("transition", "transition_2"), duration: 2},
+              {texture: Assets.get("transition", "transition_1"), duration: 2},
+              {texture: Assets.get("transition", "transition_0"), duration: 2}
+            ]}
+          });
+
         this.asteroids = [];
-        let music = new Howl({
+        this.music = new Howl({
             src: ['/res/audio/song2_c123.wav'],
-            autoplay: true,
+            autoplay: false,
             loop: true,
             volume: 1
         });
         this.walkingMusic = new Howl({
             src: ['/res/audio/song2_c4.wav'],
-            autoplay: true,
+            autoplay: false,
             loop: true,
             volume: 1
         });
@@ -36,6 +80,7 @@ class PlayScreen extends PIXI.Container {
         this.touchdownSound = new Howl({
             src: ['res/audio/touchdown.wav']
         });
+        this.walkingMusic.mute(true);
 
         this.stars = new ParallaxLayers([
             { texture: Assets.get("sheet", "star_0"), n: 20 },
@@ -495,6 +540,8 @@ class PlayScreen extends PIXI.Container {
 
         this.oxygenMeter = new OxygenMeter();
         this.addChild(this.oxygenMeter);
+
+        this.addChild(this.transition);
     }
 
     update() {
@@ -508,75 +555,79 @@ class PlayScreen extends PIXI.Container {
             Input.stop()
         }
         */
-        this.oxygenMeter.decrementOxygen(0.02);
+        this.transition.update();
 
-        if (this.player.grounded) {
-            if (!DanielInput.getDown("ArrowRight") && !DanielInput.getDown("ArrowLeft")) {
-                this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
-            }
-            if (DanielInput.getDown("ArrowRight") && DanielInput.getDown("ArrowLeft")) {
-                this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
-            } else {
-                if (DanielInput.getDown("ArrowRight")) {
-                    this.walkingMusic.mute(false)
+        if(this.transitionComplete) {
+            this.oxygenMeter.decrementOxygen(0.02);
 
-                    this.rotateTheUniverse(0.025);
-                    this.player.currentSpritesetID = "walk_right"
-                    this.player.last_direction = "right";
+            if (this.player.grounded) {
+                if (!DanielInput.getDown("ArrowRight") && !DanielInput.getDown("ArrowLeft")) {
+                    this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 }
-
-                else if (DanielInput.getDown("ArrowLeft")) {
-                    this.walkingMusic.mute(false);
-
-                    this.rotateTheUniverse(-0.025);
-                    this.player.currentSpritesetID = "walk_left"
-                    this.player.last_direction = "left";
+                if (DanielInput.getDown("ArrowRight") && DanielInput.getDown("ArrowLeft")) {
+                    this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 } else {
+                    if (DanielInput.getDown("ArrowRight")) {
+                        this.walkingMusic.mute(false)
+
+                        this.rotateTheUniverse(0.025);
+                        this.player.currentSpritesetID = "walk_right"
+                        this.player.last_direction = "right";
+                    }
+
+                    else if (DanielInput.getDown("ArrowLeft")) {
+                        this.walkingMusic.mute(false);
+
+                        this.rotateTheUniverse(-0.025);
+                        this.player.currentSpritesetID = "walk_left"
+                        this.player.last_direction = "left";
+                    } else {
+                        this.walkingMusic.mute(true);
+                    }
+                }
+                if (DanielInput.getDown("z")) {
                     this.walkingMusic.mute(true);
-                }
-            }
-            if (DanielInput.getDown("z")) {
-                this.walkingMusic.mute(true);
-                this.jumpSound.play()
+                    this.jumpSound.play()
 
-                for (let asteroid of this.asteroids) {
-                    asteroid.move(this.player.rot, 1);
-                }
-                this.player.grounded = false;
-            }
-        } else {
-            this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
-            for (let asteroid of this.asteroids) {
-                asteroid.move(this.player.rot, 0.8);
-                this.stars.move(this.player.rot, 0.040);
-                if (HitTest.circle(this.player.collider, asteroid.collider)) {
-                    this.player.grounded = true;
-                    this.playerAsteroid = asteroid;
-                    let relativeDistance = {
-                        x: (this.playerAsteroid.xPos + this.playerAsteroid.width / 2) - 160 / 2,
-                        y: (this.playerAsteroid.yPos + this.playerAsteroid.height / 2) - 144 / 2
-                    }
-                    let relativeAngle = Math.atan2(relativeDistance.y, relativeDistance.x);
-                    this.player.rot = ((relativeAngle + Math.PI) * (180 / Math.PI) + 180) % 360;
-                    let distance = Math.sqrt(relativeDistance.x * relativeDistance.x + relativeDistance.y * relativeDistance.y);
-                    let direction = {
-                        x: relativeDistance.x / distance,
-                        y: relativeDistance.y / distance
-                    }
-                    let displacement = {
-                        x: direction.x * (this.player.collider.r + this.playerAsteroid.collider.r - distance + .1),
-                        y: direction.y * (this.player.collider.r + this.playerAsteroid.collider.r - distance + .1)
-                    }
                     for (let asteroid of this.asteroids) {
-                        asteroid.xPos += displacement.x;
-                        asteroid.yPos += displacement.y;
+                        asteroid.move(this.player.rot, 1);
+                    }
+                    this.player.grounded = false;
+                }
+            } else {
+                this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
+                for (let asteroid of this.asteroids) {
+                    asteroid.move(this.player.rot, 0.8);
+                    this.stars.move(this.player.rot, 0.040);
+                    if (HitTest.circle(this.player.collider, asteroid.collider)) {
+                        this.player.grounded = true;
+                        this.playerAsteroid = asteroid;
+                        let relativeDistance = {
+                            x: (this.playerAsteroid.xPos + this.playerAsteroid.width / 2) - 160 / 2,
+                            y: (this.playerAsteroid.yPos + this.playerAsteroid.height / 2) - 144 / 2
+                        }
+                        let relativeAngle = Math.atan2(relativeDistance.y, relativeDistance.x);
+                        this.player.rot = ((relativeAngle + Math.PI) * (180 / Math.PI) + 180) % 360;
+                        let distance = Math.sqrt(relativeDistance.x * relativeDistance.x + relativeDistance.y * relativeDistance.y);
+                        let direction = {
+                            x: relativeDistance.x / distance,
+                            y: relativeDistance.y / distance
+                        }
+                        let displacement = {
+                            x: direction.x * (this.player.collider.r + this.playerAsteroid.collider.r - distance + .1),
+                            y: direction.y * (this.player.collider.r + this.playerAsteroid.collider.r - distance + .1)
+                        }
+                        for (let asteroid of this.asteroids) {
+                            asteroid.xPos += displacement.x;
+                            asteroid.yPos += displacement.y;
+                        }
                     }
                 }
             }
-        }
 
-        for (let asteroid of this.asteroids) asteroid.update();
-        this.player.update();
+            for (let asteroid of this.asteroids) asteroid.update();
+            this.player.update();
+        }
     }
 
     rotateTheUniverse(speed) {

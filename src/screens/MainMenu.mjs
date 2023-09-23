@@ -7,8 +7,47 @@ import DanielInput from "../DanielInput.mjs";
 import Screen from "../Screen.mjs";
 
 class MainMenu extends PIXI.Container {
+  transitionComplete = false;
+
+  init() {
+    this.transition.switchSpriteset("reveal");
+  }
+
   constructor() {
     super();
+
+    this.transition = new GameObject({
+      reveal: {loop: false, callback: () => this.transitionComplete=true, frames: [
+        {texture: Assets.get("transition", "transition_0"), duration: 2},
+        {texture: Assets.get("transition", "transition_1"), duration: 2},
+        {texture: Assets.get("transition", "transition_2"), duration: 2},
+        {texture: Assets.get("transition", "transition_3"), duration: 2},
+        {texture: Assets.get("transition", "transition_4"), duration: 2},
+        {texture: Assets.get("transition", "transition_5"), duration: 2},
+        {texture: Assets.get("transition", "transition_6"), duration: 2},
+        {texture: Assets.get("transition", "transition_7"), duration: 2},
+        {texture: Assets.get("transition", "transition_8"), duration: 2},
+        {texture: Assets.get("transition", "transition_9"), duration: 2},
+        {texture: Assets.get("transition", "transition_10"), duration: 2},
+        {texture: Assets.get("transition", "transition_11"), duration: 2},
+        {texture: Assets.get("transition", "transition_12"), duration: 2}
+      ]},
+      conceal: {loop: false, callback: () => Screen.switch("playScreen"), frames: [
+        {texture: Assets.get("transition", "transition_12"), duration: 2},
+        {texture: Assets.get("transition", "transition_11"), duration: 2},
+        {texture: Assets.get("transition", "transition_10"), duration: 2},
+        {texture: Assets.get("transition", "transition_9"), duration: 2},
+        {texture: Assets.get("transition", "transition_8"), duration: 2},
+        {texture: Assets.get("transition", "transition_7"), duration: 2},
+        {texture: Assets.get("transition", "transition_6"), duration: 2},
+        {texture: Assets.get("transition", "transition_5"), duration: 2},
+        {texture: Assets.get("transition", "transition_4"), duration: 2},
+        {texture: Assets.get("transition", "transition_3"), duration: 2},
+        {texture: Assets.get("transition", "transition_2"), duration: 2},
+        {texture: Assets.get("transition", "transition_1"), duration: 2},
+        {texture: Assets.get("transition", "transition_0"), duration: 2}
+      ]}
+    });
 
     this.parallaxLayers = new ParallaxLayers([
       {texture: Assets.get("sheet", "star_0"), n: 20},
@@ -46,20 +85,27 @@ class MainMenu extends PIXI.Container {
     this.addChild(this.spaceship);
     this.spaceship.xPos = (160-this.spaceship.width)/2;
     this.spaceship.yPos = (144-this.spaceship.height)/2;
+    this.spaceship.updatePosition();
 
     this.radians = Math.PI;
     this.bobSpeed = 0.075;
+
+    this.addChild(this.transition);
   }
 
   update() {
-    this.radians -= this.bobSpeed;
-    if(this.radians <= -Math.PI) this.radians = Math.PI;
-    this.spaceship.yPos = (144-this.spaceship.height)/2 + Math.sin(this.radians)*2;
-    this.spaceship.update();
-    this.parallaxLayers.rotateAroundCenterParallax(0.005);
-
-    if(DanielInput.getClick("z")) {
-      Screen.switch("playScreen");
+    this.transition.update();
+    if(this.transitionComplete) {
+      this.radians -= this.bobSpeed;
+      if(this.radians <= -Math.PI) this.radians = Math.PI;
+      this.spaceship.yPos = (144-this.spaceship.height)/2 + Math.sin(this.radians)*2;
+      this.spaceship.update();
+      this.parallaxLayers.rotateAroundCenterParallax(0.005);
+  
+      if(DanielInput.getClick("z")) {
+        this.transitionComplete = false;
+        this.transition.switchSpriteset("conceal");
+      }
     }
   }
 }

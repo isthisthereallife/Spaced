@@ -56,7 +56,14 @@ class GameObject extends PIXI.Sprite {
         if (this.#activeSpriteset.loop) {
           this.#spritesetIndex = 0;
         } else {
-          this.switchSpriteset(this.#activeSpriteset.goto);
+          if("callback" in this.#activeSpriteset) {
+            this.#activeSpriteset.callback();
+          }
+          if("goto" in this.#activeSpriteset) {
+            this.switchSpriteset(this.#activeSpriteset.goto);
+          } else {
+            return;
+          }
         }
       } else {
         this.#spritesetIndex++;

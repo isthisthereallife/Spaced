@@ -26,7 +26,8 @@ document.body.appendChild(app.view);
 
 await Assets.load({
     sheet: "res/spritesheet.json",
-    spaceman: "res/spaceman_spritesheet.json"
+    spaceman: "res/spaceman_spritesheet.json",
+    transition: "res/screen_transition.json"
 });
 Screen.init(app.stage);
 Screen.addScreens({
