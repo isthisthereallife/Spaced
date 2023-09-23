@@ -19,7 +19,7 @@ class PlayScreen extends PIXI.Container {
         this.asteroids = [];
         let music = new Howl({
             src: ['/res/audio/starchild_sonnet.wav'],
-            autoplay : true,
+            autoplay : false,
             loop: true,
             volume: 1
         });
@@ -508,13 +508,13 @@ class PlayScreen extends PIXI.Container {
         this.oxygenMeter.decrementOxygen(0.02);
 
         if(this.player.grounded) {
-            if(!DanielInput.getKey("ArrowRight") && !DanielInput.getKey("ArrowLeft")) {
+            if(!DanielInput.getDown("ArrowRight") && !DanielInput.getDown("ArrowLeft")) {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
             }
-            if (DanielInput.getKey("ArrowRight") && DanielInput.getKey("ArrowLeft")) {
+            if (DanielInput.getDown("ArrowRight") && DanielInput.getDown("ArrowLeft")) {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
             } else {
-                if (DanielInput.getKey("ArrowRight")) {
+                if (DanielInput.getDown("ArrowRight")) {
                     if(!this.movingSound.playing()){
                         this.movingSound.play()
                         //this.movingSound.fade(0.1,0.5, 1000)
@@ -523,7 +523,7 @@ class PlayScreen extends PIXI.Container {
                     this.player.currentSpritesetID = "walk_right"
                     this.player.last_direction = "right";
                 }
-                else if (DanielInput.getKey("ArrowLeft")) {
+                else if (DanielInput.getDown("ArrowLeft")) {
                      if(!this.movingSound.playing()){
                         this.movingSound.play()
                         //this.movingSound.fade(0.1,1, 1000)
@@ -535,7 +535,7 @@ class PlayScreen extends PIXI.Container {
                     this.movingSound.stop();
                 }
             }
-            if (DanielInput.getKey("z")) {
+            if (DanielInput.getDown("z")) {
                 this.jumpSound.play()
 
                 for (let asteroid of this.asteroids) {

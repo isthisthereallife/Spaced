@@ -37,8 +37,6 @@ Input.startListener();
 DanielInput.init();
 
 Screen.switch("mainMenu");
-Screen.switch("playScreen");
-
 
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
