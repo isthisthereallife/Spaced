@@ -28,6 +28,7 @@ class PlayScreen extends PIXI.Container {
         this.deathMusic.stop();
         this.victoryMusic.stop();
         this.walkingMusic.stop();
+        this.music.play();
         this.walkingMusic.play();
         this.walkingMusic.mute(true);
 
@@ -86,8 +87,6 @@ class PlayScreen extends PIXI.Container {
             reveal: {
                 loop: false, callback: () => {
                     if (!this.transitionComplete) {
-                        this.music.play();
-                        this.walkingMusic.play();
                         this.transitionComplete = true;
                     }
                 }, frames: [
