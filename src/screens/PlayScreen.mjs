@@ -77,7 +77,7 @@ class PlayScreen extends PIXI.Container {
             volume: 1
         });
         this.victoryMusic = new Howl({
-            src: ['/res/audio/fly2m00n_v2.wav'],
+            src: ['/res/audio/fly2m00n_v3.wav'],
             autoplay: false,
             loop: true,
             volume: 1
@@ -553,11 +553,11 @@ class PlayScreen extends PIXI.Container {
             }
         });
 
-        this.spaceship.xPos = 0;
-        this.spaceship.yPos = -200;
+        this.spaceship.xPos = Math.random() * 4000 - 2000;
+        this.spaceship.yPos = Math.random() * 4000 - 2000;
         this.spaceship.update();
         this.spaceObjects.push(this.spaceship)
-
+        console.log(this.spaceship.collider)
 
         this.asteroid = new Asteroid({
             static: {
