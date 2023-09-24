@@ -97,7 +97,13 @@ class PlayScreen extends PIXI.Container {
             src: ['/res/audio/jump.wav'],
             volume: 1
         });
-       
+        this.collisionSound = new Howl({
+            src: ['/res/audio/landing.wav'],
+            autoplay: false,
+            loop: false,
+            volume: 1
+        })
+
         this.walkingMusic.mute(true);
 
         this.stars = new ParallaxLayers([
@@ -541,22 +547,12 @@ class PlayScreen extends PIXI.Container {
         });
         this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
         this.asteroid.yPos = this.player.y + this.player.height / 2;
-        this.asteroids.push(this.asteroid);
+        this.asteroid.update();
         this.playerAsteroid = this.asteroid;
 
-        this.asteroid2 = new Asteroid({
-            static: {
-                frames: [
-                    { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
-        });
-        this.asteroids.push(this.asteroid2);
-        this.asteroid2.xPos = -this.asteroid2.width / 2;
-        this.asteroid2.yPos = -this.asteroid2.height / 2;
-
+        this.asteroids.push(this.asteroid);
+        this.generateAsteroids();
         for (let asteroid of this.asteroids) {
-            asteroid.update();
             this.addChild(asteroid);
         }
 
@@ -567,11 +563,11 @@ class PlayScreen extends PIXI.Container {
     }
 
     update() {
-        
+
         this.transition.update();
 
         if (this.transitionComplete) {
-            this.oxygenMeter.decrementOxygen(0.1); // 0.02
+            //this.oxygenMeter.decrementOxygen(0.1); // 0.02
 
             if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
@@ -619,10 +615,11 @@ class PlayScreen extends PIXI.Container {
                 }
             } else {
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
+                this.stars.move(this.player.rot, 0.080);
                 for (let asteroid of this.asteroids) {
                     asteroid.move(this.player.rot, 0.8);
-                    this.stars.move(this.player.rot, 0.040);
                     if (HitTest.circle(this.player.collider, asteroid.collider)) {
+                        this.collisionSound.play()
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
                         let relativeDistance = {
@@ -671,5 +668,41 @@ class PlayScreen extends PIXI.Container {
 
         this.player.rot = ((relativeAngle + Math.PI) * (180 / Math.PI) + 180) % 360;
     }
+
+    generateAsteroids() {
+        let minimumDistance = 50;
+        let safety = 0;
+        for (let i = 0; i < 5000; i++) {
+            let ok = true;
+            //skapa en asteroid
+            let sprite = `asteroid_${Math.round(Math.random() * 2)}`
+            const obj = new Asteroid({
+                static: {
+                    loop: true, goto: "static", frames: [
+                        { texture: Assets.get("sheet", sprite), duration: Number.MAX_SAFE_INTEGER }
+                    ]
+                }
+            });
+            // positionera på en (ledig) plats mellan -1000 och 1000 på både x och y
+            do {
+                ok = true;
+                obj.xPos = Math.random() * 10000 - 5000;
+                obj.yPos = Math.random() * 10000 - 5000;
+
+                obj.update();
+                // kolla med de tidigare asteroiderna om platsen redan är upptagen
+                for (let a of this.asteroids) {
+                    if (HitTest.circle(obj.collider, a.collider, this.player.collider.r * 4)) {
+                        ok = false;
+                        break;
+                    }
+                }
+            } while (!ok)
+
+            this.asteroids.push(obj);
+        }
+       
+    }
+
 
 } export default PlayScreen;
