@@ -614,7 +614,10 @@ class PlayScreen extends PIXI.Container {
                     this.player.grounded = false;
                 }
             } else {
-
+                DanielInput.getClick("z");
+                DanielInput.getClick("Z");
+                DanielInput.getClick("a");
+                DanielInput.getClick("A");
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 this.stars.move(this.player.rot, 0.080);
                 for (let asteroid of this.asteroids) {
