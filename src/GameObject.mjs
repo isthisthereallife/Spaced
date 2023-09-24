@@ -53,6 +53,7 @@ class GameObject extends PIXI.Sprite {
     if (this.frameDuration > 0) this.frameDuration--;
     else {
       if (this.#spritesetIndex == this.#activeSpriteset.frames.length - 1) {
+        if(!("callback" in this.#activeSpriteset) && !("goto" in this.#activeSpriteset)) return;
         if (this.#activeSpriteset.loop) {
           this.#spritesetIndex = 0;
         } else {
@@ -61,8 +62,6 @@ class GameObject extends PIXI.Sprite {
           }
           if("goto" in this.#activeSpriteset) {
             this.switchSpriteset(this.#activeSpriteset.goto);
-          } else {
-            return;
           }
         }
       } else {

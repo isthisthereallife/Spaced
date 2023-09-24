@@ -1,12 +1,11 @@
 import * as PIXI from "pixi.js";
-import Assets from "../Assets.mjs";
+import DanielInput from "../DanielInput.mjs";
 import GameObject from "../GameObject.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
-import Spaceship from "../Spaceship.mjs";
-import DanielInput from "../DanielInput.mjs";
+import Assets from "../Assets.mjs";
 import ScreenController from "../ScreenController.mjs";
 
-class MainMenu extends PIXI.Container {
+class LoseScreen extends PIXI.Container {
   transitionComplete = false;
 
   init() {
@@ -32,7 +31,7 @@ class MainMenu extends PIXI.Container {
         {texture: Assets.get("transition", "transition_11"), duration: 2},
         {texture: Assets.get("transition", "transition_12"), duration: 2}
       ]},
-      conceal: {loop: false, callback: () => ScreenController.switch("playScreen"), frames: [
+      conceal: {loop: false, callback: () => ScreenController.switch("mainMenu"), frames: [
         {texture: Assets.get("transition", "transition_12"), duration: 2},
         {texture: Assets.get("transition", "transition_11"), duration: 2},
         {texture: Assets.get("transition", "transition_10"), duration: 2},
@@ -58,8 +57,8 @@ class MainMenu extends PIXI.Container {
     this.addChild(this.parallaxLayers);
 
     this.logo = new GameObject({
-      static: {loop: true, frames: [
-        {texture: Assets.get("sheet", "title"), duration: Number.MAX_SAFE_INTEGER}
+      static: {frames: [
+        {texture: Assets.get("sheet", "gameover"), duration: Number.MAX_SAFE_INTEGER}
       ]}
     });
     this.addChild(this.logo);
@@ -68,8 +67,8 @@ class MainMenu extends PIXI.Container {
     this.logo.updatePosition();
 
     this.aPrompt = new GameObject({
-      static: {loop: true, frames: [
-        {texture: Assets.get("sheet", "a_prompt_start"), duration: Number.MAX_SAFE_INTEGER}
+      static: {loop: false, frames: [
+        {texture: Assets.get("sheet", "a_prompt_continue"), duration: Number.MAX_SAFE_INTEGER}
       ]}
     });
     this.addChild(this.aPrompt);
@@ -77,18 +76,15 @@ class MainMenu extends PIXI.Container {
     this.aPrompt.yPos = 144-16-this.aPrompt.height;
     this.aPrompt.updatePosition();
 
-    this.spaceship = new Spaceship({
-      static: {loop: true, frames: [
-        {texture: Assets.get("sheet", "spaceship"), duration: Number.MAX_SAFE_INTEGER}
+    this.helmet = new GameObject({
+      static: {loop: false, frames: [
+        {texture: Assets.get("sheet", "helmet"), duration: Number.MAX_SAFE_INTEGER}
       ]}
     });
-    this.addChild(this.spaceship);
-    this.spaceship.xPos = (160-this.spaceship.width)/2;
-    this.spaceship.yPos = (144-this.spaceship.height)/2;
-    this.spaceship.updatePosition();
-
-    this.radians = Math.PI;
-    this.bobSpeed = 0.075;
+    this.addChild(this.helmet);
+    this.helmet.xPos = (160-this.helmet.width)/2;
+    this.helmet.yPos = (144-this.helmet.height)/2;
+    this.helmet.updatePosition();
 
     this.addChild(this.transition);
   }
@@ -96,12 +92,7 @@ class MainMenu extends PIXI.Container {
   update() {
     this.transition.update();
     if(this.transitionComplete) {
-      this.radians -= this.bobSpeed;
-      if(this.radians <= -Math.PI) this.radians = Math.PI;
-      this.spaceship.yPos = (144-this.spaceship.height)/2 + Math.sin(this.radians)*2;
-      this.spaceship.update();
-      this.parallaxLayers.rotateAroundCenterParallax(0.005);
-  
+      this.parallaxLayers.move(0, 0.040);
       if(DanielInput.getClick("z")) {
         this.transitionComplete = false;
         this.transition.switchSpriteset("conceal");
@@ -110,4 +101,4 @@ class MainMenu extends PIXI.Container {
   }
 }
 
-export default MainMenu;
+export default LoseScreen;

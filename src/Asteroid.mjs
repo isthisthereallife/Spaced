@@ -1,5 +1,4 @@
 import GameObject from "./GameObject.mjs";
-import Input from "./Input.mjs";
 
 class Asteroid extends GameObject {
     collider;

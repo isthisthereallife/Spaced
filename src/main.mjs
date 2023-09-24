@@ -1,10 +1,11 @@
 import * as PIXI from "pixi.js";
 import Assets from "./Assets.mjs";
 import Input from "./Input.mjs";
-import Screen from "./Screen.mjs";
+import ScreenController from "./ScreenController.mjs";
 import MainMenu from "./screens/MainMenu.mjs";
 import PlayScreen from "./screens/PlayScreen.mjs";
 import DanielInput from "./DanielInput.mjs";
+import LoseScreen from "./screens/LoseScreen.mjs";
 
 console.log("pixi version:", PIXI.VERSION);
 
@@ -29,17 +30,18 @@ await Assets.load({
     spaceman: "res/spaceman_spritesheet.json",
     transition: "res/screen_transition.json"
 });
-Screen.init(app.stage);
-Screen.addScreens({
+ScreenController.init(app.stage);
+ScreenController.addScreens({
     mainMenu: new MainMenu(),
-    playScreen: new PlayScreen()
+    playScreen: new PlayScreen(),
+    loseScreen: new LoseScreen()
 });
-Input.startListener();
+//Input.startListener();
 DanielInput.init();
 
-Screen.switch("mainMenu");
+ScreenController.switch("mainMenu");
 
 PIXI.Ticker.shared.maxFPS = 60;
 PIXI.Ticker.shared.add(ts => {
-    Screen.updateScreen();
+    ScreenController.updateScreen();
 });

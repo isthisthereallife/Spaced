@@ -10,11 +10,14 @@ import ParallaxLayers from "../ParallaxLayers.mjs";
 import HitTest from "../HitTest.mjs";
 import OxygenMeter from "../OxygenMeter.mjs";
 import GameObject from "../GameObject.mjs";
+import ScreenController from "../ScreenController.mjs";
 
 class PlayScreen extends PIXI.Container {
     transitionComplete = false;
 
     init() {
+        this.oxygenMeter.currentOxygen = this.oxygenMeter.maxOxygen;
+        this.oxygenMeter.updateOxygenScale();
         this.transition.switchSpriteset("reveal");
     }
 
@@ -43,7 +46,7 @@ class PlayScreen extends PIXI.Container {
               {texture: Assets.get("transition", "transition_11"), duration: 2},
               {texture: Assets.get("transition", "transition_12"), duration: 2}
             ]},
-            conceal: {loop: false, callback: () => Screen.switch("mainMenu"), frames: [
+            conceal: {loop: false, callback: () => ScreenController.switch("loseScreen"), frames: [
               {texture: Assets.get("transition", "transition_12"), duration: 2},
               {texture: Assets.get("transition", "transition_11"), duration: 2},
               {texture: Assets.get("transition", "transition_10"), duration: 2},
@@ -516,7 +519,7 @@ class PlayScreen extends PIXI.Container {
 
         this.asteroid = new Asteroid({
             static: {
-                loop: true, goto: "static", frames: [
+                frames: [
                     { texture: Assets.get("sheet", "asteroid_1"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             }
@@ -528,8 +531,8 @@ class PlayScreen extends PIXI.Container {
 
         this.asteroid2 = new Asteroid({
             static: {
-                loop: true, goto: "static", frames: [
-                    { texture: Assets.get("sheet", "asteroid_2"), duration: Number.MAX_SAFE_INTEGER }
+                frames: [
+                    { texture: Assets.get("sheet", "asteroid_0"), duration: Number.MAX_SAFE_INTEGER }
                 ]
             }
         });
@@ -538,7 +541,7 @@ class PlayScreen extends PIXI.Container {
         this.asteroid2.yPos = -this.asteroid2.height/2;
 
         for(let asteroid of this.asteroids) {
-            asteroid.updatePosition();
+            asteroid.update();
             this.addChild(asteroid);
         }
 
@@ -562,7 +565,14 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if(this.transitionComplete) {
-            this.oxygenMeter.decrementOxygen(0.02);
+            this.oxygenMeter.decrementOxygen(0.1); // 0.02
+
+            if(this.oxygenMeter.currentOxygen == 0) {
+                this.music.stop();
+                this.walkingMusic.stop();
+                this.transitionComplete = false;
+                this.transition.switchSpriteset("conceal");
+            }
 
             if (this.player.grounded) {
                 if (!DanielInput.getDown("ArrowRight") && !DanielInput.getDown("ArrowLeft")) {

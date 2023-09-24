@@ -1,4 +1,4 @@
-class Screen {
+class ScreenController {
   static #stage;
   static #screens;
 
@@ -21,4 +21,4 @@ class Screen {
   }
 }
 
-export default Screen;
+export default ScreenController;
