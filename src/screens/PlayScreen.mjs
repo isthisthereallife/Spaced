@@ -40,7 +40,7 @@ class PlayScreen extends PIXI.Container {
         this.startingAsteroid = new Asteroid({
             static: {
                 frames: [
-                    { texture: Assets.get("sheet", `asteroid_${Math.round(Math.random()*2)}`), duration: Number.MAX_SAFE_INTEGER }
+                    { texture: Assets.get("sheet", `asteroid_${Math.round(Math.random() * 2)}`), duration: Number.MAX_SAFE_INTEGER }
                 ]
             }
         });
@@ -59,10 +59,10 @@ class PlayScreen extends PIXI.Container {
         });
         this.spaceship.xPos = Math.random() * 4000 - 2000;
         this.spaceship.yPos = Math.random() * 4000 - 2000;
-        this.spaceshipLastPos = this.spaceship.collider;
+        this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
         console.log(this.spaceshipLastPos)
         this.spaceship.update();
-        
+
         this.spaceObjects.push(this.spaceship)
 
         this.generateAsteroids();
@@ -601,7 +601,7 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if (this.transitionComplete) {
-            this.oxygenMeter.decrementOxygen(0.02); // 0.02
+            //this.oxygenMeter.decrementOxygen(0.02); // 0.02
 
             if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
@@ -641,6 +641,7 @@ class PlayScreen extends PIXI.Container {
                 if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
                     this.walkingMusic.mute(true);
                     this.jumpSound.play()
+                    
 
                     for (let asteroid of this.spaceObjects) {
                         asteroid.move(this.player.rot, 1);
@@ -660,11 +661,20 @@ class PlayScreen extends PIXI.Container {
                         this.collisionSound.play()
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
+
                         if (this.playerAsteroid == this.spaceship) {
                             this.music.stop();
                             this.victoryMusic.play();
                             // goto win screen
+                        } else {
+                            if (HitTest.distanceTo(this.player.collider, this.spaceship.collider) < HitTest.distanceTo(this.player.collider, this.spaceshipLastPos)) {
+                                console.log("närmre")
+                            } else {
+                                console.log("längre bort")
+                            }
+                            this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
                         }
+
                         let relativeDistance = {
                             x: (this.playerAsteroid.xPos + this.playerAsteroid.width / 2) - 160 / 2,
                             y: (this.playerAsteroid.yPos + this.playerAsteroid.height / 2) - 144 / 2
@@ -728,8 +738,8 @@ class PlayScreen extends PIXI.Container {
             // positionera på en (ledig) plats mellan -1000 och 1000 på både x och y
             do {
                 ok = true;
-                obj.xPos = Math.random() * fieldSize - fieldSize/2;
-                obj.yPos = Math.random() * fieldSize - fieldSize/2;
+                obj.xPos = Math.random() * fieldSize - fieldSize / 2;
+                obj.yPos = Math.random() * fieldSize - fieldSize / 2;
 
                 obj.update();
                 // kolla med de tidigare asteroiderna om platsen redan är upptagen
