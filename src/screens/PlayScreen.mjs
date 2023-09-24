@@ -25,47 +25,63 @@ class PlayScreen extends PIXI.Container {
         super();
 
         this.transition = new GameObject({
-            reveal: {loop: false, callback: () => {
-                if(!this.transitionComplete) {
-                    this.music.play();
-                    this.walkingMusic.play();
-                    this.transitionComplete=true;
-                }
-            }, frames: [
-              {texture: Assets.get("transition", "transition_0"), duration: 2},
-              {texture: Assets.get("transition", "transition_1"), duration: 2},
-              {texture: Assets.get("transition", "transition_2"), duration: 2},
-              {texture: Assets.get("transition", "transition_3"), duration: 2},
-              {texture: Assets.get("transition", "transition_4"), duration: 2},
-              {texture: Assets.get("transition", "transition_5"), duration: 2},
-              {texture: Assets.get("transition", "transition_6"), duration: 2},
-              {texture: Assets.get("transition", "transition_7"), duration: 2},
-              {texture: Assets.get("transition", "transition_8"), duration: 2},
-              {texture: Assets.get("transition", "transition_9"), duration: 2},
-              {texture: Assets.get("transition", "transition_10"), duration: 2},
-              {texture: Assets.get("transition", "transition_11"), duration: 2},
-              {texture: Assets.get("transition", "transition_12"), duration: 2}
-            ]},
-            conceal: {loop: false, callback: () => ScreenController.switch("loseScreen"), frames: [
-              {texture: Assets.get("transition", "transition_12"), duration: 2},
-              {texture: Assets.get("transition", "transition_11"), duration: 2},
-              {texture: Assets.get("transition", "transition_10"), duration: 2},
-              {texture: Assets.get("transition", "transition_9"), duration: 2},
-              {texture: Assets.get("transition", "transition_8"), duration: 2},
-              {texture: Assets.get("transition", "transition_7"), duration: 2},
-              {texture: Assets.get("transition", "transition_6"), duration: 2},
-              {texture: Assets.get("transition", "transition_5"), duration: 2},
-              {texture: Assets.get("transition", "transition_4"), duration: 2},
-              {texture: Assets.get("transition", "transition_3"), duration: 2},
-              {texture: Assets.get("transition", "transition_2"), duration: 2},
-              {texture: Assets.get("transition", "transition_1"), duration: 2},
-              {texture: Assets.get("transition", "transition_0"), duration: 2}
-            ]}
-          });
+            reveal: {
+                loop: false, callback: () => {
+                    if (!this.transitionComplete) {
+                        this.music.play();
+                        this.walkingMusic.play();
+                        this.transitionComplete = true;
+                    }
+                }, frames: [
+                    { texture: Assets.get("transition", "transition_0"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_1"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_2"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_3"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_4"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_5"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_6"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_7"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_8"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_9"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_10"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_11"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_12"), duration: 2 }
+                ]
+            },
+            conceal: {
+                loop: false, callback: () => ScreenController.switch("loseScreen"), frames: [
+                    { texture: Assets.get("transition", "transition_12"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_11"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_10"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_9"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_8"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_7"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_6"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_5"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_4"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_3"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_2"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_1"), duration: 2 },
+                    { texture: Assets.get("transition", "transition_0"), duration: 2 }
+                ]
+            }
+        });
 
         this.asteroids = [];
         this.music = new Howl({
             src: ['/res/audio/song2_c123.wav'],
+            autoplay: false,
+            loop: true,
+            volume: 1
+        });
+        this.deathTwirl = new Howl({
+            src: ['/res/audio/death_twirl.wav'],
+            autoplay: false,
+            loop: false,
+            volume: 1
+        });
+        this.deathMusic = new Howl({
+            src: ['/res/audio/deathComesForUsAll.wav'],
             autoplay: false,
             loop: true,
             volume: 1
@@ -537,10 +553,10 @@ class PlayScreen extends PIXI.Container {
             }
         });
         this.asteroids.push(this.asteroid2);
-        this.asteroid2.xPos = -this.asteroid2.width/2;
-        this.asteroid2.yPos = -this.asteroid2.height/2;
+        this.asteroid2.xPos = -this.asteroid2.width / 2;
+        this.asteroid2.yPos = -this.asteroid2.height / 2;
 
-        for(let asteroid of this.asteroids) {
+        for (let asteroid of this.asteroids) {
             asteroid.update();
             this.addChild(asteroid);
         }
@@ -564,12 +580,15 @@ class PlayScreen extends PIXI.Container {
         */
         this.transition.update();
 
-        if(this.transitionComplete) {
+        if (this.transitionComplete) {
             this.oxygenMeter.decrementOxygen(0.1); // 0.02
 
-            if(this.oxygenMeter.currentOxygen == 0) {
+            if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
                 this.walkingMusic.stop();
+                this.deathTwirl.play();
+                this.deathTwirl.on("end", () => this.deathMusic.play());
+
                 this.transitionComplete = false;
                 this.transition.switchSpriteset("conceal");
             }
