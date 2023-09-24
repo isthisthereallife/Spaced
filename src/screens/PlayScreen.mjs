@@ -567,7 +567,7 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if (this.transitionComplete) {
-            //this.oxygenMeter.decrementOxygen(0.1); // 0.02
+            this.oxygenMeter.decrementOxygen(0.01); // 0.02
 
             if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
@@ -604,7 +604,7 @@ class PlayScreen extends PIXI.Container {
                         this.walkingMusic.mute(true);
                     }
                 }
-                if (DanielInput.getClick("z") || DanielInput.getClick("a")) {
+                if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
                     this.walkingMusic.mute(true);
                     this.jumpSound.play()
 
@@ -614,6 +614,7 @@ class PlayScreen extends PIXI.Container {
                     this.player.grounded = false;
                 }
             } else {
+
                 this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 this.stars.move(this.player.rot, 0.080);
                 for (let asteroid of this.asteroids) {
@@ -701,7 +702,7 @@ class PlayScreen extends PIXI.Container {
 
             this.asteroids.push(obj);
         }
-       
+
     }
 
 
