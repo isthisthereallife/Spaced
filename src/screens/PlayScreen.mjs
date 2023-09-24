@@ -14,6 +14,7 @@ import ScreenController from "../ScreenController.mjs";
 import Spaceship from "../Spaceship.mjs";
 
 class PlayScreen extends PIXI.Container {
+    win = false;
     transitionComplete = false;
 
     init() {
@@ -45,7 +46,7 @@ class PlayScreen extends PIXI.Container {
             }
         });
         this.startingAsteroid.xPos = (gameSettings.width - this.startingAsteroid.width) / 2;
-        this.startingAsteroid.yPos = this.player.y + this.player.height / 2 + 32;
+        this.startingAsteroid.yPos = this.player.y + this.player.height / 2 + 28;
         this.startingAsteroid.update();
         this.playerAsteroid = this.startingAsteroid;
         this.spaceObjects.push(this.startingAsteroid);
@@ -100,7 +101,10 @@ class PlayScreen extends PIXI.Container {
                 ]
             },
             conceal: {
-                loop: false, callback: () => ScreenController.switch("loseScreen"), frames: [
+                loop: false, callback: () => {
+                        if(this.win) ScreenController.switch("winScreen");
+                        else if(!this.win) ScreenController.switch("loseScreen");
+                    }, frames: [
                     { texture: Assets.get("transition", "transition_12"), duration: 2 },
                     { texture: Assets.get("transition", "transition_11"), duration: 2 },
                     { texture: Assets.get("transition", "transition_10"), duration: 2 },
@@ -598,7 +602,7 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if (this.transitionComplete) {
-            this.oxygenMeter.decrementOxygen(0.1); // 0.02
+            this.oxygenMeter.decrementOxygen(0.02); // 0.02
 
             if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
@@ -607,6 +611,7 @@ class PlayScreen extends PIXI.Container {
                 this.deathTwirl.on("end", () => this.deathMusic.play());
 
                 this.transitionComplete = false;
+                this.win = false;
                 this.transition.switchSpriteset("conceal");
             }
 
@@ -660,7 +665,9 @@ class PlayScreen extends PIXI.Container {
                         if (this.playerAsteroid == this.spaceship) {
                             this.music.stop();
                             this.victoryMusic.play();
-                            // goto win screen
+                            this.transitionComplete = false;
+                            this.win = true;
+                            this.transition.switchSpriteset("conceal");
                         }
                         let relativeDistance = {
                             x: (this.playerAsteroid.xPos + this.playerAsteroid.width / 2) - 160 / 2,

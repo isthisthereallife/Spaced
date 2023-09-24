@@ -6,6 +6,7 @@ import MainMenu from "./screens/MainMenu.mjs";
 import PlayScreen from "./screens/PlayScreen.mjs";
 import DanielInput from "./DanielInput.mjs";
 import LoseScreen from "./screens/LoseScreen.mjs";
+import WinScreen from "./screens/WinScreen.mjs";
 
 console.log("pixi version:", PIXI.VERSION);
 
@@ -34,7 +35,8 @@ ScreenController.init(app.stage);
 ScreenController.addScreens({
     mainMenu: new MainMenu(),
     playScreen: new PlayScreen(),
-    loseScreen: new LoseScreen()
+    loseScreen: new LoseScreen(),
+    winScreen: new WinScreen()
 });
 //Input.startListener();
 DanielInput.init();

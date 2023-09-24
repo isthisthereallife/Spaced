@@ -1,6 +1,6 @@
 { "frames": {
    "star_3": {
-    "frame": { "x": 256, "y": 30, "w": 5, "h": 5 },
+    "frame": { "x": 256, "y": 55, "w": 5, "h": 5 },
     "rotated": false,
     "trimmed": true,
     
@@ -32,7 +32,7 @@
     "duration": 100
    },
    "asteroid_1": {
-    "frame": { "x": 152, "y": 55, "w": 40, "h": 40 },
+    "frame": { "x": 152, "y": 76, "w": 40, "h": 40 },
     "rotated": false,
     "trimmed": true,
     
@@ -40,7 +40,7 @@
     "duration": 100
    },
    "asteroid_0": {
-    "frame": { "x": 95, "y": 79, "w": 18, "h": 18 },
+    "frame": { "x": 109, "y": 79, "w": 18, "h": 18 },
     "rotated": false,
     "trimmed": true,
     
@@ -72,7 +72,7 @@
     "duration": 100
    },
    "oxygen_meter": {
-    "frame": { "x": 250, "y": 67, "w": 14, "h": 46 },
+    "frame": { "x": 95, "y": 79, "w": 14, "h": 46 },
     "rotated": false,
     "trimmed": true,
     
@@ -88,7 +88,15 @@
     "duration": 100
    },
    "a_prompt_start": {
-    "frame": { "x": 192, "y": 67, "w": 58, "h": 12 },
+    "frame": { "x": 192, "y": 88, "w": 58, "h": 12 },
+    "rotated": false,
+    "trimmed": true,
+    
+    
+    "duration": 100
+   },
+   "win": {
+    "frame": { "x": 152, "y": 34, "w": 117, "h": 21 },
     "rotated": false,
     "trimmed": true,
     
@@ -96,7 +104,7 @@
     "duration": 100
    },
    "a_prompt_continue": {
-    "frame": { "x": 192, "y": 55, "w": 80, "h": 12 },
+    "frame": { "x": 192, "y": 76, "w": 80, "h": 12 },
     "rotated": false,
     "trimmed": true,
     
@@ -112,7 +120,7 @@
     "duration": 100
    },
    "gameover": {
-    "frame": { "x": 152, "y": 34, "w": 104, "h": 21 },
+    "frame": { "x": 152, "y": 55, "w": 104, "h": 21 },
     "rotated": false,
     "trimmed": true,
     
@@ -133,7 +141,7 @@
   "version": "1.3-rc6-x64",
   "image": "spritesheet.png",
   "format": "RGBA8888",
-  "size": { "w": 282, "h": 113 },
+  "size": { "w": 282, "h": 125 },
   "scale": "1"
  }
 }
