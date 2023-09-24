@@ -7,10 +7,15 @@ class Spaceship extends GameObject {
     super(spriteset);
 
     this.collider = {
-      x: this.width/2,
-      y: this.height/2,
-      r: 15
+      x: this.width / 2,
+      y: this.height / 2,
+      r: 20
     }
+  }
+  update() {
+    super.update()
+    this.collider.x = this.xPos+ this.width/2;
+    this.collider.y = this.yPos+ this.height/2;
   }
 }
 
