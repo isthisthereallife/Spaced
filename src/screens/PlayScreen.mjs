@@ -17,10 +17,60 @@ class PlayScreen extends PIXI.Container {
     transitionComplete = false;
 
     init() {
+        this.removeChildren();
+
+        this.addChild(this.stars);
+
         this.oxygenMeter.currentOxygen = this.oxygenMeter.maxOxygen;
         this.oxygenMeter.updateOxygenScale();
         this.transition.switchSpriteset("reveal");
-        this.deathMusic.stop()
+        this.deathMusic.stop();
+        this.victoryMusic.stop();
+        this.walkingMusic.stop();
+        this.walkingMusic.play();
+        this.walkingMusic.mute(true);
+
+        this.player.rot = 90;
+        this.player.updateSpriteRotation();
+        this.addChild(this.player);
+
+        this.spaceObjects = [];
+
+        this.startingAsteroid = new Asteroid({
+            static: {
+                frames: [
+                    { texture: Assets.get("sheet", `asteroid_${Math.round(Math.random()*2)}`), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            }
+        });
+        this.startingAsteroid.xPos = (gameSettings.width - this.startingAsteroid.width) / 2;
+        this.startingAsteroid.yPos = this.player.y + this.player.height / 2;
+        this.startingAsteroid.update();
+        this.playerAsteroid = this.startingAsteroid;
+        this.spaceObjects.push(this.startingAsteroid);
+
+        this.generateAsteroids();
+
+        this.spaceship = new Spaceship({
+            static: {
+                frames: [
+                    { texture: Assets.get("sheet", "spaceship"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            }
+        });
+        this.spaceship.xPos = 0;
+        this.spaceship.yPos = -200;
+        this.spaceship.update();
+        this.spaceObjects.push(this.spaceship)
+
+        this.generateAsteroids();
+        for (let asteroid of this.spaceObjects) {
+            this.addChild(asteroid);
+        }
+
+        this.addChild(this.oxygenMeter);
+
+        this.addChild(this.transition);
     }
 
     constructor() {
@@ -111,15 +161,12 @@ class PlayScreen extends PIXI.Container {
             volume: 1
         })
 
-        this.walkingMusic.mute(true);
-
         this.stars = new ParallaxLayers([
             { texture: Assets.get("sheet", "star_0"), n: 20 },
             { texture: Assets.get("sheet", "star_1"), n: 10 },
             { texture: Assets.get("sheet", "star_2"), n: 6 },
             { texture: Assets.get("sheet", "star_3"), n: 2 }
         ]);
-        this.addChild(this.stars);
 
         this.player = new Player({
             idle_right_0: {
@@ -543,44 +590,8 @@ class PlayScreen extends PIXI.Container {
         this.player.xPos = (gameSettings.width - this.player.width) / 2;
         this.player.yPos = (gameSettings.height - this.player.height) / 2;
         this.player.updatePosition();
-        this.addChild(this.player);
-
-        this.spaceship = new Spaceship({
-            static: {
-                frames: [
-                    { texture: Assets.get("sheet", "spaceship"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
-        });
-
-        this.spaceship.xPos = 0;
-        this.spaceship.yPos = -200;
-        this.spaceship.update();
-        this.spaceObjects.push(this.spaceship)
-
-
-        this.asteroid = new Asteroid({
-            static: {
-                frames: [
-                    { texture: Assets.get("sheet", "asteroid_1"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
-        });
-        this.asteroid.xPos = (gameSettings.width - this.asteroid.width) / 2;
-        this.asteroid.yPos = this.player.y + this.player.height / 2;
-        this.asteroid.update();
-        this.playerAsteroid = this.asteroid;
-
-        this.spaceObjects.push(this.asteroid);
-        this.generateAsteroids();
-        for (let asteroid of this.spaceObjects) {
-            this.addChild(asteroid);
-        }
 
         this.oxygenMeter = new OxygenMeter();
-        this.addChild(this.oxygenMeter);
-
-        this.addChild(this.transition);
     }
 
     update() {
@@ -650,7 +661,7 @@ class PlayScreen extends PIXI.Container {
                         if (this.playerAsteroid == this.spaceship) {
                             this.music.stop();
                             this.victoryMusic.play();
-                            window.alert("WIN");
+                            // goto win screen
                         }
                         let relativeDistance = {
                             x: (this.playerAsteroid.xPos + this.playerAsteroid.width / 2) - 160 / 2,
@@ -700,9 +711,8 @@ class PlayScreen extends PIXI.Container {
     }
 
     generateAsteroids() {
-        let minimumDistance = 50;
-        let safety = 0;
-        for (let i = 0; i < 5000; i++) {
+        let fieldSize = 10000;
+        for (let i = 0; i < 200; i++) {
             let ok = true;
             //skapa en asteroid
             let sprite = `asteroid_${Math.round(Math.random() * 2)}`
@@ -716,8 +726,8 @@ class PlayScreen extends PIXI.Container {
             // positionera på en (ledig) plats mellan -1000 och 1000 på både x och y
             do {
                 ok = true;
-                obj.xPos = Math.random() * 10000 - 5000;
-                obj.yPos = Math.random() * 10000 - 5000;
+                obj.xPos = Math.random() * fieldSize - fieldSize/2;
+                obj.yPos = Math.random() * fieldSize - fieldSize/2;
 
                 obj.update();
                 // kolla med de tidigare asteroiderna om platsen redan är upptagen
