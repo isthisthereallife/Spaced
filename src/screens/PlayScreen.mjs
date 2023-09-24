@@ -57,9 +57,12 @@ class PlayScreen extends PIXI.Container {
                 ]
             }
         });
-        this.spaceship.xPos = 0;
-        this.spaceship.yPos = -200;
+        this.spaceship.xPos = Math.random() * 4000 - 2000;
+        this.spaceship.yPos = Math.random() * 4000 - 2000;
+        this.spaceshipLastPos = this.spaceship.collider;
+        console.log(this.spaceshipLastPos)
         this.spaceship.update();
+        
         this.spaceObjects.push(this.spaceship)
 
         this.generateAsteroids();
@@ -598,7 +601,7 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if (this.transitionComplete) {
-            this.oxygenMeter.decrementOxygen(0.1); // 0.02
+            this.oxygenMeter.decrementOxygen(0.02); // 0.02
 
             if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
