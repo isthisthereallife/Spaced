@@ -30,7 +30,8 @@ class PlayScreen extends PIXI.Container {
         this.walkingMusic.play();
         this.walkingMusic.mute(true);
 
-        this.player.rot = 90;
+        this.player.grounded = false;
+        this.player.rot = 270;
         this.player.updateSpriteRotation();
         this.addChild(this.player);
 
@@ -44,12 +45,10 @@ class PlayScreen extends PIXI.Container {
             }
         });
         this.startingAsteroid.xPos = (gameSettings.width - this.startingAsteroid.width) / 2;
-        this.startingAsteroid.yPos = this.player.y + this.player.height / 2;
+        this.startingAsteroid.yPos = this.player.y + this.player.height / 2 + 32;
         this.startingAsteroid.update();
         this.playerAsteroid = this.startingAsteroid;
         this.spaceObjects.push(this.startingAsteroid);
-
-        this.generateAsteroids();
 
         this.spaceship = new Spaceship({
             static: {
@@ -127,7 +126,7 @@ class PlayScreen extends PIXI.Container {
             volume: 1
         });
         this.victoryMusic = new Howl({
-            src: ['/res/audio/fly2m00n.wav'],
+            src: ['/res/audio/fly2m00n_v3.wav'],
             autoplay: false,
             loop: true,
             volume: 1
@@ -599,7 +598,7 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if (this.transitionComplete) {
-            this.oxygenMeter.decrementOxygen(0.01); // 0.02
+            this.oxygenMeter.decrementOxygen(0.1); // 0.02
 
             if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
@@ -712,7 +711,7 @@ class PlayScreen extends PIXI.Container {
 
     generateAsteroids() {
         let fieldSize = 10000;
-        for (let i = 0; i < 200; i++) {
+        for (let i = 0; i < 5000; i++) {
             let ok = true;
             //skapa en asteroid
             let sprite = `asteroid_${Math.round(Math.random() * 2)}`
@@ -741,7 +740,7 @@ class PlayScreen extends PIXI.Container {
 
             this.spaceObjects.push(obj);
         }
-
+        console.log("generate complete");
     }
 
 
