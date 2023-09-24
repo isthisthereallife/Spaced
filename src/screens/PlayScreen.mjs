@@ -58,13 +58,14 @@ class PlayScreen extends PIXI.Container {
                 ]
             }
         });
-        this.spaceship.xPos = Math.random() * 4000 - 2000;
-        this.spaceship.yPos = Math.random() * 4000 - 2000;
-        this.spaceshipLastPos = this.spaceship.collider;
-        console.log(this.spaceshipLastPos)
+        let angleToCenter = Math.random()*2*Math.PI-Math.PI;
+        let distanceToCenter = 2500;
+        this.spaceship.xPos = (gameSettings.width/2) + Math.cos(angleToCenter) * distanceToCenter;
+        this.spaceship.yPos = (gameSettings.height/2) + Math.sin(angleToCenter) * distanceToCenter;
         this.spaceship.update();
+        console.log(this.spaceship.x, this.spaceship.y);
         
-        this.spaceObjects.push(this.spaceship)
+        this.spaceObjects.push(this.spaceship);
 
         this.generateAsteroids();
         for (let asteroid of this.spaceObjects) {
@@ -605,7 +606,7 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if (this.transitionComplete) {
-            this.oxygenMeter.decrementOxygen(0.02); // 0.02
+            //this.oxygenMeter.decrementOxygen(0.02); // 0.02
 
             if (this.oxygenMeter.currentOxygen == 0) {
                 this.music.stop();
@@ -662,6 +663,7 @@ class PlayScreen extends PIXI.Container {
                 for (let asteroid of this.spaceObjects) {
                     asteroid.move(this.player.rot, 0.8);
                     if (HitTest.circle(this.player.collider, asteroid.collider)) {
+                        console.log(this.spaceship.x, this.spaceship.y);
                         this.collisionSound.play()
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
