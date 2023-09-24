@@ -77,7 +77,7 @@ class PlayScreen extends PIXI.Container {
             volume: 1
         });
         this.victoryMusic = new Howl({
-            src: ['/res/audio/fly2m00n.wav'],
+            src: ['/res/audio/fly2m00n_v2.wav'],
             autoplay: false,
             loop: true,
             volume: 1
