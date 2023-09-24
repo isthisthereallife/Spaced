@@ -58,24 +58,16 @@ class PlayScreen extends PIXI.Container {
                 ]
             }
         });
-<<<<<<< HEAD
         let angleToCenter = Math.random()*2*Math.PI-Math.PI;
         let distanceToCenter = 2500;
         this.spaceship.xPos = (gameSettings.width/2) + Math.cos(angleToCenter) * distanceToCenter;
         this.spaceship.yPos = (gameSettings.height/2) + Math.sin(angleToCenter) * distanceToCenter;
         this.spaceship.update();
         console.log(this.spaceship.x, this.spaceship.y);
-        
         this.spaceObjects.push(this.spaceship);
-=======
-        this.spaceship.xPos = Math.random() * 4000 - 2000;
-        this.spaceship.yPos = Math.random() * 4000 - 2000;
-        this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
-        console.log(this.spaceshipLastPos)
-        this.spaceship.update();
 
-        this.spaceObjects.push(this.spaceship)
->>>>>>> 1a0fd84d34841e9c5065d5a24be6ed69990b36b8
+        this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
+        console.log(this.spaceshipLastPos);
 
         this.generateAsteroids();
         for (let asteroid of this.spaceObjects) {
@@ -657,7 +649,6 @@ class PlayScreen extends PIXI.Container {
                 if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
                     this.walkingMusic.mute(true);
                     this.jumpSound.play()
-                    
 
                     for (let asteroid of this.spaceObjects) {
                         asteroid.move(this.player.rot, 1);
@@ -678,7 +669,6 @@ class PlayScreen extends PIXI.Container {
                         this.collisionSound.play()
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
-
                         if (this.playerAsteroid == this.spaceship) {
                             this.music.stop();
                             this.victoryMusic.play();
