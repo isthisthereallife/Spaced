@@ -19,6 +19,7 @@ class PlayScreen extends PIXI.Container {
         this.oxygenMeter.currentOxygen = this.oxygenMeter.maxOxygen;
         this.oxygenMeter.updateOxygenScale();
         this.transition.switchSpriteset("reveal");
+        this.deathMusic.stop()
     }
 
     constructor() {
@@ -78,13 +79,13 @@ class PlayScreen extends PIXI.Container {
             src: ['/res/audio/death_twirl.wav'],
             autoplay: false,
             loop: false,
-            volume: 1
+            volume: 0.7
         });
         this.deathMusic = new Howl({
             src: ['/res/audio/deathComesForUsAll.wav'],
             autoplay: false,
             loop: true,
-            volume: 1
+            volume: 0.7
         });
         this.walkingMusic = new Howl({
             src: ['/res/audio/song2_c4.wav'],
@@ -96,9 +97,7 @@ class PlayScreen extends PIXI.Container {
             src: ['/res/audio/jump.wav'],
             volume: 1
         });
-        this.touchdownSound = new Howl({
-            src: ['res/audio/touchdown.wav']
-        });
+       
         this.walkingMusic.mute(true);
 
         this.stars = new ParallaxLayers([
@@ -568,16 +567,7 @@ class PlayScreen extends PIXI.Container {
     }
 
     update() {
-        /*
-        if (Input.getInput("left")){
-            this.rotateTheUniverse(1)
-            Input.stop()
-        }
-        if(Input.getInput("right")){
-            this.rotateTheUniverse(-1)
-            Input.stop()
-        }
-        */
+        
         this.transition.update();
 
         if (this.transitionComplete) {
