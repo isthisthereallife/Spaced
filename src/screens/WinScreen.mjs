@@ -63,7 +63,7 @@ class WinScreen extends PIXI.Container {
     this.logo = new GameObject({
       static: {
         frames: [
-          { texture: Assets.get("sheet", "gameover"), duration: Number.MAX_SAFE_INTEGER }
+          { texture: Assets.get("sheet", "win"), duration: Number.MAX_SAFE_INTEGER }
         ]
       }
     });
