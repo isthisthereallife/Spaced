@@ -102,7 +102,7 @@ class MainMenu extends PIXI.Container {
       this.spaceship.update();
       this.parallaxLayers.rotateAroundCenterParallax(0.005);
   
-      if(DanielInput.getClick("z")) {
+      if(DanielInput.getClick("z") || DanielInput.getClick("a")) {
         this.transitionComplete = false;
         this.transition.switchSpriteset("conceal");
       }

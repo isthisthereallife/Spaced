@@ -604,7 +604,7 @@ class PlayScreen extends PIXI.Container {
                         this.walkingMusic.mute(true);
                     }
                 }
-                if (DanielInput.getClick("z")) {
+                if (DanielInput.getClick("z") || DanielInput.getClick("a")) {
                     this.walkingMusic.mute(true);
                     this.jumpSound.play()
 
