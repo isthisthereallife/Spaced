@@ -1,6 +1,6 @@
 class ScreenController {
   static #stage;
-  static #screens;
+  static #screens = {};
 
   static init(stage) {
     this.#stage = stage;
@@ -8,6 +8,11 @@ class ScreenController {
 
   static addScreens(screens) {
     this.#screens = screens;
+  }
+  static addScreen(id, screen) {
+    if (!(id in this.#screens)) {
+      this.#screens[id] = screen
+    }
   }
 
   static switch(id) {

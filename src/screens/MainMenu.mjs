@@ -113,6 +113,7 @@ class MainMenu extends PIXI.Container {
       this.parallaxLayers.rotateAroundCenterParallax(0.005);
 
       if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
+        ScreenController.addScreen("playScreen", new PlayScreen());
         this.transitionComplete = false;
         this.transition.switchSpriteset("conceal");
       }

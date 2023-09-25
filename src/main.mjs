@@ -34,7 +34,6 @@ await Assets.load({
 ScreenController.init(app.stage);
 ScreenController.addScreens({
     mainMenu: new MainMenu(),
-    playScreen: new PlayScreen(),
     loseScreen: new LoseScreen(),
     winScreen: new WinScreen()
 });
