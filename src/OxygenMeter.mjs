@@ -3,8 +3,8 @@ import GameObject from "./GameObject.mjs";
 import * as PIXI from "pixi.js";
 
 class OxygenMeter extends PIXI.Container {
-  maxOxygen = 44;
-  currentOxygen = 44;
+  static maxOxygen = 44;
+  static currentOxygen = 44;
 
   constructor(spriteset) {
     super(spriteset);
@@ -36,19 +36,23 @@ class OxygenMeter extends PIXI.Container {
   }
 
   decrementOxygen(value) {
-    if(this.currentOxygen - value >= 0) this.currentOxygen -= value;
-    else this.currentOxygen = 0;
+    if(OxygenMeter.currentOxygen - value >= 0) OxygenMeter.currentOxygen -= value;
+    else OxygenMeter.currentOxygen = 0;
     this.updateOxygenScale();
   }
 
   incrementOxygen(value) {
-    if(this.currentOxygen + value <= this.maxOxygen) this.currentOxygen += value;
-    else this.currentOxygen = this.maxOxygen;
+    if(OxygenMeter.currentOxygen + value <= OxygenMeter.maxOxygen) OxygenMeter.currentOxygen += value;
+    else OxygenMeter.currentOxygen = OxygenMeter.maxOxygen;
     this.updateOxygenScale();
   }
 
   updateOxygenScale() {
-    this.oxygen.scale.y = 1/this.maxOxygen * Math.round(this.currentOxygen);
+    this.oxygen.scale.y = 1/OxygenMeter.maxOxygen * Math.round(OxygenMeter.currentOxygen);
+  }
+
+  static getOxygenPercentage() {
+    return Math.ceil((OxygenMeter.currentOxygen / OxygenMeter.maxOxygen)*100);
   }
 }
 

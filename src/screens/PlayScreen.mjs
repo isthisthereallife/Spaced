@@ -22,7 +22,7 @@ class PlayScreen extends PIXI.Container {
 
         this.addChild(this.stars);
 
-        this.oxygenMeter.currentOxygen = this.oxygenMeter.maxOxygen;
+        OxygenMeter.currentOxygen = OxygenMeter.maxOxygen;
         this.oxygenMeter.updateOxygenScale();
         this.transition.switchSpriteset("reveal");
         this.deathMusic.stop();
@@ -59,15 +59,13 @@ class PlayScreen extends PIXI.Container {
             }
         });
         let angleToCenter = Math.random()*2*Math.PI-Math.PI;
-        let distanceToCenter = 2500;
+        let distanceToCenter = 1600;
         this.spaceship.xPos = (gameSettings.width/2) + Math.cos(angleToCenter) * distanceToCenter;
         this.spaceship.yPos = (gameSettings.height/2) + Math.sin(angleToCenter) * distanceToCenter;
         this.spaceship.update();
-        console.log(this.spaceship.x, this.spaceship.y);
         this.spaceObjects.push(this.spaceship);
 
         this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
-        console.log(this.spaceshipLastPos);
 
         this.generateAsteroids();
         for (let asteroid of this.spaceObjects) {
@@ -75,6 +73,7 @@ class PlayScreen extends PIXI.Container {
         }
 
         this.addChild(this.oxygenMeter);
+        this.addChild(this.radar);
 
         this.addChild(this.transition);
     }
@@ -601,6 +600,16 @@ class PlayScreen extends PIXI.Container {
         this.player.updatePosition();
 
         this.oxygenMeter = new OxygenMeter();
+        this.radar = new GameObject({
+            closer: {
+                frames: [{texture: Assets.get("sheet", "radar_1"), duration: Number.MAX_SAFE_INTEGER}]
+            }, 
+            further: {
+                frames: [{texture: Assets.get("sheet", "radar_0"), duration: Number.MAX_SAFE_INTEGER}]
+            }
+        });
+        this.radar.xPos = 160-this.radar.width;
+        this.radar.update();
     }
 
     update() {
@@ -608,9 +617,9 @@ class PlayScreen extends PIXI.Container {
         this.transition.update();
 
         if (this.transitionComplete) {
-            //this.oxygenMeter.decrementOxygen(0.02); // 0.02
+            this.oxygenMeter.decrementOxygen(0.005);
 
-            if (this.oxygenMeter.currentOxygen == 0) {
+            if (OxygenMeter.currentOxygen == 0) {
                 this.music.stop();
                 this.walkingMusic.stop();
                 this.deathTwirl.play();
@@ -665,7 +674,6 @@ class PlayScreen extends PIXI.Container {
                 for (let asteroid of this.spaceObjects) {
                     asteroid.move(this.player.rot, 0.8);
                     if (HitTest.circle(this.player.collider, asteroid.collider)) {
-                        console.log(this.spaceship.x, this.spaceship.y);
                         this.collisionSound.play()
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
@@ -678,9 +686,9 @@ class PlayScreen extends PIXI.Container {
                             // goto win screen
                         } else {
                             if (HitTest.distanceTo(this.player.collider, this.spaceship.collider) < HitTest.distanceTo(this.player.collider, this.spaceshipLastPos)) {
-                                console.log("närmre")
+                                this.radar.switchSpriteset("closer");
                             } else {
-                                console.log("längre bort")
+                                this.radar.switchSpriteset("further");
                             }
                             this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
                         }
@@ -763,7 +771,6 @@ class PlayScreen extends PIXI.Container {
 
             this.spaceObjects.push(obj);
         }
-        console.log("generate complete");
     }
 
 
