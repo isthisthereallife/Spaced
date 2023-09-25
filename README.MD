@@ -1,15 +1,3 @@
-# 🚀 Welcome to your new awesome project!
+This is a game.
 
-This project has been created using **webpack-cli**, you can now run
-
-```
-npm run build
-```
-
-or
-
-```
-yarn build
-```
-
-to bundle your application
+Made by https://github.com/dafali9012 & https://github.com/isthisthereallife
