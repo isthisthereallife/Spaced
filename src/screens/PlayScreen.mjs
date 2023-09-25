@@ -128,41 +128,41 @@ class PlayScreen extends PIXI.Container {
 
         this.spaceObjects = [];
         this.music = new Howl({
-            src: ['/res/audio/song2_c123.wav'],
+            src: ['/Spaced/res/audio/song2_c123.wav'],
             autoplay: false,
             loop: true,
             volume: 1
         });
         this.victoryMusic = new Howl({
-            src: ['/res/audio/fly2m00n_v3.wav'],
+            src: ['/Spaced/res/audio/fly2m00n_v3.wav'],
             autoplay: false,
             loop: true,
             volume: 1
         });
         this.deathTwirl = new Howl({
-            src: ['/res/audio/death_twirl.wav'],
+            src: ['/Spaced/res/audio/death_twirl.wav'],
             autoplay: false,
             loop: false,
             volume: 0.7
         });
         this.deathMusic = new Howl({
-            src: ['/res/audio/deathComesForUsAll.wav'],
+            src: ['/Spaced/res/audio/deathComesForUsAll.wav'],
             autoplay: false,
             loop: true,
             volume: 0.7
         });
         this.walkingMusic = new Howl({
-            src: ['/res/audio/song2_c4.wav'],
+            src: ['/Spaced/res/audio/song2_c4.wav'],
             autoplay: false,
             loop: true,
             volume: 1
         });
         this.jumpSound = new Howl({
-            src: ['/res/audio/jump.wav'],
+            src: ['/Spaced/res/audio/jump.wav'],
             volume: 1
         });
         this.collisionSound = new Howl({
-            src: ['/res/audio/landing.wav'],
+            src: ['/Spaced/res/audio/landing.wav'],
             autoplay: false,
             loop: false,
             volume: 1
