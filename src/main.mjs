@@ -19,7 +19,7 @@ export const gameSettings = {
 const app = new PIXI.Application({
     width: gameSettings.width,
     height: gameSettings.height,
-    resolution: Math.round(window.innerHeight * 0.6 / gameSettings.height),
+    resolution: Math.round((window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight) * 0.6 / gameSettings.height),
     backgroundColor: 0x213555
 });
 

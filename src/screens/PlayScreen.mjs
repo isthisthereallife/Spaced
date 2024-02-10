@@ -36,6 +36,10 @@ class PlayScreen extends PIXI.Container {
         this.player.rot = 270;
         this.player.updateSpriteRotation();
         this.addChild(this.player);
+        this.addChild(this.aButton);
+        this.addChild(this.arrowLeft);
+        this.addChild(this.arrowRight);
+
 
         this.spaceObjects = [];
 
@@ -59,10 +63,10 @@ class PlayScreen extends PIXI.Container {
                 ]
             }
         });
-        let angleToCenter = Math.random()*2*Math.PI-Math.PI;
+        let angleToCenter = Math.random() * 2 * Math.PI - Math.PI;
         let distanceToCenter = 1600;
-        this.spaceship.xPos = (gameSettings.width/2) + Math.cos(angleToCenter) * distanceToCenter;
-        this.spaceship.yPos = (gameSettings.height/2) + Math.sin(angleToCenter) * distanceToCenter;
+        this.spaceship.xPos = (gameSettings.width / 2) + Math.cos(angleToCenter) * distanceToCenter;
+        this.spaceship.yPos = (gameSettings.height / 2) + Math.sin(angleToCenter) * distanceToCenter;
         this.spaceship.update();
         this.spaceObjects.push(this.spaceship);
 
@@ -106,9 +110,9 @@ class PlayScreen extends PIXI.Container {
             },
             conceal: {
                 loop: false, callback: () => {
-                        if(this.win) ScreenController.switch("winScreen");
-                        else if(!this.win) ScreenController.switch("loseScreen");
-                    }, frames: [
+                    if (this.win) ScreenController.switch("winScreen");
+                    else if (!this.win) ScreenController.switch("loseScreen");
+                }, frames: [
                     { texture: Assets.get("transition", "transition_12"), duration: 2 },
                     { texture: Assets.get("transition", "transition_11"), duration: 2 },
                     { texture: Assets.get("transition", "transition_10"), duration: 2 },
@@ -601,14 +605,56 @@ class PlayScreen extends PIXI.Container {
         this.oxygenMeter = new OxygenMeter();
         this.radar = new GameObject({
             closer: {
-                frames: [{texture: Assets.get("sheet", "radar_1"), duration: Number.MAX_SAFE_INTEGER}]
-            }, 
+                frames: [{ texture: Assets.get("sheet", "radar_1"), duration: Number.MAX_SAFE_INTEGER }]
+            },
             further: {
-                frames: [{texture: Assets.get("sheet", "radar_0"), duration: Number.MAX_SAFE_INTEGER}]
+                frames: [{ texture: Assets.get("sheet", "radar_0"), duration: Number.MAX_SAFE_INTEGER }]
             }
         });
-        this.radar.xPos = 160-this.radar.width;
+        this.radar.xPos = 160 - this.radar.width;
         this.radar.update();
+
+
+        this.aButton = new GameObject({
+            static: {
+                loop: true, frames: [
+                    { texture: Assets.get("sheet", "a_button"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            }
+        });
+        this.aButton.anchor.set(0.5,0.5);
+        this.aButton.scale.set(1.5,1.5);
+        this.aButton.xPos = gameSettings.width - 15;//(160 - this.aButton.width) / 2;
+        this.aButton.yPos = gameSettings.height - 15;//144 - 16 - this.aButton.height;
+        this.aButton.updatePosition();
+
+        this.arrowLeft = new GameObject({
+            static: {
+                loop: true, frames: [
+                    { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            }
+        })
+        this.arrowLeft.angle = 315;
+        this.arrowLeft.xPos = 15;
+        this.arrowLeft.yPos = gameSettings.height-15;
+        this.arrowLeft.anchor.set(0.5,0.5);
+        this.arrowLeft.scale.set(2,2);
+        this.arrowLeft.updatePosition();
+
+        this.arrowRight = new GameObject({
+            static: {
+                loop: true, frames: [
+                    { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
+                ]
+            }
+        })
+        this.arrowRight.angle = 135;
+        this.arrowRight.xPos = 35;
+        this.arrowRight.yPos = gameSettings.height-15;
+        this.arrowRight.anchor.set(0.5,0.5);
+        this.arrowRight.scale.set(2,2);
+        this.arrowRight.updatePosition();
     }
 
     update() {

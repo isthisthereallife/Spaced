@@ -13,3 +13,9 @@ body {
 canvas{
     border:64px ridge #880000;
 }
+@media screen and (orientation : portrait){
+
+    canvas {
+        border: 32px ridge rgb(23, 48, 91);
+    }
+}
