@@ -90,10 +90,6 @@ class MainMenu extends PIXI.Container {
 
     this.aPrompt.on('touchstart', (event) => {
       gameSettings.touch = true;
-      console.log("globalPos: ", this.aPrompt.getGlobalPosition())
-      console.log("localbounds:", this.aPrompt.getLocalBounds())
-      console.log("bounds: ", this.aPrompt.getBounds())
-      console.log("touch= ", gameSettings.touch)
       this.goToPlayScreen();
     });
     this.aPrompt.eventMode = 'static';
