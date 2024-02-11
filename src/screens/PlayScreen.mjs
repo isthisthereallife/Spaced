@@ -666,7 +666,7 @@ class PlayScreen extends PIXI.Container {
             })
 
             this.arrowLeft.on("touchend", () => {
-´                DanielInput.keyRelease("ArrowLeft");
+               DanielInput.keyRelease("ArrowLeft");
 
             });
             this.arrowLeft.on("touchcancel", () => {
