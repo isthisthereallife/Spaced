@@ -83,6 +83,13 @@ class LoseScreen extends PIXI.Container {
     this.aPrompt.xPos = (160 - this.aPrompt.width) / 2;
     this.aPrompt.yPos = 144 - 16 - this.aPrompt.height;
     this.aPrompt.updatePosition();
+    this.aPrompt.eventMode = "static";
+    this.aPrompt.on('touchstart', () => {
+      console.log("globalPos: ", this.aPrompt.getGlobalPosition())
+      console.log("localbounds:", this.aPrompt.getLocalBounds())
+      console.log("bounds: ", this.aPrompt.getBounds())
+      this.goToMainMenu();
+    });
 
     this.helmet = new GameObject({
       static: {
@@ -104,10 +111,13 @@ class LoseScreen extends PIXI.Container {
     if (this.transitionComplete) {
       this.parallaxLayers.move(0, 0.040);
       if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
-        this.transitionComplete = false;
-        this.transition.switchSpriteset("conceal");
+        this.goToMainMenu()
       }
     }
+  }
+  goToMainMenu() {
+    this.transitionComplete = false;
+    this.transition.switchSpriteset("conceal");
   }
 }
 

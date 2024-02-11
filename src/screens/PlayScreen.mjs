@@ -639,14 +639,6 @@ class PlayScreen extends PIXI.Container {
                 DanielInput.keyPress("a")
             })
 
-            this.aButton.on("touchend", () => {
-                DanielInput.keyRelease("a");
-
-            });
-            this.aButton.on("touchcancel", () => {
-                DanielInput.keyRelease("a");
-            });
-
             this.arrowLeft = new GameObject({
                 static: {
                     loop: true, frames: [
@@ -664,15 +656,6 @@ class PlayScreen extends PIXI.Container {
             this.arrowLeft.on('touchstart', () => {
                 DanielInput.keyPress("ArrowLeft")
             })
-
-            this.arrowLeft.on("touchend", () => {
-               DanielInput.keyRelease("ArrowLeft");
-
-            });
-            this.arrowLeft.on("touchcancel", () => {
-                DanielInput.keyRelease("ArrowLeft");
-            });
-
 
 
             this.arrowRight = new GameObject({
@@ -692,16 +675,18 @@ class PlayScreen extends PIXI.Container {
             this.arrowRight.on('touchstart', () => {
                 DanielInput.keyPress("ArrowRight");
             })
-
-            this.arrowRight.on("touchend", () => {
+            
+            document.addEventListener("touchend", () => {
+                DanielInput.keyRelease("a");
+                DanielInput.keyRelease("ArrowLeft");
                 DanielInput.keyRelease("ArrowRight");
 
             });
-            this.arrowRight.on("touchcancel", () => {
+            document.addEventListener("touchcancel", () => {
+                DanielInput.keyRelease("a");
+                DanielInput.keyRelease("ArrowLeft");
                 DanielInput.keyRelease("ArrowRight");
             });
-
-
         }
     }
 
