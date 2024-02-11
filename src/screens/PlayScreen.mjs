@@ -36,9 +36,6 @@ class PlayScreen extends PIXI.Container {
         this.player.rot = 270;
         this.player.updateSpriteRotation();
         this.addChild(this.player);
-        this.addChild(this.aButton);
-        this.addChild(this.arrowLeft);
-        this.addChild(this.arrowRight);
 
 
         this.spaceObjects = [];
@@ -79,6 +76,12 @@ class PlayScreen extends PIXI.Container {
 
         this.addChild(this.oxygenMeter);
         this.addChild(this.radar);
+
+        if (gameSettings.touch) {
+            this.addChild(this.aButton);
+            this.addChild(this.arrowLeft);
+            this.addChild(this.arrowRight);
+        }
 
         this.addChild(this.transition);
     }
@@ -614,47 +617,92 @@ class PlayScreen extends PIXI.Container {
         this.radar.xPos = 160 - this.radar.width;
         this.radar.update();
 
+        if (gameSettings.touch) {
+            console.log("touchy!");
+            this.aButton = new GameObject({
+                static: {
+                    loop: true, frames: [
+                        { texture: Assets.get("sheet", "a_button"), duration: Number.MAX_SAFE_INTEGER }
+                    ]
+                }
+            });
+            this.aButton.anchor.set(0.5, 0.5);
+            this.aButton.scale.set(1.5, 1.5);
+            this.aButton.xPos = gameSettings.width - 15;//(160 - this.aButton.width) / 2;
+            this.aButton.yPos = gameSettings.height - 15;//144 - 16 - this.aButton.height;
 
-        this.aButton = new GameObject({
-            static: {
-                loop: true, frames: [
-                    { texture: Assets.get("sheet", "a_button"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
-        });
-        this.aButton.anchor.set(0.5,0.5);
-        this.aButton.scale.set(1.5,1.5);
-        this.aButton.xPos = gameSettings.width - 15;//(160 - this.aButton.width) / 2;
-        this.aButton.yPos = gameSettings.height - 15;//144 - 16 - this.aButton.height;
-        this.aButton.updatePosition();
+            this.aButton.eventMode = 'static';
 
-        this.arrowLeft = new GameObject({
-            static: {
-                loop: true, frames: [
-                    { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
-        })
-        this.arrowLeft.angle = 315;
-        this.arrowLeft.xPos = 15;
-        this.arrowLeft.yPos = gameSettings.height-15;
-        this.arrowLeft.anchor.set(0.5,0.5);
-        this.arrowLeft.scale.set(2,2);
-        this.arrowLeft.updatePosition();
+            this.aButton.updatePosition();
 
-        this.arrowRight = new GameObject({
-            static: {
-                loop: true, frames: [
-                    { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
-                ]
-            }
-        })
-        this.arrowRight.angle = 135;
-        this.arrowRight.xPos = 35;
-        this.arrowRight.yPos = gameSettings.height-15;
-        this.arrowRight.anchor.set(0.5,0.5);
-        this.arrowRight.scale.set(2,2);
-        this.arrowRight.updatePosition();
+            this.aButton.on('touchstart', () => {
+                DanielInput.keyPress("a")
+            })
+
+            this.aButton.on("touchend", () => {
+                DanielInput.keyRelease("a");
+
+            });
+            this.aButton.on("touchcancel", () => {
+                DanielInput.keyRelease("a");
+            });
+
+            this.arrowLeft = new GameObject({
+                static: {
+                    loop: true, frames: [
+                        { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
+                    ]
+                }
+            })
+            this.arrowLeft.angle = 315;
+            this.arrowLeft.xPos = 15;
+            this.arrowLeft.yPos = gameSettings.height - 15;
+            this.arrowLeft.anchor.set(0.5, 0.5);
+            this.arrowLeft.scale.set(2, 2);
+            this.arrowLeft.updatePosition();
+            this.arrowLeft.eventMode = "static";
+            this.arrowLeft.on('touchstart', () => {
+                DanielInput.keyPress("ArrowLeft")
+            })
+
+            this.arrowLeft.on("touchend", () => {
+´                DanielInput.keyRelease("ArrowLeft");
+
+            });
+            this.arrowLeft.on("touchcancel", () => {
+                DanielInput.keyRelease("ArrowLeft");
+            });
+
+
+
+            this.arrowRight = new GameObject({
+                static: {
+                    loop: true, frames: [
+                        { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
+                    ]
+                }
+            })
+            this.arrowRight.angle = 135;
+            this.arrowRight.xPos = 35;
+            this.arrowRight.yPos = gameSettings.height - 15;
+            this.arrowRight.anchor.set(0.5, 0.5);
+            this.arrowRight.scale.set(2, 2);
+            this.arrowRight.updatePosition();
+            this.arrowRight.eventMode = "static";
+            this.arrowRight.on('touchstart', () => {
+                DanielInput.keyPress("ArrowRight");
+            })
+
+            this.arrowRight.on("touchend", () => {
+                DanielInput.keyRelease("ArrowRight");
+
+            });
+            this.arrowRight.on("touchcancel", () => {
+                DanielInput.keyRelease("ArrowRight");
+            });
+
+
+        }
     }
 
     update() {

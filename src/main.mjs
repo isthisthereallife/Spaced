@@ -13,7 +13,8 @@ PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
 export const gameSettings = {
     width: 160,
-    height: 144
+    height: 144,
+    touch: false
 };
 
 const app = new PIXI.Application({

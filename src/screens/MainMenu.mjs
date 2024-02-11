@@ -6,6 +6,7 @@ import Spaceship from "../Spaceship.mjs";
 import DanielInput from "../DanielInput.mjs";
 import ScreenController from "../ScreenController.mjs";
 import PlayScreen from "./PlayScreen.mjs";
+import { gameSettings } from "../main.mjs";
 
 class MainMenu extends PIXI.Container {
   transitionComplete = false;
@@ -82,9 +83,20 @@ class MainMenu extends PIXI.Container {
       }
     });
     this.addChild(this.aPrompt);
+    //this.aPrompt.anchor.set(0.5,0.5)
     this.aPrompt.xPos = (160 - this.aPrompt.width) / 2;
     this.aPrompt.yPos = 144 - 16 - this.aPrompt.height;
     this.aPrompt.updatePosition();
+
+    this.aPrompt.on('touchstart', (event) => {
+      gameSettings.touch = true;
+      console.log("globalPos: ", this.aPrompt.getGlobalPosition())
+      console.log("localbounds:", this.aPrompt.getLocalBounds())
+      console.log("bounds: ", this.aPrompt.getBounds())
+      console.log("touch= ", gameSettings.touch)
+      this.goToPlayScreen();
+    });
+    this.aPrompt.eventMode = 'static';
 
     this.spaceship = new Spaceship({
       static: {
@@ -114,11 +126,14 @@ class MainMenu extends PIXI.Container {
       this.parallaxLayers.rotateAroundCenterParallax(0.005);
 
       if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
-        ScreenController.addScreen("playScreen", new PlayScreen());
-        this.transitionComplete = false;
-        this.transition.switchSpriteset("conceal");
+        this.goToPlayScreen();
       }
     }
+  }
+  goToPlayScreen() {
+    ScreenController.addScreen("playScreen", new PlayScreen());
+    this.transitionComplete = false;
+    this.transition.switchSpriteset("conceal");
   }
 }
 
