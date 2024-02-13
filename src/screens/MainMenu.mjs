@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 import Assets from "../Assets.mjs";
 import GameObject from "../GameObject.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
@@ -8,7 +8,7 @@ import ScreenController from "../ScreenController.mjs";
 import PlayScreen from "./PlayScreen.mjs";
 import { gameSettings, sounds } from "../main.mjs";
 
-class MainMenu extends PIXI.Container {
+class MainMenu extends Container {
   transitionComplete = false;
 
   init() {

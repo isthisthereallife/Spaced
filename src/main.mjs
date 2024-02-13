@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Application, BaseTexture, Ticker, VERSION, SCALE_MODES  }from "pixi.js";
 import Assets from "./Assets.mjs";
 import * as Howler from 'howler';
 import ScreenController from "./ScreenController.mjs";
@@ -7,9 +7,9 @@ import DanielInput from "./DanielInput.mjs";
 import LoseScreen from "./screens/LoseScreen.mjs";
 import WinScreen from "./screens/WinScreen.mjs";
 
-console.log("pixi version:", PIXI.VERSION);
+console.log("pixi version:", VERSION);
 
-PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
+BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
 
 export const gameSettings = {
     width: 160,
@@ -59,7 +59,7 @@ export const sounds = {
     })
 }
 
-const app = new PIXI.Application({
+const app = new Application({
     width: gameSettings.width,
     height: gameSettings.height,
     resolution: Math.round((window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight) * 0.6 / gameSettings.height),
@@ -83,7 +83,7 @@ DanielInput.init();
 
 ScreenController.switch("mainMenu");
 
-PIXI.Ticker.shared.maxFPS = 60;
-PIXI.Ticker.shared.add(ts => {
+Ticker.shared.maxFPS = 60;
+Ticker.shared.add(ts => {
     ScreenController.updateScreen();
 });
