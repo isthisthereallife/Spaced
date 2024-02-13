@@ -1,10 +1,8 @@
 import * as PIXI from "pixi.js";
-import * as Howler from 'howler';
 import Player from "../Player.mjs";
-import { gameSettings } from "../main.mjs"
+import { gameSettings, sounds } from "../main.mjs"
 import Assets from "../Assets.mjs";
 import Asteroid from "../Asteroid.mjs";
-import Input from "../Input.mjs";
 import DanielInput from "../DanielInput.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
 import HitTest from "../HitTest.mjs";
@@ -25,12 +23,12 @@ class PlayScreen extends PIXI.Container {
         OxygenMeter.currentOxygen = OxygenMeter.maxOxygen;
         this.oxygenMeter.updateOxygenScale();
         this.transition.switchSpriteset("reveal");
-        this.deathMusic.stop();
-        this.victoryMusic.stop();
-        this.walkingMusic.stop();
-        this.music.play();
-        this.walkingMusic.play();
-        this.walkingMusic.mute(true);
+        sounds.deathMusic.stop();
+        sounds.victoryMusic.stop();
+        sounds.walkingMusic.stop();
+        sounds.music.play();
+        sounds.walkingMusic.play();
+        sounds.walkingMusic.mute(true);
 
         this.player.grounded = false;
         this.player.rot = 270;
@@ -134,46 +132,7 @@ class PlayScreen extends PIXI.Container {
         });
 
         this.spaceObjects = [];
-        this.music = new Howl({
-            src: ['./res/audio/song2_c123.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 1
-        });
-        this.victoryMusic = new Howl({
-            src: ['./res/audio/fly2m00n_v3.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 1
-        });
-        this.deathTwirl = new Howl({
-            src: ['./res/audio/death_twirl.wav'],
-            autoplay: false,
-            loop: false,
-            volume: 0.7
-        });
-        this.deathMusic = new Howl({
-            src: ['./res/audio/deathComesForUsAll.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 0.7
-        });
-        this.walkingMusic = new Howl({
-            src: ['./res/audio/song2_c4.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 1
-        });
-        this.jumpSound = new Howl({
-            src: ['./res/audio/jump.wav'],
-            volume: 1
-        });
-        this.collisionSound = new Howl({
-            src: ['./res/audio/landing.wav'],
-            autoplay: false,
-            loop: false,
-            volume: 1
-        })
+
 
         this.stars = new ParallaxLayers([
             { texture: Assets.get("sheet", "star_0"), n: 20 },
@@ -618,7 +577,6 @@ class PlayScreen extends PIXI.Container {
         this.radar.update();
 
         if (gameSettings.touch) {
-            console.log("touchy!");
             this.aButton = new GameObject({
                 static: {
                     loop: true, frames: [
@@ -675,7 +633,7 @@ class PlayScreen extends PIXI.Container {
             this.arrowRight.on('touchstart', () => {
                 DanielInput.keyPress("ArrowRight");
             })
-            
+
             document.addEventListener("touchend", () => {
                 DanielInput.keyRelease("a");
                 DanielInput.keyRelease("ArrowLeft");
@@ -698,10 +656,10 @@ class PlayScreen extends PIXI.Container {
             this.oxygenMeter.decrementOxygen(0.005);
 
             if (OxygenMeter.currentOxygen == 0) {
-                this.music.stop();
-                this.walkingMusic.stop();
-                this.deathTwirl.play();
-                this.deathTwirl.on("end", () => this.deathMusic.play());
+                sounds.music.stop();
+                sounds.walkingMusic.stop();
+                sounds.deathTwirl.play();
+                sounds.deathTwirl.on("end", () => sounds.deathMusic.play());
 
                 this.transitionComplete = false;
                 this.win = false;
@@ -716,7 +674,7 @@ class PlayScreen extends PIXI.Container {
                     this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 } else {
                     if (DanielInput.getDown("ArrowRight")) {
-                        this.walkingMusic.mute(false)
+                        sounds.walkingMusic.mute(false)
 
                         this.rotateTheUniverse(0.025 / (this.playerAsteroid.collider.r / 20));
                         this.player.currentSpritesetID = "walk_right"
@@ -724,18 +682,18 @@ class PlayScreen extends PIXI.Container {
                     }
 
                     else if (DanielInput.getDown("ArrowLeft")) {
-                        this.walkingMusic.mute(false);
+                        sounds.walkingMusic.mute(false);
 
                         this.rotateTheUniverse(-(0.025 / (this.playerAsteroid.collider.r / 20)));
                         this.player.currentSpritesetID = "walk_left"
                         this.player.last_direction = "left";
                     } else {
-                        this.walkingMusic.mute(true);
+                        sounds.walkingMusic.mute(true);
                     }
                 }
                 if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
-                    this.walkingMusic.mute(true);
-                    this.jumpSound.play()
+                    sounds.walkingMusic.mute(true);
+                    sounds.jumpSound.play()
 
                     for (let asteroid of this.spaceObjects) {
                         asteroid.move(this.player.rot, 1);
@@ -752,12 +710,12 @@ class PlayScreen extends PIXI.Container {
                 for (let asteroid of this.spaceObjects) {
                     asteroid.move(this.player.rot, 0.8);
                     if (HitTest.circle(this.player.collider, asteroid.collider)) {
-                        this.collisionSound.play()
+                        sounds.collisionSound.play()
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
                         if (this.playerAsteroid == this.spaceship) {
-                            this.music.stop();
-                            this.victoryMusic.play();
+                            sounds.music.stop();
+                            sounds.victoryMusic.play();
                             this.transitionComplete = false;
                             this.win = true;
                             this.transition.switchSpriteset("conceal");

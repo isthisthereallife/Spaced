@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import Assets from "./Assets.mjs";
-import Input from "./Input.mjs";
+import * as Howler from 'howler';
 import ScreenController from "./ScreenController.mjs";
 import MainMenu from "./screens/MainMenu.mjs";
 import DanielInput from "./DanielInput.mjs";
@@ -16,6 +16,48 @@ export const gameSettings = {
     height: 144,
     touch: false
 };
+export const sounds = {
+    music: new Howl({
+        src: ['./res/audio/song2_c123.wav'],
+        autoplay: false,
+        loop: true,
+        volume: 1
+    }),
+    victoryMusic: new Howl({
+        src: ['./res/audio/fly2m00n_v3.wav'],
+        autoplay: false,
+        loop: true,
+        volume: 1
+    }),
+    deathTwirl: new Howl({
+        src: ['./res/audio/death_twirl.wav'],
+        autoplay: false,
+        loop: false,
+        volume: 0.7
+    }),
+    deathMusic: new Howl({
+        src: ['./res/audio/deathComesForUsAll.wav'],
+        autoplay: false,
+        loop: true,
+        volume: 0.7
+    }),
+    walkingMusic: new Howl({
+        src: ['./res/audio/song2_c4.wav'],
+        autoplay: false,
+        loop: true,
+        volume: 0.4
+    }),
+    jumpSound: new Howl({
+        src: ['./res/audio/jump.wav'],
+        volume: 1
+    }),
+    collisionSound: new Howl({
+        src: ['./res/audio/landing.wav'],
+        autoplay: false,
+        loop: false,
+        volume: 1
+    })
+}
 
 const app = new PIXI.Application({
     width: gameSettings.width,
@@ -37,7 +79,6 @@ ScreenController.addScreens({
     loseScreen: new LoseScreen(),
     winScreen: new WinScreen()
 });
-//Input.startListener();
 DanielInput.init();
 
 ScreenController.switch("mainMenu");

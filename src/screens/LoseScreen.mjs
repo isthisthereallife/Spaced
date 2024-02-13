@@ -85,9 +85,6 @@ class LoseScreen extends PIXI.Container {
     this.aPrompt.updatePosition();
     this.aPrompt.eventMode = "static";
     this.aPrompt.on('touchstart', () => {
-      console.log("globalPos: ", this.aPrompt.getGlobalPosition())
-      console.log("localbounds:", this.aPrompt.getLocalBounds())
-      console.log("bounds: ", this.aPrompt.getBounds())
       this.goToMainMenu();
     });
 

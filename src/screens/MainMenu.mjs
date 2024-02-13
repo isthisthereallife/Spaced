@@ -6,7 +6,7 @@ import Spaceship from "../Spaceship.mjs";
 import DanielInput from "../DanielInput.mjs";
 import ScreenController from "../ScreenController.mjs";
 import PlayScreen from "./PlayScreen.mjs";
-import { gameSettings } from "../main.mjs";
+import { gameSettings, sounds } from "../main.mjs";
 
 class MainMenu extends PIXI.Container {
   transitionComplete = false;
@@ -83,7 +83,6 @@ class MainMenu extends PIXI.Container {
       }
     });
     this.addChild(this.aPrompt);
-    //this.aPrompt.anchor.set(0.5,0.5)
     this.aPrompt.xPos = (160 - this.aPrompt.width) / 2;
     this.aPrompt.yPos = 144 - 16 - this.aPrompt.height;
     this.aPrompt.updatePosition();
