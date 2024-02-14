@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 import Player from "../Player.mjs";
 import { gameSettings, sounds } from "../main.mjs"
 import Assets from "../Assets.mjs";
@@ -11,7 +11,7 @@ import GameObject from "../GameObject.mjs";
 import ScreenController from "../ScreenController.mjs";
 import Spaceship from "../Spaceship.mjs";
 
-class PlayScreen extends PIXI.Container {
+class PlayScreen extends Container {
     win = false;
     transitionComplete = false;
 
@@ -62,6 +62,7 @@ class PlayScreen extends PIXI.Container {
         let distanceToCenter = 1600;
         this.spaceship.xPos = (gameSettings.width / 2) + Math.cos(angleToCenter) * distanceToCenter;
         this.spaceship.yPos = (gameSettings.height / 2) + Math.sin(angleToCenter) * distanceToCenter;
+        this.spaceship.isSpaceship = true;
         this.spaceship.update();
         this.spaceObjects.push(this.spaceship);
 
@@ -752,7 +753,17 @@ class PlayScreen extends PIXI.Container {
                 }
             }
 
-            for (let asteroid of this.spaceObjects) asteroid.update();
+            for (let asteroid of this.spaceObjects) {
+                if (asteroid.isSpaceship) {
+                    asteroid.update();
+                } else {
+                    if (HitTest.isOnScreen(this.player, asteroid)) {
+                        asteroid.update();
+                    } else {
+                        asteroid.updatePosition()
+                    }
+                }
+            }
             this.player.update();
         }
     }

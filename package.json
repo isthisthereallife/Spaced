@@ -1,6 +1,6 @@
 {
   "name": "spaced",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "dependencies": {
     "howler": "^2.2.4",
     "pixi.js": "^7.2.4"

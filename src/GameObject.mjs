@@ -1,6 +1,6 @@
-import * as PIXI from "pixi.js";
+import { Sprite } from "pixi.js";
 
-class GameObject extends PIXI.Sprite {
+class GameObject extends Sprite {
   #centerRotation = false;
   xPos = 0;
   yPos = 0;
@@ -25,12 +25,12 @@ class GameObject extends PIXI.Sprite {
 
   setCenterRotation(bool) {
     this.#centerRotation = bool;
-    if(this.#centerRotation) this.pivot.set(this.width/2, this.height/2);
+    if (this.#centerRotation) this.pivot.set(this.width / 2, this.height / 2);
     else this.pivot.set(0, 0);
   }
 
   switchSpriteset(id) {
-    if(this.#activeSpriteset === this.#spriteset[id]) return;
+    if (this.#activeSpriteset === this.#spriteset[id]) return;
     this.#activeSpriteset = this.#spriteset[id];
     this.#spritesetIndex = 0;
     this.frameDuration = this.#activeSpriteset.frames[0].duration;
@@ -45,22 +45,22 @@ class GameObject extends PIXI.Sprite {
   }
 
   updatePosition() {
-    this.x = Math.round(this.xPos + (this.#centerRotation ? this.width/2 : 0));
-    this.y = Math.round(this.yPos + (this.#centerRotation ? this.height/2 : 0));
+    this.x = Math.round(this.xPos + (this.#centerRotation ? this.width / 2 : 0));
+    this.y = Math.round(this.yPos + (this.#centerRotation ? this.height / 2 : 0));
   }
 
   drawSprite() {
     if (this.frameDuration > 0) this.frameDuration--;
     else {
       if (this.#spritesetIndex == this.#activeSpriteset.frames.length - 1) {
-        if(!("callback" in this.#activeSpriteset) && !("goto" in this.#activeSpriteset)) return;
+        if (!("callback" in this.#activeSpriteset) && !("goto" in this.#activeSpriteset)) return;
         if (this.#activeSpriteset.loop) {
           this.#spritesetIndex = 0;
         } else {
-          if("callback" in this.#activeSpriteset) {
+          if ("callback" in this.#activeSpriteset) {
             this.#activeSpriteset.callback();
           }
-          if("goto" in this.#activeSpriteset) {
+          if ("goto" in this.#activeSpriteset) {
             this.switchSpriteset(this.#activeSpriteset.goto);
           }
         }

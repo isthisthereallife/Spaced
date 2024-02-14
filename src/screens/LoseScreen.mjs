@@ -1,11 +1,11 @@
-import * as PIXI from "pixi.js";
+import { Container }from "pixi.js";
 import DanielInput from "../DanielInput.mjs";
 import GameObject from "../GameObject.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
 import Assets from "../Assets.mjs";
 import ScreenController from "../ScreenController.mjs";
 
-class LoseScreen extends PIXI.Container {
+class LoseScreen extends Container {
   transitionComplete = false;
 
   init() {

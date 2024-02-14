@@ -1,7 +1,7 @@
-import { Application, BaseTexture, Ticker, VERSION, SCALE_MODES  }from "pixi.js";
+import { Application, BaseTexture, Ticker, VERSION, SCALE_MODES } from "pixi.js";
 import Assets from "./Assets.mjs";
-import * as Howler from 'howler';
 import ScreenController from "./ScreenController.mjs";
+import * as Howler from "howler"
 import MainMenu from "./screens/MainMenu.mjs";
 import DanielInput from "./DanielInput.mjs";
 import LoseScreen from "./screens/LoseScreen.mjs";

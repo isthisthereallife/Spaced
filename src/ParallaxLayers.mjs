@@ -1,20 +1,22 @@
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 import GameObject from "./GameObject.mjs";
 import { gameSettings } from "./main.mjs";
 
-class ParallaxLayers extends PIXI.Container {
+class ParallaxLayers extends Container {
   layers = [];
 
   constructor(layerSettings) {
     super();
 
-    for(let layerSetting of layerSettings) {
-      const layer = new PIXI.Container();
-      for(let i = 0; i < layerSetting.n; i++) {
+    for (let layerSetting of layerSettings) {
+      const layer = new Container();
+      for (let i = 0; i < layerSetting.n; i++) {
         const obj = new GameObject({
-          static: {loop: true, goto: "static", frames: [
+          static: {
+            loop: true, goto: "static", frames: [
               { texture: layerSetting.texture, duration: Number.MAX_SAFE_INTEGER }
-            ]}
+            ]
+          }
         });
         obj.xPos = Math.random() * gameSettings.width - obj.width;
         obj.yPos = Math.random() * gameSettings.height - obj.height;
@@ -27,8 +29,8 @@ class ParallaxLayers extends PIXI.Container {
   }
 
   move(angle, speed) {
-    for(let i = 0; i < this.layers.length; i++) {
-      for(let child of this.layers[i].children) {
+    for (let i = 0; i < this.layers.length; i++) {
+      for (let child of this.layers[i].children) {
         const radians = angle * (Math.PI / 180);
         child.xPos += Math.cos(radians) * (speed + speed * i);
         child.yPos += Math.sin(radians) * (speed + speed * i);
@@ -39,10 +41,10 @@ class ParallaxLayers extends PIXI.Container {
   }
 
   rotateInRelation(relativeDistance, relativeAngle, distanceToCenter, speed) {
-    for(let i = 0; i < this.layers.length; i++) {
-      for(let child of this.layers[i].children) {
-        child.xPos = (child.xPos + child.width/2 - relativeDistance.x) + Math.cos(relativeAngle + (speed)) * distanceToCenter - child.width/2;
-        child.yPos = (child.yPos + child.height/2 - relativeDistance.y) + Math.sin(relativeAngle + (speed)) * distanceToCenter - child.height/2;
+    for (let i = 0; i < this.layers.length; i++) {
+      for (let child of this.layers[i].children) {
+        child.xPos = (child.xPos + child.width / 2 - relativeDistance.x) + Math.cos(relativeAngle + (speed)) * distanceToCenter - child.width / 2;
+        child.yPos = (child.yPos + child.height / 2 - relativeDistance.y) + Math.sin(relativeAngle + (speed)) * distanceToCenter - child.height / 2;
 
         this.wrapObjectPosition(child);
         child.update();
@@ -51,12 +53,12 @@ class ParallaxLayers extends PIXI.Container {
   }
 
   rotateAroundCenterParallax(speed) {
-    for(let i = 0; i < this.layers.length; i++) {
-      for(let child of this.layers[i].children) {
-        let angleToCenter = Math.atan2(child.yPos - (gameSettings.height/2), child.xPos - gameSettings.width/2);
-        let distanceToCenter = Math.sqrt((child.xPos - (gameSettings.width/2))**2 + (child.yPos - (gameSettings.height/2))**2);
-        child.xPos = (gameSettings.width/2) + Math.cos(angleToCenter + (speed+speed*i)) * distanceToCenter;
-        child.yPos = (gameSettings.height/2) + Math.sin(angleToCenter + (speed+speed*i)) * distanceToCenter;
+    for (let i = 0; i < this.layers.length; i++) {
+      for (let child of this.layers[i].children) {
+        let angleToCenter = Math.atan2(child.yPos - (gameSettings.height / 2), child.xPos - gameSettings.width / 2);
+        let distanceToCenter = Math.sqrt((child.xPos - (gameSettings.width / 2)) ** 2 + (child.yPos - (gameSettings.height / 2)) ** 2);
+        child.xPos = (gameSettings.width / 2) + Math.cos(angleToCenter + (speed + speed * i)) * distanceToCenter;
+        child.yPos = (gameSettings.height / 2) + Math.sin(angleToCenter + (speed + speed * i)) * distanceToCenter;
 
         this.wrapObjectPosition(child);
         child.update();
@@ -65,12 +67,12 @@ class ParallaxLayers extends PIXI.Container {
   }
 
   rotateAroundCenterNoParallax(speed) {
-    for(let i = 0; i < this.layers.length; i++) {
-      for(let child of this.layers[i].children) {
-        let angleToCenter = Math.atan2(child.yPos - (gameSettings.height/2), child.xPos - gameSettings.width/2);
-        let distanceToCenter = Math.sqrt((child.xPos - (gameSettings.width/2))**2 + (child.yPos - (gameSettings.height/2))**2);
-        child.xPos = (gameSettings.width/2) + Math.cos(angleToCenter + (speed)) * distanceToCenter;
-        child.yPos = (gameSettings.height/2) + Math.sin(angleToCenter + (speed)) * distanceToCenter;
+    for (let i = 0; i < this.layers.length; i++) {
+      for (let child of this.layers[i].children) {
+        let angleToCenter = Math.atan2(child.yPos - (gameSettings.height / 2), child.xPos - gameSettings.width / 2);
+        let distanceToCenter = Math.sqrt((child.xPos - (gameSettings.width / 2)) ** 2 + (child.yPos - (gameSettings.height / 2)) ** 2);
+        child.xPos = (gameSettings.width / 2) + Math.cos(angleToCenter + (speed)) * distanceToCenter;
+        child.yPos = (gameSettings.height / 2) + Math.sin(angleToCenter + (speed)) * distanceToCenter;
 
         this.wrapObjectPosition(child);
         child.update();

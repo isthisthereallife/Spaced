@@ -1,11 +1,11 @@
-import * as PIXI from "pixi.js";
+import { Assets as PixiAssets} from "pixi.js";
 
 class Assets {
   static #assets;
 
   static async load(bundle) {
-    PIXI.Assets.addBundle("resources", bundle);
-    this.#assets = await PIXI.Assets.loadBundle("resources");
+    PixiAssets.addBundle("resources", bundle);
+    this.#assets = await PixiAssets.loadBundle("resources");
   }
 
   static get(bundle, id) {

@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 import DanielInput from "../DanielInput.mjs";
 import GameObject from "../GameObject.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
@@ -6,7 +6,7 @@ import Assets from "../Assets.mjs";
 import ScreenController from "../ScreenController.mjs";
 import OxygenMeter from "../OxygenMeter.mjs";
 
-class WinScreen extends PIXI.Container {
+class WinScreen extends Container {
   transitionComplete = false;
   oxygenLeft;
 
@@ -137,7 +137,7 @@ class WinScreen extends PIXI.Container {
 
 
 
-    this.oxygenPercentage = new PIXI.Container();
+    this.oxygenPercentage = new Container();
 
     this.percentage = new GameObject({
       static: {
