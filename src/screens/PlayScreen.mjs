@@ -675,6 +675,7 @@ class PlayScreen extends Container {
 
                 this.transitionComplete = false;
                 this.win = false;
+                this.adrift = false;
                 this.transition.switchSpriteset("conceal");
             }
 
@@ -773,10 +774,10 @@ class PlayScreen extends Container {
                         }
                     }
                 }
-                
-                if (!this.adrift && (this.topAsteroid.yPos < this.player.yPos - 50 || this.bottomAsteroid.yPos > this.player.yPos + 50 || this.spaceObjects[1].xPos > this.player.xPos + 50|| this.spaceObjects[this.spaceObjects.length - 1].xPos < this.player.xPos -50)) {
+
+                if (!this.adrift && (this.topAsteroid.yPos < this.player.yPos - 50 || this.bottomAsteroid.yPos > this.player.yPos + 50 || this.spaceObjects[1].xPos > this.player.xPos + 50 || this.spaceObjects[this.spaceObjects.length - 1].xPos < this.player.xPos - 50)) {
                     this.adrift = true;
-                    
+
                     sounds.music.stop();
                     sounds.adriftMusic.play();
                 }
