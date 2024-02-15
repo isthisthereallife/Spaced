@@ -12,7 +12,7 @@ const stylesHandler = 'style-loader';
 const config = {
     entry: './src/main.mjs',
     output: {
-        filename: '[name].bundle.js',
+        filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
     },
 

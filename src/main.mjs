@@ -23,6 +23,12 @@ export const sounds = {
         loop: true,
         volume: 1
     }),
+    adriftMusic: new Howl({
+        src: ['./res/audio/adrift.wav'],
+        autoplay: false,
+        loop: true,
+        volume: 0.7
+    }),
     victoryMusic: new Howl({
         src: ['./res/audio/fly2m00n_v3.wav'],
         autoplay: false,
