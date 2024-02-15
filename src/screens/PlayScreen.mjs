@@ -16,9 +16,9 @@ class PlayScreen extends Container {
     transitionComplete = false;
     fieldSize = 6000;
     asteroidAmount = 2000;
+    topAsteroid = { yPos: 0 }
+    bottomAsteroid = { yPos: 0 }
     adrift = false;
-    adriftInterval = undefined;
-    adriftTimer = 0;
 
 
     init() {
@@ -35,6 +35,9 @@ class PlayScreen extends Container {
         sounds.music.play();
         sounds.walkingMusic.play();
         sounds.walkingMusic.mute(true);
+
+        this.adrift = false;
+        sounds.adriftMusic.stop();
 
         this.player.grounded = false;
         this.player.rot = 270;
@@ -71,13 +74,11 @@ class PlayScreen extends Container {
         this.spaceship.isSpaceship = true;
         this.spaceship.update();
         this.spaceObjects.push(this.spaceship);
-        //console.log("xPos: ", this.spaceship.xPos, "\n yPos: ", this.spaceship.yPos)
 
         this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
 
         this.generateAsteroids();
         this.spaceObjects.sort((a, b) => a.xPos - b.xPos)
-        //console.log(this.spaceObjects[this.spaceObjects.length - 1].xPos)
         for (let asteroid of this.spaceObjects) {
             this.addChild(asteroid);
         }
@@ -679,14 +680,14 @@ class PlayScreen extends Container {
 
             if (this.player.grounded) {
 
-             /*   if (this.adrift) {
-                    sounds.adriftMusic.stop();
-                    sounds.music.play();
-                }
-                this.adrift = false;
-                this.adriftTimer = 0;
-                this.adriftInterval = this.stopAdriftTimer(this);
-*/
+                /*   if (this.adrift) {
+                       sounds.adriftMusic.stop();
+                       sounds.music.play();
+                   }
+                   this.adrift = false;
+                   this.adriftTimer = 0;
+                   this.adriftInterval = this.stopAdriftTimer(this);
+   */
                 if (!DanielInput.getDown("ArrowRight") && !DanielInput.getDown("ArrowLeft")) {
                     this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 }
@@ -714,13 +715,6 @@ class PlayScreen extends Container {
                 if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
                     sounds.walkingMusic.mute(true);
                     sounds.jumpSound.play()
-                   
-
-
-                  //  this.startAdriftTimer(this)
-
-                   // console.log("adin:", this.adriftInterval)
-                 //   console.log("atim:", this.adriftTimer);
 
                     for (let asteroid of this.spaceObjects) {
                         asteroid.move(this.player.rot, 1);
@@ -728,7 +722,6 @@ class PlayScreen extends Container {
                     this.player.grounded = false;
                 }
             } else {
-              //  console.log("adin:", this.adriftInterval)
 
                 DanielInput.getClick("z");
                 DanielInput.getClick("Z");
@@ -740,7 +733,6 @@ class PlayScreen extends Container {
                     asteroid.move(this.player.rot, 0.8);
                     if (HitTest.circle(this.player.collider, asteroid.collider)) {
                         sounds.collisionSound.play()
-                        // reset adriftTimer
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
                         if (this.playerAsteroid == this.spaceship) {
@@ -781,15 +773,13 @@ class PlayScreen extends Container {
                         }
                     }
                 }
-
-                // jag bryr mig inte längre. om player driftat i 10 sek, fejda ut musiken och spela adrift.wav
-   /*             if (!this.adrift && this.adriftTimer > 10) {
+                
+                if (!this.adrift && (this.topAsteroid.yPos < this.player.yPos - 50 || this.bottomAsteroid.yPos > this.player.yPos + 50 || this.spaceObjects[1].xPos > this.player.xPos + 50|| this.spaceObjects[this.spaceObjects.length - 1].xPos < this.player.xPos -50)) {
                     this.adrift = true;
+                    
                     sounds.music.stop();
                     sounds.adriftMusic.play();
-
                 }
-                */
             }
 
             for (let asteroid of this.spaceObjects) {
@@ -806,18 +796,7 @@ class PlayScreen extends Container {
             this.player.update();
         }
     }
-/*
-    startAdriftTimer(that) {
 
-        that.adriftInterval = setInterval(function () {
-            that.adriftTimer += 1;
-            console.log("adriftTimer: ", that.adriftTimer)
-        }, 1000);
-    }
-    stopAdriftTimer(that) {
-        that.adriftInterval = clearInterval()
-    }
-    */
     rotateTheUniverse(speed) {
         let relativeDistance = {
             x: (this.playerAsteroid.xPos + this.playerAsteroid.width / 2) - 160 / 2,
@@ -838,6 +817,7 @@ class PlayScreen extends Container {
     }
 
     generateAsteroids() {
+
         for (let i = 0; i < this.asteroidAmount; i++) {
             let ok = true;
             //skapa en asteroid
@@ -864,7 +844,8 @@ class PlayScreen extends Container {
                     }
                 }
             } while (!ok)
-
+            if (obj.yPos < this.bottomAsteroid.yPos) this.bottomAsteroid = obj
+            else if (obj.yPos > this.topAsteroid.yPos) this.topAsteroid = obj;
             this.spaceObjects.push(obj);
         }
     }
