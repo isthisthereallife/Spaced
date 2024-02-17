@@ -19,13 +19,14 @@ class PlayScreen extends Container {
     topAsteroid = { yPos: 0 }
     bottomAsteroid = { yPos: 0 }
     adrift = false;
+    isDead = false;
 
 
     init() {
         this.removeChildren();
 
         this.addChild(this.stars);
-
+        this.isDead = false;
         OxygenMeter.currentOxygen = OxygenMeter.maxOxygen;
         this.oxygenMeter.updateOxygenScale();
         this.transition.switchSpriteset("reveal");
@@ -672,7 +673,7 @@ class PlayScreen extends Container {
                 sounds.walkingMusic.stop();
                 sounds.deathTwirl.play();
                 sounds.deathTwirl.on("end", () => sounds.deathMusic.play());
-
+                this.isDead = true;
                 this.transitionComplete = false;
                 this.win = false;
                 this.adrift = false;
@@ -680,15 +681,6 @@ class PlayScreen extends Container {
             }
 
             if (this.player.grounded) {
-
-                /*   if (this.adrift) {
-                       sounds.adriftMusic.stop();
-                       sounds.music.play();
-                   }
-                   this.adrift = false;
-                   this.adriftTimer = 0;
-                   this.adriftInterval = this.stopAdriftTimer(this);
-   */
                 if (!DanielInput.getDown("ArrowRight") && !DanielInput.getDown("ArrowLeft")) {
                     this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 }
@@ -776,10 +768,12 @@ class PlayScreen extends Container {
                 }
 
                 if (!this.adrift && (this.topAsteroid.yPos < this.player.yPos - 50 || this.bottomAsteroid.yPos > this.player.yPos + 50 || this.spaceObjects[1].xPos > this.player.xPos + 50 || this.spaceObjects[this.spaceObjects.length - 1].xPos < this.player.xPos - 50)) {
+                    if(!this.isDead){
                     this.adrift = true;
 
                     sounds.music.stop();
                     sounds.adriftMusic.play();
+                    }
                 }
             }
 
