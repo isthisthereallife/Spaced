@@ -9,12 +9,3 @@ body {
     align-items: center;
     height:100vh;
 }
-
-canvas{
-    border:64px ridge #880000;
-}
-
-@font-face {
-    font-family: gameboyfont;
-    src: url("../../res/gameboy.ttf") format("truetype");
-}

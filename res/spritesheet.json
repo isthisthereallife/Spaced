@@ -95,12 +95,26 @@
     
     "duration": 100
    },
+   "a_button": {
+    "frame": {"x": 222, "y":88, "w": 12, "h": 12 },
+    "rotated": false,
+    "trimmed": true,
+
+    "duration": 100
+   },
    "win": {
     "frame": { "x": 152, "y": 34, "w": 117, "h": 21 },
     "rotated": false,
     "trimmed": true,
     
     
+    "duration": 100
+   },
+   "arrow":{
+    "frame": {"x":119,"y":82, "w":8,"h":8},
+    "rotated": false,
+    "trimmed": true,
+
     "duration": 100
    },
    "radar_0": {

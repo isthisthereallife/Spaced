@@ -1,10 +1,8 @@
-import * as PIXI from "pixi.js";
-import * as Howler from 'howler';
+import { Container } from "pixi.js";
 import Player from "../Player.mjs";
-import { gameSettings } from "../main.mjs"
+import { gameSettings, sounds } from "../main.mjs"
 import Assets from "../Assets.mjs";
 import Asteroid from "../Asteroid.mjs";
-import Input from "../Input.mjs";
 import DanielInput from "../DanielInput.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
 import HitTest from "../HitTest.mjs";
@@ -13,29 +11,40 @@ import GameObject from "../GameObject.mjs";
 import ScreenController from "../ScreenController.mjs";
 import Spaceship from "../Spaceship.mjs";
 
-class PlayScreen extends PIXI.Container {
+class PlayScreen extends Container {
     win = false;
     transitionComplete = false;
+    fieldSize = 6000;
+    asteroidAmount = 2000;
+    topAsteroid = { yPos: 0 }
+    bottomAsteroid = { yPos: 0 }
+    adrift = false;
+    isDead = false;
+
 
     init() {
         this.removeChildren();
 
         this.addChild(this.stars);
-
+        this.isDead = false;
         OxygenMeter.currentOxygen = OxygenMeter.maxOxygen;
         this.oxygenMeter.updateOxygenScale();
         this.transition.switchSpriteset("reveal");
-        this.deathMusic.stop();
-        this.victoryMusic.stop();
-        this.walkingMusic.stop();
-        this.music.play();
-        this.walkingMusic.play();
-        this.walkingMusic.mute(true);
+        sounds.deathMusic.stop();
+        sounds.victoryMusic.stop();
+        sounds.walkingMusic.stop();
+        sounds.music.play();
+        sounds.walkingMusic.play();
+        sounds.walkingMusic.mute(true);
+
+        this.adrift = false;
+        sounds.adriftMusic.stop();
 
         this.player.grounded = false;
         this.player.rot = 270;
         this.player.updateSpriteRotation();
         this.addChild(this.player);
+
 
         this.spaceObjects = [];
 
@@ -59,22 +68,30 @@ class PlayScreen extends PIXI.Container {
                 ]
             }
         });
-        let angleToCenter = Math.random()*2*Math.PI-Math.PI;
+        let angleToCenter = Math.random() * 2 * Math.PI - Math.PI;
         let distanceToCenter = 1600;
-        this.spaceship.xPos = (gameSettings.width/2) + Math.cos(angleToCenter) * distanceToCenter;
-        this.spaceship.yPos = (gameSettings.height/2) + Math.sin(angleToCenter) * distanceToCenter;
+        this.spaceship.xPos = (gameSettings.width / 2) + Math.cos(angleToCenter) * distanceToCenter;
+        this.spaceship.yPos = (gameSettings.height / 2) + Math.sin(angleToCenter) * distanceToCenter;
+        this.spaceship.isSpaceship = true;
         this.spaceship.update();
         this.spaceObjects.push(this.spaceship);
 
         this.spaceshipLastPos = JSON.parse(JSON.stringify(this.spaceship.collider));
 
         this.generateAsteroids();
+        this.spaceObjects.sort((a, b) => a.xPos - b.xPos)
         for (let asteroid of this.spaceObjects) {
             this.addChild(asteroid);
         }
 
         this.addChild(this.oxygenMeter);
         this.addChild(this.radar);
+
+        if (gameSettings.touch) {
+            this.addChild(this.aButton);
+            this.addChild(this.arrowLeft);
+            this.addChild(this.arrowRight);
+        }
 
         this.addChild(this.transition);
     }
@@ -106,9 +123,9 @@ class PlayScreen extends PIXI.Container {
             },
             conceal: {
                 loop: false, callback: () => {
-                        if(this.win) ScreenController.switch("winScreen");
-                        else if(!this.win) ScreenController.switch("loseScreen");
-                    }, frames: [
+                    if (this.win) ScreenController.switch("winScreen");
+                    else if (!this.win) ScreenController.switch("loseScreen");
+                }, frames: [
                     { texture: Assets.get("transition", "transition_12"), duration: 2 },
                     { texture: Assets.get("transition", "transition_11"), duration: 2 },
                     { texture: Assets.get("transition", "transition_10"), duration: 2 },
@@ -127,46 +144,7 @@ class PlayScreen extends PIXI.Container {
         });
 
         this.spaceObjects = [];
-        this.music = new Howl({
-            src: ['/res/audio/song2_c123.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 1
-        });
-        this.victoryMusic = new Howl({
-            src: ['/res/audio/fly2m00n_v3.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 1
-        });
-        this.deathTwirl = new Howl({
-            src: ['/res/audio/death_twirl.wav'],
-            autoplay: false,
-            loop: false,
-            volume: 0.7
-        });
-        this.deathMusic = new Howl({
-            src: ['/res/audio/deathComesForUsAll.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 0.7
-        });
-        this.walkingMusic = new Howl({
-            src: ['/res/audio/song2_c4.wav'],
-            autoplay: false,
-            loop: true,
-            volume: 1
-        });
-        this.jumpSound = new Howl({
-            src: ['/res/audio/jump.wav'],
-            volume: 1
-        });
-        this.collisionSound = new Howl({
-            src: ['/res/audio/landing.wav'],
-            autoplay: false,
-            loop: false,
-            volume: 1
-        })
+
 
         this.stars = new ParallaxLayers([
             { texture: Assets.get("sheet", "star_0"), n: 20 },
@@ -601,14 +579,85 @@ class PlayScreen extends PIXI.Container {
         this.oxygenMeter = new OxygenMeter();
         this.radar = new GameObject({
             closer: {
-                frames: [{texture: Assets.get("sheet", "radar_1"), duration: Number.MAX_SAFE_INTEGER}]
-            }, 
+                frames: [{ texture: Assets.get("sheet", "radar_1"), duration: Number.MAX_SAFE_INTEGER }]
+            },
             further: {
-                frames: [{texture: Assets.get("sheet", "radar_0"), duration: Number.MAX_SAFE_INTEGER}]
+                frames: [{ texture: Assets.get("sheet", "radar_0"), duration: Number.MAX_SAFE_INTEGER }]
             }
         });
-        this.radar.xPos = 160-this.radar.width;
+        this.radar.xPos = 160 - this.radar.width;
         this.radar.update();
+
+        if (gameSettings.touch) {
+            this.aButton = new GameObject({
+                static: {
+                    loop: true, frames: [
+                        { texture: Assets.get("sheet", "a_button"), duration: Number.MAX_SAFE_INTEGER }
+                    ]
+                }
+            });
+            this.aButton.anchor.set(0.5, 0.5);
+            this.aButton.scale.set(1.5, 1.5);
+            this.aButton.xPos = gameSettings.width - 15;//(160 - this.aButton.width) / 2;
+            this.aButton.yPos = gameSettings.height - 15;//144 - 16 - this.aButton.height;
+
+            this.aButton.eventMode = 'static';
+
+            this.aButton.updatePosition();
+
+            this.aButton.on('touchstart', () => {
+                DanielInput.keyPress("a")
+            })
+
+            this.arrowLeft = new GameObject({
+                static: {
+                    loop: true, frames: [
+                        { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
+                    ]
+                }
+            })
+            this.arrowLeft.angle = 315;
+            this.arrowLeft.xPos = 15;
+            this.arrowLeft.yPos = gameSettings.height - 15;
+            this.arrowLeft.anchor.set(0.5, 0.5);
+            this.arrowLeft.scale.set(2, 2);
+            this.arrowLeft.updatePosition();
+            this.arrowLeft.eventMode = "static";
+            this.arrowLeft.on('touchstart', () => {
+                DanielInput.keyPress("ArrowLeft")
+            })
+
+
+            this.arrowRight = new GameObject({
+                static: {
+                    loop: true, frames: [
+                        { texture: Assets.get("sheet", "arrow"), duration: Number.MAX_SAFE_INTEGER }
+                    ]
+                }
+            })
+            this.arrowRight.angle = 135;
+            this.arrowRight.xPos = 35;
+            this.arrowRight.yPos = gameSettings.height - 15;
+            this.arrowRight.anchor.set(0.5, 0.5);
+            this.arrowRight.scale.set(2, 2);
+            this.arrowRight.updatePosition();
+            this.arrowRight.eventMode = "static";
+            this.arrowRight.on('touchstart', () => {
+                DanielInput.keyPress("ArrowRight");
+            })
+
+            document.addEventListener("touchend", () => {
+                DanielInput.keyRelease("a");
+                DanielInput.keyRelease("ArrowLeft");
+                DanielInput.keyRelease("ArrowRight");
+
+            });
+            document.addEventListener("touchcancel", () => {
+                DanielInput.keyRelease("a");
+                DanielInput.keyRelease("ArrowLeft");
+                DanielInput.keyRelease("ArrowRight");
+            });
+        }
     }
 
     update() {
@@ -619,13 +668,15 @@ class PlayScreen extends PIXI.Container {
             this.oxygenMeter.decrementOxygen(0.005);
 
             if (OxygenMeter.currentOxygen == 0) {
-                this.music.stop();
-                this.walkingMusic.stop();
-                this.deathTwirl.play();
-                this.deathTwirl.on("end", () => this.deathMusic.play());
-
+                sounds.music.stop();
+                sounds.adriftMusic.stop();
+                sounds.walkingMusic.stop();
+                sounds.deathTwirl.play();
+                sounds.deathTwirl.on("end", () => sounds.deathMusic.play());
+                this.isDead = true;
                 this.transitionComplete = false;
                 this.win = false;
+                this.adrift = false;
                 this.transition.switchSpriteset("conceal");
             }
 
@@ -637,7 +688,7 @@ class PlayScreen extends PIXI.Container {
                     this.player.currentSpritesetID = `idle_${this.player.last_direction}`;
                 } else {
                     if (DanielInput.getDown("ArrowRight")) {
-                        this.walkingMusic.mute(false)
+                        sounds.walkingMusic.mute(false)
 
                         this.rotateTheUniverse(0.025 / (this.playerAsteroid.collider.r / 20));
                         this.player.currentSpritesetID = "walk_right"
@@ -645,18 +696,18 @@ class PlayScreen extends PIXI.Container {
                     }
 
                     else if (DanielInput.getDown("ArrowLeft")) {
-                        this.walkingMusic.mute(false);
+                        sounds.walkingMusic.mute(false);
 
                         this.rotateTheUniverse(-(0.025 / (this.playerAsteroid.collider.r / 20)));
                         this.player.currentSpritesetID = "walk_left"
                         this.player.last_direction = "left";
                     } else {
-                        this.walkingMusic.mute(true);
+                        sounds.walkingMusic.mute(true);
                     }
                 }
                 if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
-                    this.walkingMusic.mute(true);
-                    this.jumpSound.play()
+                    sounds.walkingMusic.mute(true);
+                    sounds.jumpSound.play()
 
                     for (let asteroid of this.spaceObjects) {
                         asteroid.move(this.player.rot, 1);
@@ -664,6 +715,7 @@ class PlayScreen extends PIXI.Container {
                     this.player.grounded = false;
                 }
             } else {
+
                 DanielInput.getClick("z");
                 DanielInput.getClick("Z");
                 DanielInput.getClick("a");
@@ -673,12 +725,13 @@ class PlayScreen extends PIXI.Container {
                 for (let asteroid of this.spaceObjects) {
                     asteroid.move(this.player.rot, 0.8);
                     if (HitTest.circle(this.player.collider, asteroid.collider)) {
-                        this.collisionSound.play()
+                        sounds.collisionSound.play()
                         this.player.grounded = true;
                         this.playerAsteroid = asteroid;
                         if (this.playerAsteroid == this.spaceship) {
-                            this.music.stop();
-                            this.victoryMusic.play();
+                            sounds.music.stop();
+                            sounds.adriftMusic.stop();
+                            sounds.victoryMusic.play();
                             this.transitionComplete = false;
                             this.win = true;
                             this.transition.switchSpriteset("conceal");
@@ -713,9 +766,28 @@ class PlayScreen extends PIXI.Container {
                         }
                     }
                 }
+
+                if (!this.adrift && (this.topAsteroid.yPos < this.player.yPos - 50 || this.bottomAsteroid.yPos > this.player.yPos + 50 || this.spaceObjects[1].xPos > this.player.xPos + 50 || this.spaceObjects[this.spaceObjects.length - 1].xPos < this.player.xPos - 50)) {
+                    if(!this.isDead){
+                    this.adrift = true;
+
+                    sounds.music.stop();
+                    sounds.adriftMusic.play();
+                    }
+                }
             }
 
-            for (let asteroid of this.spaceObjects) asteroid.update();
+            for (let asteroid of this.spaceObjects) {
+                if (asteroid.isSpaceship) {
+                    asteroid.update();
+                } else {
+                    if (HitTest.isOnScreen(this.player, asteroid)) {
+                        asteroid.update();
+                    } else {
+                        asteroid.updatePosition()
+                    }
+                }
+            }
             this.player.update();
         }
     }
@@ -740,8 +812,8 @@ class PlayScreen extends PIXI.Container {
     }
 
     generateAsteroids() {
-        let fieldSize = 10000;
-        for (let i = 0; i < 5000; i++) {
+
+        for (let i = 0; i < this.asteroidAmount; i++) {
             let ok = true;
             //skapa en asteroid
             let sprite = `asteroid_${Math.round(Math.random() * 2)}`
@@ -755,8 +827,8 @@ class PlayScreen extends PIXI.Container {
             // positionera på en (ledig) plats mellan -1000 och 1000 på både x och y
             do {
                 ok = true;
-                obj.xPos = Math.random() * fieldSize - fieldSize / 2;
-                obj.yPos = Math.random() * fieldSize - fieldSize / 2;
+                obj.xPos = Math.random() * this.fieldSize - this.fieldSize / 2;
+                obj.yPos = Math.random() * this.fieldSize - this.fieldSize / 2;
 
                 obj.update();
                 // kolla med de tidigare asteroiderna om platsen redan är upptagen
@@ -767,7 +839,8 @@ class PlayScreen extends PIXI.Container {
                     }
                 }
             } while (!ok)
-
+            if (obj.yPos < this.bottomAsteroid.yPos) this.bottomAsteroid = obj
+            else if (obj.yPos > this.topAsteroid.yPos) this.topAsteroid = obj;
             this.spaceObjects.push(obj);
         }
     }

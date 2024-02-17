@@ -1,11 +1,11 @@
-import * as PIXI from "pixi.js";
+import { Container }from "pixi.js";
 import DanielInput from "../DanielInput.mjs";
 import GameObject from "../GameObject.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
 import Assets from "../Assets.mjs";
 import ScreenController from "../ScreenController.mjs";
 
-class LoseScreen extends PIXI.Container {
+class LoseScreen extends Container {
   transitionComplete = false;
 
   init() {
@@ -83,6 +83,10 @@ class LoseScreen extends PIXI.Container {
     this.aPrompt.xPos = (160 - this.aPrompt.width) / 2;
     this.aPrompt.yPos = 144 - 16 - this.aPrompt.height;
     this.aPrompt.updatePosition();
+    this.aPrompt.eventMode = "static";
+    this.aPrompt.on('touchstart', () => {
+      this.goToMainMenu();
+    });
 
     this.helmet = new GameObject({
       static: {
@@ -104,10 +108,13 @@ class LoseScreen extends PIXI.Container {
     if (this.transitionComplete) {
       this.parallaxLayers.move(0, 0.040);
       if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
-        this.transitionComplete = false;
-        this.transition.switchSpriteset("conceal");
+        this.goToMainMenu()
       }
     }
+  }
+  goToMainMenu() {
+    this.transitionComplete = false;
+    this.transition.switchSpriteset("conceal");
   }
 }
 

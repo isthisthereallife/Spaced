@@ -1,12 +1,14 @@
-import * as PIXI from "pixi.js";
+import { Container } from "pixi.js";
 import Assets from "../Assets.mjs";
 import GameObject from "../GameObject.mjs";
 import ParallaxLayers from "../ParallaxLayers.mjs";
 import Spaceship from "../Spaceship.mjs";
 import DanielInput from "../DanielInput.mjs";
 import ScreenController from "../ScreenController.mjs";
+import PlayScreen from "./PlayScreen.mjs";
+import { gameSettings, sounds } from "../main.mjs";
 
-class MainMenu extends PIXI.Container {
+class MainMenu extends Container {
   transitionComplete = false;
 
   init() {
@@ -85,6 +87,12 @@ class MainMenu extends PIXI.Container {
     this.aPrompt.yPos = 144 - 16 - this.aPrompt.height;
     this.aPrompt.updatePosition();
 
+    this.aPrompt.on('touchstart', (event) => {
+      gameSettings.touch = true;
+      this.goToPlayScreen();
+    });
+    this.aPrompt.eventMode = 'static';
+
     this.spaceship = new Spaceship({
       static: {
         loop: true, frames: [
@@ -113,10 +121,14 @@ class MainMenu extends PIXI.Container {
       this.parallaxLayers.rotateAroundCenterParallax(0.005);
 
       if (DanielInput.getClick("z") || DanielInput.getClick("Z") || DanielInput.getClick("a") || DanielInput.getClick("A")) {
-        this.transitionComplete = false;
-        this.transition.switchSpriteset("conceal");
+        this.goToPlayScreen();
       }
     }
+  }
+  goToPlayScreen() {
+    ScreenController.addScreen("playScreen", new PlayScreen());
+    this.transitionComplete = false;
+    this.transition.switchSpriteset("conceal");
   }
 }
 

@@ -3,12 +3,19 @@ class DanielInput {
 
   static init() {
     document.addEventListener("keydown", e => {
-      this.#keys[e.key] = {down: true, pressed: true};
+      this.keyPress(e.key);
     });
 
     document.addEventListener("keyup", e => {
-      if(e.key in this.#keys) this.#keys[e.key].down = false;
+      this.keyRelease(e.key)
     });
+  }
+
+  static keyPress(id) {
+    this.#keys[id] = { down: true, pressed: true }
+  }
+  static keyRelease(id) {
+    if (id in this.#keys) this.#keys[id].down = false;
   }
 
   static getDown(id) {
@@ -16,7 +23,7 @@ class DanielInput {
   }
 
   static getClick(id) {
-    if(id in this.#keys && !this.#keys[id].down && this.#keys[id].pressed) {
+    if (id in this.#keys && !this.#keys[id].down && this.#keys[id].pressed) {
       this.#keys[id].pressed = false;
       return true;
     }
